@@ -9,6 +9,11 @@
          style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
         <h2 class="fw-bold">Tentang Wisata Air Panas Wong Pulungan</h2>
     </div>
+
+    <div class="text-center text-white py-4 rounded shadow"
+         style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <h2 class="fw-bold">Tentang Wisata Air Panas Wong Pulungan</h2>
+    </div>
 </div>
 
 <div class="container-fluid bg-light py-5 my-5">
