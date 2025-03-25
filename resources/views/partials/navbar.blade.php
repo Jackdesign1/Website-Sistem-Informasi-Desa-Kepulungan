@@ -3,7 +3,7 @@
         <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/">
             <img src="{{ asset('images/Logo.png') }}" alt="Logo" width="50" height="50" class="rounded-circle">
-            <span class="ms-2 ">Wisata Air Panas Wong Pulungan</span>
+            <span class="ms-2 ">Pemerintah Desa Kepulungan</span>
         </a>
 
         <!-- Button toggle untuk mobile -->

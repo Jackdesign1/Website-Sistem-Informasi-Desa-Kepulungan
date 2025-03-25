@@ -4,7 +4,7 @@
 
             <!-- Kolom 1: Tentang Wisata -->
             <div class="col-md-4">
-                <h5 class="fw-bold">Wisata Air Panas Wong Pulungan</h5>
+                <h5 class="fw-bold">WPemerintah Desa Kepulungan</h5>
                 <p>Destinasi wisata pemandian air panas alami dengan pemandangan alam yang indah. Nikmati relaksasi terbaik hanya di sini!</p>
             </div>
 
@@ -32,7 +32,7 @@
                 <h5 class="fw-bold">Kontak</h5>
                 <p class="mb-1"><i class="bi bi-geo-alt"></i> Pasuruan, Jawa Timur</p>
                 <p class="mb-1"><i class="bi bi-telephone"></i> +62 812-3456-7890</p>
-                <p><i class="bi bi-envelope"></i> info@wongpulungan.com</p>
+                <p><i class="bi bi-envelope"></i> info@pemdeskepulungan.com</p>
             </div>
 
         </div>
@@ -41,7 +41,7 @@
 
         <!-- Hak Cipta -->
         <div class="text-center">
-            <p class="mb-0">&copy; 2025 Wisata Air Panas Wong Pulungan. All Rights Reserved.</p>
+            <p class="mb-0">&copy; Pemerintah Desa Kepulungan. All Rights Reserved.</p>
         </div>
     </div>
 </footer>
