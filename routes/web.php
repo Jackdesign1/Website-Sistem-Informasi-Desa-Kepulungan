@@ -1,27 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('pages.home');
-});
+Route::view('/', 'welcome');
 
-Route::get('/tentang-kami', function () {
-    return view('pages.about');
-});
+Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-Route::get('/destinasi-wisata', function () {
-    return view('pages.destinasi');
-});
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
 
-Route::get('/berita', function () {
-    return view('pages.berita');
-});
+Volt::route('volt', 'pages.test.counter');
 
-Route::get('/galeri', function () {
-    return view('pages.galeri');
-});
-
-Route::get('/kontak', function () {
-    return view('pages.kontak');
-});
+require __DIR__.'/auth.php';
