@@ -11,20 +11,23 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        {{-- mary ui plugin --}}
+        <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.css" rel="stylesheet">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
- 
+
         {{-- The navbar with `sticky` --}}
         <x-mary-nav sticky class="z-40">
-     
+
             <x-slot:brand>
                 {{-- Drawer toggle for "main-drawer" --}}
                 <label for="main-drawer" class="mr-3 lg:hidden">
                     <x-mary-icon name="o-bars-3" class="cursor-pointer" />
                 </label>
-     
+
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}" alt="logo desa kapulungan" class="h-14">
                     <div class="flex flex-col font-semibold">
@@ -33,7 +36,7 @@
                     </div>
                 </div>
             </x-slot:brand>
-     
+
             {{-- Right side actions --}}
             <x-slot:actions>
                 <div class="flex gap-2">
@@ -47,7 +50,7 @@
                 </div>
             </x-slot:actions>
         </x-mary-nav>
-     
+
         {{-- The main content --}}
         <main>
             {{-- The `$slot` goes here --}}
@@ -55,8 +58,11 @@
                 {{ $slot }}
             {{-- </x-slot:content> --}}
         </main>
-     
+
         {{--  TOAST area --}}
         <x-mary-toast />
+
+        {{-- mary ui plugin --}}
+        <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.js"></script>
     </body>
 </html>

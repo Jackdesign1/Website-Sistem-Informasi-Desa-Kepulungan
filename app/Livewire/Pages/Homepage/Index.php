@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Pages\Homepage;
 
-use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 
 #[Layout('layouts.guest')]
 class Index extends Component
 {
+    public $selectedTab;
+
     public function render()
     {
         return view('livewire.pages.homepage.index');
