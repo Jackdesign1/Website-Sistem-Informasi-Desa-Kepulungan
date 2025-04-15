@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,17 +14,49 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/" wire:navigate>
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <body class="font-sans antialiased">
+ 
+        {{-- The navbar with `sticky` --}}
+        <x-mary-nav sticky class="z-40">
+     
+            <x-slot:brand>
+                {{-- Drawer toggle for "main-drawer" --}}
+                <label for="main-drawer" class="mr-3 lg:hidden">
+                    <x-mary-icon name="o-bars-3" class="cursor-pointer" />
+                </label>
+     
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}" alt="logo desa kapulungan" class="h-14">
+                    <div class="flex flex-col font-semibold">
+                        <span>Pemerintah Desa Kapulungan</span>
+                        <span class="text-sm">Kabupaten Pasuruan</span>
+                    </div>
+                </div>
+            </x-slot:brand>
+     
+            {{-- Right side actions --}}
+            <x-slot:actions>
+                <div class="flex gap-2">
+                    <x-mary-button label="Beranda" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Profil Desa" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Anggaran" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Informasi" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="BUMDes" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Galeri" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Kontak" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                </div>
+            </x-slot:actions>
+        </x-mary-nav>
+     
+        {{-- The main content --}}
+        <main>
+            {{-- The `$slot` goes here --}}
+            {{-- <x-slot:content> --}}
                 {{ $slot }}
-            </div>
-        </div>
+            {{-- </x-slot:content> --}}
+        </main>
+     
+        {{--  TOAST area --}}
+        <x-mary-toast />
     </body>
 </html>
