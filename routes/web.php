@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Pages\Homepage\Index;
+use App\Livewire\Pages\ProfileVillage\Index as ProfileVillageIndex;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -17,5 +18,7 @@ Route::view('profile', 'profile')
 Volt::route('volt', 'pages.test.counter');
 
 Route::get('/', Index::class)->name('homepage');
+
+Route::get('/profil-desa', ProfileVillageIndex::class)->name('village-profile');
 
 require __DIR__.'/auth.php';

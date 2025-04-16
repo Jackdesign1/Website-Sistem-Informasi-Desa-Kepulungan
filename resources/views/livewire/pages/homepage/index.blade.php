@@ -1,5 +1,19 @@
 <div class="pb-20 space-y-40">
-    <x-carousel></x-carousel>
+    <x-carousel class="h-96 md:h-[500px] lg:h-[600px]">
+        @for ($i = 1; $i <= 4; $i++)
+            <div id="slide{{ $i }}" class="relative w-full carousel-item">
+                <img
+                    src="/assets/images/hero-image.png"
+                    class="object-cover w-full" />
+                <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
+                    <x-carousel-nav name="slide" :index="$i"></x-carousel-nav>
+                    <div class="absolute text-white md:text-4xl bottom-24 max-w-96 left-20">
+                        Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan {{ $i }}
+                    </div>
+                </x-container>
+            </div>
+        @endfor
+    </x-carousel>
 
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
@@ -192,11 +206,15 @@
             ];
         @endphp
 
+        
         <div class="flex items-center gap-8">
-            <div class="flex-shrink rounded-lg shadow-lg">
-                <x-mary-calendar :events="$events" class="w-full" months="2"/>
+            <div>
+                <x-header class="mb-8">Kalender Desa</x-header>
+                <div class="flex-shrink border rounded-lg shadow-lg">
+                    <x-mary-calendar :events="$events" class="w-full" months="2"/>
+                </div>
             </div>
-            <div class="flex-1">
+            <div class="flex-1 text-center">
                 @foreach ($events as $event)
                     <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
                         <li>
@@ -212,7 +230,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                             </div>
-                            <div class="mb-10 {{ $loop->iteration % 2 == 1? "timeline-start" : "timeline-end" }} md:text-end">
+                            <div class="mb-10 {{ $loop->iteration % 2 == 1? "timeline-start" : "timeline-end" }} {{ $loop->iteration % 2 == 1? "md:text-end" : "md:text-start" }}">
                                 <time class="font-mono italic">{{ isset($event['date'])? $event['date']->format('d M Y') : $event['range'][0]->format('d M Y')." - ".$event['range'][1]->format('d M Y') }}</time>
                                 <div class="text-lg font-black">{{ $event['label'] }}</div>
                                     {{ $event['description'] }}
@@ -221,7 +239,63 @@
                         </li>
                     </ul>
                 @endforeach
+                <a href="" class="link link-primary link-hover">Lihat selengkapnya</a>
             </div>
         </div>
+    </x-container>
+
+    <div class="bg-gradient-to-tr from-red-600 to-red-400">
+        <x-container class="py-20">
+            <x-header class="mb-8 text-center text-white">Badan Usaha Milik Desa</x-header>
+            <x-carousel class="h-96 md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-lg">
+                @for ($i = 1; $i <= 4; $i++)
+                    <div id="bumdes{{ $i }}" class="relative w-full carousel-item">
+                        <img
+                            src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}"
+                            class="object-cover w-full" />
+                        <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
+                            <x-carousel-nav :index="$i" name="bumdes"></x-carousel-nav>
+                            <div class="absolute space-y-3 text-white bottom-20 left-24 lg:w-1/2">
+                                <x-header>
+                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan {{ $i }}
+                                </x-header>
+                                <div class="text-xl">
+                                    Wisata Pemandian Air Panas Langsung <br>
+                                    Dari Sumbernya yang Sangat Menyejukkan Badan
+                                </div>
+                                <x-mary-button label="Kunjungi Website" class="btn-primary"/>
+                            </div>
+                        </x-container>
+                    </div>
+                @endfor
+            </x-carousel>
+        </x-container>
+    </div>
+
+    <x-container>
+        <div class="flex items-center justify-between mb-8">
+            <x-header>Galeri Desa</x-header>
+            <x-mary-button class="btn-primary" label="Lihat Galeri" />
+        </div>
+        {{-- galery --}}
+        <div class="grid grid-cols-2 gap-3 min-h-96">
+            <div class="flex flex-col min-h-0 gap-3">
+                <div class="rounded-lg overflow-hidden shadow-lg flex-[.8]">
+                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                </div>
+                <div class="flex-1 overflow-hidden rounded-lg shadow-lg">
+                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                </div>
+            </div>
+            <div class="flex flex-col min-h-0 gap-3">
+                <div class="rounded-lg overflow-hidden shadow-lg flex-[1.8]">
+                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                </div>
+                <div class="flex-1 overflow-hidden rounded-lg shadow-lg">
+                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                </div>
+            </div>
+        </div>
+
     </x-container>
 </div>

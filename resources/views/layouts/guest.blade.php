@@ -40,8 +40,8 @@
             {{-- Right side actions --}}
             <x-slot:actions>
                 <div class="flex gap-2">
-                    <x-mary-button label="Beranda" link="###" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Profil Desa" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Beranda" link="{{ route('homepage') }}" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Profil Desa" link="{{ route('village-profile') }}" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Anggaran" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Informasi" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="BUMDes" link="###" class="text-sm btn-ghost btn-sm" responsive />
