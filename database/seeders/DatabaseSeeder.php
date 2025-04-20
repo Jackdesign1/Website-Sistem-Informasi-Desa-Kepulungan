@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Apparatus;
+use App\Models\News;
 use App\Models\User;
+use App\Models\Media;
+use App\Models\Apparatus;
+use App\Models\JobVacancy;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,6 +24,21 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@gmail.com',
         ]);
 
-        Apparatus::factory(10);
+        Apparatus::factory(10)->create();
+
+        News::factory(40)->create()->each(function($news) {
+            Media::factory(mt_rand(2, 5))->create([
+                'news_id' => $news->id,
+                'type' => 'image'
+            ]);
+            if ($news->type == 'report') {
+                Media::factory(mt_rand(2, 5))->create([
+                    'news_id' => $news->id,
+                    'type' => 'file'
+                ]);
+            }
+        });
+
+        JobVacancy::factory(20)->create();
     }
 }

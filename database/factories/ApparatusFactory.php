@@ -19,8 +19,8 @@ class ApparatusFactory extends Factory
         return [
             'name' => fake()->name(),
             'position' => fake()->jobTitle(),
-            'nipd' => fake()->randomNumber(18),
-            'image' => fake()->imageUrl(400, 400),
+            'nipd' => fake()->randomNumber(9).fake()->randomNumber(9),
+            'image' => fake()->imageUrl(),
         ];
     }
 }

@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Livewire\Pages\Information\Report;
+
+use App\Models\News;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\WithoutUrlPagination;
+
+class Index extends Component
+{
+    use WithPagination, WithoutUrlPagination;
+
+    public function placeholder() {
+        return view('livewire.pages.information.content-placeholder');
+    }
+
+    public function render()
+    {
+        return view('livewire.pages.information.report.index', [
+            'reports' => News::onlyReports()->latest()->paginate(10, pageName: 'reports'),
+        ]);
+    }
+}

@@ -1,0 +1,95 @@
+<x-container class="py-8">
+    <div class="flex gap-5">
+        <div class="flex-1">
+            <div class="w-full shadow card rounded-xl bg-base-100 h-full image-full aspect-[5/4]">
+                <figure>
+                    <img
+                    src="{{ asset('assets/images/berita1.png') }}"
+                    class="object-cover w-full"
+                    alt="berita1" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="text-2xl card-title">Bupati Pasuruan Resmikan Wisata Wong Pulungan</h2>
+                    <p>Update 26 Maret 2024</p>
+                    <div class="justify-end card-actions">
+                    <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-1 flex gap-5 flex-col">
+            <div class="flex-1">
+                <div class="w-full shadow h-full card rounded-xl bg-base-100 image-full aspect-[2/1]">
+                    <figure>
+                        <img
+                        src="{{ asset('assets/images/berita1.png') }}"
+                        class="object-cover w-full"
+                        alt="berita1" />
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="text-xl card-title">Bupati Pasuruan Resmikan Wisata Wong Pulungan</h2>
+                        <p>Update 26 Maret 2024</p>
+                        <div class="justify-end card-actions">
+                        <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-1 gap-5">
+                <div class="flex-1">
+                    <div class="w-full shadow card rounded-xl bg-base-100 image-full aspect-[2/1]">
+                        <figure>
+                            <img
+                            src="{{ asset('assets/images/berita1.png') }}"
+                            class="object-cover w-full"
+                            alt="berita1" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="text-xl card-title">Bupati Pasuruan Resmikan Wisata Wong Pulungan</h2>
+                            <p>Update 26 Maret 2024</p>
+                            <div class="justify-end card-actions">
+                            <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="w-full shadow card rounded-xl bg-base-100 image-full aspect-[2/1]">
+                        <figure>
+                            <img
+                            src="{{ asset('assets/images/berita1.png') }}"
+                            class="object-cover w-full"
+                            alt="berita1" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="text-xl card-title">Bupati Pasuruan Resmikan Wisata Wong Pulungan</h2>
+                            <p>Update 26 Maret 2024</p>
+                            <div class="justify-end card-actions">
+                            <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex gap-8 pt-24" id="news-content">
+        <div class="flex-1">
+            <x-mary-tabs wire:model="selectedTab">
+                <x-mary-tab name="news" label="News">
+                    <livewire:pages.information.news.index lazy/>
+                </x-mary-tab>
+                <x-mary-tab name="report" label="Report">
+                    <livewire:pages.information.report.index lazy/>
+                </x-mary-tab>
+                <x-mary-tab name="jobs" label="Jobs">
+                    <livewire:pages.information.job-vacancy.index lazy/>
+                </x-mary-tab>
+            </x-mary-tabs>
+        </div>
+        <div class="flex-[.5]">
+            <livewire:pages.information.rightbar />
+        </div>
+    </div>
+</x-container>

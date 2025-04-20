@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light" class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,16 +11,20 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        {{-- Cropper.js --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
- 
+    <body class="font-sans antialiased" x-data>
+
         @livewire('layouts.dashboard-navigation')
-     
+
         {{-- The main content with `full-width` --}}
         <x-mary-main with-nav full-width>
-     
+
             {{-- This is a sidebar that works also as a drawer on small screens --}}
             {{-- Notice the `main-drawer` reference here --}}
             <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-200">
@@ -38,23 +42,28 @@
                 {{-- Activates the menu item when a route matches the `link` property --}}
                 <x-mary-menu activate-by-route>
                     <x-mary-menu-item title="Home" icon="o-home" link="###" />
-                    <x-mary-menu-item title="Aparatur" icon="o-envelope" :link="route('apparatus')" />
-                    <x-mary-menu-item title="Anggaran" icon="o-envelope" link="###" />
-                    <x-mary-menu-sub title="Informasi" icon="o-cog-6-tooth">
-                        <x-mary-menu-item title="Berita" icon="o-wifi" link="####" />
-                        <x-mary-menu-item title="Laporan" icon="o-archive-box" link="####" />
-                        <x-mary-menu-item title="Lowongan Kerja" icon="o-archive-box" link="####" />
+                    <x-mary-menu-item title="Aparatur" icon="tabler.users" :link="route('dashboard.apparatus')" />
+                    {{-- <x-mary-menu-item  :link="route('dashboard.budget')" /> --}}
+                    <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
+                        <x-mary-menu-item title="Anggaran Desa" :link="route('dashboard.budget.village')" />
+                        <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority')" />
+                        <x-mary-menu-item title="Pendapatan" :link="route('dashboard.budget.income')" />
                     </x-mary-menu-sub>
-                    <x-mary-menu-item title="Galeri" icon="o-envelope" link="###" />
+                    <x-mary-menu-sub title="Informasi" icon="hugeicons.apple-news">
+                        <x-mary-menu-item title="Berita" link="####" />
+                        <x-mary-menu-item title="Laporan" link="####" />
+                        <x-mary-menu-item title="Lowongan Kerja" link="####" />
+                    </x-mary-menu-sub>
+                    <x-mary-menu-item title="Galeri" icon="tabler.box-multiple-filled" link="###" />
                 </x-mary-menu>
             </x-slot:sidebar>
-     
+
             {{-- The `$slot` goes here --}}
             <x-slot:content>
                 {{ $slot }}
             </x-slot:content>
         </x-mary-main>
-     
+
         {{--  TOAST area --}}
         <x-mary-toast />
     </body>

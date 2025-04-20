@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light" class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,10 +46,10 @@
             {{-- Right side actions --}}
             <x-slot:actions>
                 <div class="flex gap-2">
-                    <x-mary-button label="Beranda" link="{{ route('homepage') }}" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Profil Desa" link="{{ route('village-profile') }}" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Anggaran" link="{{ route('budget') }}" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Informasi" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Beranda" :link="route('homepage')" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Profil Desa" :link="route('village-profile')" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Anggaran" :link="route('budget')" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Informasi" :link="route('information.index')" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="BUMDes" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Galeri" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Kontak" link="###" class="text-sm btn-ghost btn-sm" responsive />
@@ -70,7 +70,7 @@
 
         {{-- mary ui plugin --}}
         <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.js"></script>
-        
+
         @stack('scripts')
     </body>
 </html>
