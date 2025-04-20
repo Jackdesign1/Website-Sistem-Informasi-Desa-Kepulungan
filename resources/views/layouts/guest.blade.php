@@ -13,6 +13,12 @@
 
         {{-- mary ui plugin --}}
         <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> --}}
+
+        {{-- evo calendar library --}}
+        <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar-royal-navy.min.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -42,7 +48,7 @@
                 <div class="flex gap-2">
                     <x-mary-button label="Beranda" link="{{ route('homepage') }}" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Profil Desa" link="{{ route('village-profile') }}" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Anggaran" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Anggaran" link="{{ route('budget') }}" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Informasi" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="BUMDes" link="###" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Galeri" link="###" class="text-sm btn-ghost btn-sm" responsive />
@@ -64,5 +70,7 @@
 
         {{-- mary ui plugin --}}
         <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.js"></script>
+        
+        @stack('scripts')
     </body>
 </html>

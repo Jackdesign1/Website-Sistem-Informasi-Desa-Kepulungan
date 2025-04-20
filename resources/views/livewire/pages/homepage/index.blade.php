@@ -17,7 +17,7 @@
 
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
-            <img src="{{ asset('assets/images/kepala-desa.png') }}" alt="" class="object-cover w-full h-full rounded-lg shadow-lg aspect-square max-w-96">
+            <img src="{{ asset('assets/images/kepala-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
         </div>
         <div class="flex-1">
             <x-header>Sambutan Kepala Desa</x-header>
@@ -33,16 +33,16 @@
             <x-mary-button class="btn btn-primary" link="profil-desa"  label="Lebih Detail"/>
         </div>
         <div class="flex-[.8]">
-            <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full rounded-lg shadow-lg aspect-video">
+            <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
         </div>
     </x-container>
 
     <x-container>
         <x-header class="mb-7">Aparatur Desa</x-header>
-        <div class="w-full gap-5 carousel rounded-box">
+        <div class="w-full gap-5 carousel">
             @for ($i = 0; $i < 8; $i++)
                 <div class="carousel-item">
-                    <x-mary-card title="Muhammad Zaky S.H.,M.H" class="!max-w-60 border !shadow-lg">
+                    <x-mary-card title="Muhammad Zaky S.H.,M.H" class="!max-w-60 border !shadow-lg rounded-xl">
                         <div>
                             <div>Kepala Desa</div>
                             <div>NIPD: 123172312641237</div>
@@ -62,7 +62,7 @@
             <x-mary-datetime/>
             <x-mary-button label="Baca Anggaran Desa" class="btn btn-primary" />
         </div>
-        <div class="w-full border shadow-lg stats">
+        <div class="w-full border shadow-lg stats rounded-xl">
             <div class="stat">
                 <div class="stat-figure text-dark">
                     <x-tabler-chart-arrows class="w-7 h-7"/>
@@ -93,22 +93,22 @@
     <x-container>
         <x-header class="mb-7">Layanan</x-header>
         <div class="flex flex-wrap w-full gap-5 carousel-item">
-            <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Kontak" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Kontak" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Layanan Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Layanan Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Aspirasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Aspirasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Panduan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg min-w-64" separator>
+            <x-mary-card title="Panduan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
             </x-mary-card>
         </div>
@@ -120,7 +120,7 @@
             <x-mary-tabs wire:model="selectedTab" wire:init="selectedTab = 'news-tab'">
                 <x-mary-tab name="news-tab" label="Berita" icon="forkawesome.newspaper-o">
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                        <div class="w-full shadow-sm card bg-base-100 image-full">
+                        <div class="w-full shadow-sm card rounded-xl bg-base-100 image-full">
                             <figure>
                                 <img
                                 src="{{ asset('assets/images/berita1.png') }}"
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full shadow-sm card bg-base-100 image-full">
+                        <div class="w-full shadow-sm card rounded-xl bg-base-100 image-full">
                             <figure>
                                 <img
                                 src="{{ asset('assets/images/berita2.png') }}"
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full shadow-sm card bg-base-100 image-full">
+                        <div class="w-full shadow-sm card rounded-xl bg-base-100 image-full">
                             <figure>
                                 <img
                                 src="{{ asset('assets/images/berita3.png') }}"
@@ -210,7 +210,7 @@
         <div class="flex items-center gap-8">
             <div>
                 <x-header class="mb-8">Kalender Desa</x-header>
-                <div class="flex-shrink border rounded-lg shadow-lg">
+                <div class="flex-shrink border shadow-lg rounded-xl">
                     <x-mary-calendar :events="$events" class="w-full" months="2"/>
                 </div>
             </div>
@@ -280,18 +280,18 @@
         {{-- galery --}}
         <div class="grid grid-cols-2 gap-3 min-h-96">
             <div class="flex flex-col min-h-0 gap-3">
-                <div class="rounded-lg overflow-hidden shadow-lg flex-[.8]">
+                <div class="rounded-xl overflow-hidden shadow-lg flex-[.8]">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
-                <div class="flex-1 overflow-hidden rounded-lg shadow-lg">
+                <div class="flex-1 overflow-hidden shadow-lg rounded-xl">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
             <div class="flex flex-col min-h-0 gap-3">
-                <div class="rounded-lg overflow-hidden shadow-lg flex-[1.8]">
+                <div class="rounded-xl overflow-hidden shadow-lg flex-[1.8]">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
-                <div class="flex-1 overflow-hidden rounded-lg shadow-lg">
+                <div class="flex-1 overflow-hidden shadow-lg rounded-xl">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
