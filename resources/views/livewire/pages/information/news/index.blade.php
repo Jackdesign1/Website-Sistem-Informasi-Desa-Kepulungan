@@ -2,7 +2,7 @@
     {{ $news->links(data: ['scrollTo' => '#news-content']) }}
     <div class="flex flex-wrap gap-5">
         @foreach ($news as $item)
-            <x-mary-card :title="$item->title" class="border shadow-lg flex-1 min-w-64">
+            <x-mary-card :title="$item->title" class="flex-1 border shadow-lg min-w-64">
                 <span class="line-clamp-3">{!! Str::limit($item->content, 200) !!}</span>
 
                 <x-slot:figure>

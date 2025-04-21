@@ -8,7 +8,7 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.guest')]
 class Index extends Component
 {
-    public $selectedTab = "jobs";
+    public $selectedTab = "news";
 
     public function render()
     {

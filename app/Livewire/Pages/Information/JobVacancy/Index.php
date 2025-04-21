@@ -7,6 +7,10 @@ use App\Models\JobVacancy;
 
 class Index extends Component
 {
+    public function placeholder() {
+        return view('livewire.pages.information.job-vacancy.placeholder');
+    }
+
     public function render()
     {
         return view('livewire.pages.information.job-vacancy.index', [
