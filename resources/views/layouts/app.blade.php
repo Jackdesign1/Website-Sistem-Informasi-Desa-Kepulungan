@@ -50,9 +50,9 @@
                         <x-mary-menu-item title="Pendapatan" :link="route('dashboard.budget.income')" />
                     </x-mary-menu-sub>
                     <x-mary-menu-sub title="Informasi" icon="hugeicons.apple-news">
-                        <x-mary-menu-item title="Berita" link="####" />
-                        <x-mary-menu-item title="Laporan" link="####" />
-                        <x-mary-menu-item title="Lowongan Kerja" link="####" />
+                        <x-mary-menu-item title="Berita" :link="route('dashboard.information.news.index')" />
+                        <x-mary-menu-item title="Laporan" :link="route('dashboard.information.report')" />
+                        <x-mary-menu-item title="Lowongan Kerja" :link="route('dashboard.information.jobs-vacancy')" />
                     </x-mary-menu-sub>
                     <x-mary-menu-item title="Galeri" icon="tabler.box-multiple-filled" link="###" />
                 </x-mary-menu>

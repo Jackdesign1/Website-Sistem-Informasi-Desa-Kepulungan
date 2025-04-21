@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->enum('type', ['news', 'report', 'jobs']);
-            $table->text('description')->nullable();
+            $table->text('description')->nullable()->caption('fill for report');
             $table->text('content')->nullable();
             $table->timestamps();
         });

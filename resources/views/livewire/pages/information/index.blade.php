@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="flex-1 flex gap-5 flex-col">
+        <div class="flex flex-col flex-1 gap-5">
             <div class="flex-1">
                 <div class="w-full shadow h-full card rounded-xl bg-base-100 image-full aspect-[2/1]">
                     <figure>
@@ -77,13 +77,13 @@
     <div class="flex gap-8 pt-24" id="news-content">
         <div class="flex-1">
             <x-mary-tabs wire:model="selectedTab">
-                <x-mary-tab name="news" label="News">
+                <x-mary-tab name="news" label="Berita">
                     <livewire:pages.information.news.index lazy/>
                 </x-mary-tab>
-                <x-mary-tab name="report" label="Report">
+                <x-mary-tab name="report" label="Laporan">
                     <livewire:pages.information.report.index lazy/>
                 </x-mary-tab>
-                <x-mary-tab name="jobs" label="Jobs">
+                <x-mary-tab name="jobs" label="Lowongan Kerja">
                     <livewire:pages.information.job-vacancy.index lazy/>
                 </x-mary-tab>
             </x-mary-tabs>

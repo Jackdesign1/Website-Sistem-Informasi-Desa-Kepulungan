@@ -9,8 +9,12 @@ use App\Livewire\Pages\Information\Index as InformationIndex;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
 use App\Livewire\Pages\VillageProfile\Index as VillageProfileIndex;
 use App\Livewire\Pages\Dashboard\Budget\Income\Index as IncomeIndex;
+use App\Livewire\Pages\Dashboard\Information\News\Index as NewsIndex;
 use App\Livewire\Pages\Dashboard\Budget\Village\Index as VillageIndex;
+use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
+use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
+use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
 
 // Route::view('/', 'welcome');
 
@@ -30,6 +34,19 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
             ->name('priority');
         Route::get('/pendapatan', IncomeIndex::class)
             ->name('income');
+    });
+
+    Route::prefix('informasi')->name('information.')->group(function() {
+        Route::prefix('/berita')->name('news.')->group(function() {
+            Route::get('/', NewsIndex::class)
+                ->name('index');
+            Route::get('/create', NewsCreate::class)
+                ->name('create');
+        });
+        Route::get('/laporan', ReportIndex::class)
+            ->name('report');
+        Route::get('/lowongan-kerja', JobVacancyIndex::class)
+            ->name('jobs-vacancy');
     });
 });
 
