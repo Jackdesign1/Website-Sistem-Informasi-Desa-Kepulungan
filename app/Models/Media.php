@@ -10,6 +10,13 @@ class Media extends Model
     /** @use HasFactory<\Database\Factories\MediaFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'news_id',
+        'type',
+        'url',
+        'alt_text'
+    ];
+
     public function scopeOnlyImage($query) {
         return $query->where('type', 'image');
     }

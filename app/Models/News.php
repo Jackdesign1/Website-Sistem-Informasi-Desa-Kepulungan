@@ -10,6 +10,15 @@ class News extends Model
     /** @use HasFactory<\Database\Factories\NewsFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'slug',
+        'type',
+        'status',
+        'description',
+        'content'
+    ];
+
     // protected $casts = [
     //     ...
     //     'library' => AsCollection::class,

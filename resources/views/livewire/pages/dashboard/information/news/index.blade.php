@@ -24,20 +24,21 @@
 
     <ul class="flex flex-col gap-3 rounded-lg">
         @foreach ($news as $item)
-            <li class="flex gap-3 p-4 border rounded-lg shadow-lg" x-data="{showMore: false}">
+            <li class="relative flex gap-3 p-6 overflow-hidden border rounded-lg shadow-lg max-h-52">
+                <div class="absolute bottom-0 left-0 right-0 z-20 h-8 bg-gradient-to-t from-white to-transparent"></div>
                 <div class="flex items-center gap-3">
-                    <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset($item->media->first()->url) }}"/>
+                    <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset("storage/".$item->media->first()->url) }}"/>
                 </div>
-                <div>
+                <div class="flex-1">
                     <div class="mb-1.5 capitalize text-lg">
                         <div class="font-semibold">
                             <a href="#">{{ $item->title }}</a>
                         </div>
                         <div class="text-xs opacity-60">{{ $item->created_at->diffForHumans() }}</div>
                     </div>
-                    <div class="text-sm line-clamp-3">
+                    <div class="text-sm line-clamp-4">
                         <a href="#">
-                            {{ $item->content }}
+                            {!! $item->content !!}
                         </a>
                     </div>
                 </div>

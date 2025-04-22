@@ -21,6 +21,12 @@
         {{-- TinyMCE --}}
         <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 
+        <style>
+            .crop-false button[data-tip="false"] {
+                display: none !important;
+            }
+        </style>
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>

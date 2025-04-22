@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Pages\Dashboard\Information\News;
 
+use App\Models\News;
+use Mary\Traits\Toast;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Rule;
@@ -9,30 +11,32 @@ use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
-    use WithFileUploads, WithMediaSync;
+    use WithFileUploads, WithMediaSync, Toast;
+
+    public $createNewsModal = false;
 
     #[Validate('required|min:3')]
     public $title;
-    #[Validate('required|min:3|slug|unique:news.slug')]
+    #[Validate('required|min:3|unique:news,slug|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     public $slug;
     #[Validate('required')]
     public $content;
 
     // Temporary files
-    #[Rule(['files.*' => 'image|max:1024'])]
+    #[Rule(['files.*' => 'image|max:2048'])]
     public array $files = [];
-    
+
     // Library metadata (optional validation)
     #[Rule('required')]
     public Collection $library;
-    
-    
+
+
     public $config = [
         'license_key' => 'gpl',
-        'min_height' => '600',
         'plugins' => 'autoresize',
     ];
 
@@ -41,7 +45,42 @@ class Create extends Component
     }
 
     public function create() {
-        dump($this->files, $this->library);
+        $this->validate();
+
+        $imagePaths = null;
+
+        try {
+            $imagePaths = collect($this->files)->map(function($file) {
+                return [
+                    'url' => $file->store('news', 'public'),
+                    'type' => 'image',
+                ];
+            })->toArray();
+        } catch (\Exception $e) {
+            $this->error('Error upload gambar');
+        }
+
+        try {
+            DB::beginTransaction();
+                $news = News::create([
+                    'title' => $this->title,
+                    'slug' => $this->slug,
+                    'type' => 'news',
+                    'status' => 'publish',
+                    'content' => $this->content,
+                ]);
+
+            $news->media()->createMany(
+                $imagePaths
+            );
+
+            DB::commit();
+            $this->success('Berita berhasil dibuat');
+            $this->redirectRoute('dashboard.information.news.index', navigate: true);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $this->error("Error membuat artikel berita: ".$e->getMessage());
+        }
     }
 
     public function mount() {
