@@ -9,7 +9,6 @@ use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
 
 class Create extends Component
 {
@@ -22,12 +21,15 @@ class Create extends Component
     #[Validate('required')]
     public $content;
 
-    // image library
+    // Temporary files
     #[Rule(['files.*' => 'image|max:1024'])]
     public array $files = [];
+    
+    // Library metadata (optional validation)
     #[Rule('required')]
     public Collection $library;
-
+    
+    
     public $config = [
         'license_key' => 'gpl',
         'min_height' => '600',
@@ -43,7 +45,7 @@ class Create extends Component
     }
 
     public function mount() {
-        $this->library = collect();
+        $this->library = new Collection();
     }
 
     public function render()

@@ -10,6 +10,11 @@ class News extends Model
     /** @use HasFactory<\Database\Factories\NewsFactory> */
     use HasFactory;
 
+    // protected $casts = [
+    //     ...
+    //     'library' => AsCollection::class,
+    // ];
+
     // public function media()
     // {
     //     return $this->morphMany(Media::class, 'mediable');

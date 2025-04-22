@@ -8,7 +8,8 @@
                 wire:library="library"             {{-- Library metadata property --}}
                 :preview="$library"                {{-- Preview control --}}
                 label="Product images"
-                hint="Max 100Kb" />
+                hint="Max 100Kb" 
+                crop-text="false" />
 
             <x-mary-input class="input-lg" label="Judul Berita">
                 <x-slot:append>
