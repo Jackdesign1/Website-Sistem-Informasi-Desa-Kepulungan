@@ -19,7 +19,6 @@ return new class extends Migration
             $table->enum('status', ['draft', 'publish']);
             $table->text('description')->nullable()->caption('fill for report');
             $table->text('content')->nullable();
-            // $table->json('library')->nullable();
             $table->timestamps();
         });
     }

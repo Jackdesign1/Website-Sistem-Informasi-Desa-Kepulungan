@@ -1,4 +1,17 @@
-<x-dashboard-container>
+<x-dashboard-container x-data="{newsStatus: ''}">
+    <x-mary-modal wire:model='changeStatusModal' title="Ubah Status Artikel">
+        <template x-if="newsStatus == 'draft'">
+            <p>Anda yakin ingin mempublikasikan berita?</p>
+        </template>
+        <template x-if="newsStatus == 'publish'">
+            <p>Tarik publikasi berita? <br> Berita yang ditarik akan masuk ke list draft</p>
+        </template>
+        <x-slot:actions>
+            <x-mary-button x-text="newsStatus == 'draft'? 'publish' : 'draft'" wire:click="changeStatus()" class=" btn-warning" />
+        </x-slot:actions>
+    </x-mary-modal>
+
+
     <x-mary-header title="Berita" progress-indicator separator>
         <x-slot:actions>
             <x-mary-button label="Tambah" icon="tabler.user-plus" class="btn-primary" :link="route('dashboard.information.news.create')"/>
@@ -27,7 +40,7 @@
             <li class="relative flex gap-3 p-6 overflow-hidden border rounded-lg shadow-lg max-h-52">
                 <div class="absolute bottom-0 left-0 right-0 z-20 h-8 bg-gradient-to-t from-white to-transparent"></div>
                 <div class="flex items-center gap-3">
-                    <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset("storage/".$item->media->first()->url) }}"/>
+                    <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset($item->media->first()->url) }}"/>
                 </div>
                 <div class="flex-1">
                     <div class="mb-1.5 capitalize text-lg">
@@ -42,9 +55,16 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex gap-0.5">
-                    <x-mary-button icon="o-trash" class="btn-square btn-ghost"></x-mary-button>
-                    <x-mary-button icon="o-eye" class="btn-square btn-ghost"></x-mary-button>
+                <div class="flex gap-0.5 flex-col">
+                    <div class="flex-1">
+                        <x-mary-button icon="o-eye" tooltip-bottom="lihat" class="btn-square btn-ghost"></x-mary-button>
+                        <x-mary-button icon="tabler.edit" tooltip-bottom="edit" class="btn-square btn-ghost" :link="route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)])"></x-mary-button>
+                        <x-mary-button icon="o-trash" tooltip-bottom="hapus" class="btn-square btn-ghost"></x-mary-button>
+                    </div>
+                    <div class="text-end">
+                        <x-mary-button :label="$item->status == 'publish'? 'published' : 'draft'" class="{{ $item->status == 'publish'? 'btn-success' : '' }} capitalize" 
+                            @click="$wire.changeStatusModal = true; newsStatus = '{{ $item->status }}'; $wire.selectedNews = '{{ Crypt::encrypt($item->id); }}'" />
+                    </div>
                 </div>
             </li>
         @endforeach

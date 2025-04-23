@@ -1,17 +1,17 @@
 <x-dashboard-container>
-    <x-mary-modal wire:model="createNewsModal" title="Publish" class="backdrop-blur">
+    <x-mary-modal wire:model="createNewsModalState" title="Publish" class="backdrop-blur">
         Pastikan artikel yang anda tulis sudah benar
 
         <x-slot:actions>
             <x-mary-button type="submit" label="Publish" class="join-item btn-success" form="create-news" spinner="create"/>
-            <x-mary-button label="Cancel" @click="$wire.createNewsModal = false" />
+            <x-mary-button label="Cancel" @click="$wire.createNewsModalState = false" />
         </x-slot:actions>
     </x-mary-modal>
 
     <x-mary-header title="Buat Berita Baru" separator progress-indicator="create">
         <x-slot:actions>
-            <x-mary-button label="Draft" />
-            <x-mary-button label="Publish" class="btn-success" @click="$wire.createNewsModal = true"/>
+            <x-mary-button label="Draft" wire:click="createDraft" spinner="createDraft"/>
+            <x-mary-button label="Publish" class="btn-success" wire:click='showNewsModal'/>
         </x-slot:actions>
     </x-mary-header>
 
@@ -36,7 +36,5 @@
             </div>
             <x-mary-editor wire:model="content" folder="/news" label="Konten" hint="Isi Konten" :config="$config" />
         </x-mary-form>
-
-        {{ $content }}
     </div>
 </x-dashboard-container>

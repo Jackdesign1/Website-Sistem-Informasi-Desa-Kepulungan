@@ -17,7 +17,7 @@ class Create extends Component
 {
     use WithFileUploads, WithMediaSync, Toast;
 
-    public $createNewsModal = false;
+    public $createNewsModalState = false;
 
     #[Validate('required|min:3')]
     public $title;
@@ -44,15 +44,17 @@ class Create extends Component
         $this->slug = Str::slug($this->title);
     }
 
-    public function create() {
-        $this->validate();
+    public function createDraft() {
+        $this->create('draft');
+    }
 
+    public function create($status = 'publish') {
         $imagePaths = null;
 
         try {
             $imagePaths = collect($this->files)->map(function($file) {
                 return [
-                    'url' => $file->store('news', 'public'),
+                    'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'image',
                 ];
             })->toArray();
@@ -66,7 +68,7 @@ class Create extends Component
                     'title' => $this->title,
                     'slug' => $this->slug,
                     'type' => 'news',
-                    'status' => 'publish',
+                    'status' => $status,
                     'content' => $this->content,
                 ]);
 
@@ -81,6 +83,11 @@ class Create extends Component
             DB::rollback();
             $this->error("Error membuat artikel berita: ".$e->getMessage());
         }
+    }
+
+    public function showNewsModal() {
+        $this->validate();
+        $this->createNewsModalState = true;
     }
 
     public function mount() {

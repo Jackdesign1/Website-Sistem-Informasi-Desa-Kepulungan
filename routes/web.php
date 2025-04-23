@@ -15,6 +15,7 @@ use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
 use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
+use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 
 // Route::view('/', 'welcome');
 
@@ -42,6 +43,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
                 ->name('index');
             Route::get('/create', NewsCreate::class)
                 ->name('create');
+            Route::get('/edit/{key}', NewsEdit::class)
+                ->name('edit');
         });
         Route::get('/laporan', ReportIndex::class)
             ->name('report');

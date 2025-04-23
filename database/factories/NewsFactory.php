@@ -26,6 +26,7 @@ class NewsFactory extends Factory
             'slug' => Str::slug($title),
             'type' => $types,
             'description' => $description,
+            'status' => fake()->randomElement(['draft', 'publish']),
             'content' => fake()->paragraphs(mt_rand(8, 15), true)
         ];
     }
