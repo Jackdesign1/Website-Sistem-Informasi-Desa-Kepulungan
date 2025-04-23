@@ -1,10 +1,10 @@
 <x-dashboard-container>
-    <x-mary-modal wire:model="createNewsModalState" title="Publish" class="backdrop-blur">
-        Pastikan artikel yang anda tulis sudah benar
+    <x-mary-modal wire:model="createModalState" title="Publish" class="backdrop-blur">
+        Pastikan report yang anda tulis sudah benar
 
         <x-slot:actions>
             <x-mary-button type="submit" label="Publish" class="join-item btn-success" form="create-news" spinner="create"/>
-            <x-mary-button label="Cancel" @click="$wire.createNewsModalState = false" />
+            <x-mary-button label="Cancel" @click="$wire.createModalState = false" />
         </x-slot:actions>
     </x-mary-modal>
 
@@ -27,7 +27,7 @@
             </div>
 
             <x-mary-image-library
-                wire:model="files"                 {{-- Temprary files --}}
+                wire:model="imageFiles"                 {{-- Temprary files --}}
                 wire:library="library"             {{-- Library metadata property --}}
                 :preview="$library"                {{-- Preview control --}}
                 label="Upload Gambar Slide"
@@ -35,7 +35,21 @@
                 crop-text="false"
                 class="crop-false"/>
 
-            <x-mary-editor wire:model="content" folder="/news" label="Konten" hint="Isi Konten" :config="$config" />
+            <x-mary-editor wire:model="description" folder="/news" label="Deskripsi" hint="Isi Konten" :config="$config" />
+
+            <div>
+                <x-mary-file wire:model="reportFiles" label="Upload File" hint="Only PDF" accept="application/pdf" multiple/>
+                <div class="flex gap-5 flex-wrap">
+                    @foreach ($reportFiles as $reportFile)
+                        <div>
+                            <div class="text-center">
+                                <x-mary-icon name='tabler.file-description' class="mb-2 w-16 h-16"></x-mary-icon>
+                            </div>
+                            <a href="{{ asset($reportFile->temporaryUrl()) }}" target="blank" class="link max-w-32 line-clamp-2 link-hover text-primary" title="{{ $reportFile->getClientOriginalName() }}">{{ $reportFile->getClientOriginalName() }}</a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </x-mary-form>
     </div>
 </x-dashboard-container>

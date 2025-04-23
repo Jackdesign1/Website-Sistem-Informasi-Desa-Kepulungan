@@ -3,28 +3,45 @@
 namespace App\Livewire\Pages\Dashboard\Information\News;
 
 use App\Models\News;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
     use Toast;
 
-    public $changeStatusModal = false;
-    public $selectedNews;
+    public $statusModalState = false;
+    public $deleteModalState = false;
 
-    public function changeStatus() {
+    public $selectedKey;
+
+    public function changeStatus()
+    {
         try {
-            $news = News::find(decrypt($this->selectedNews));
+            $news = News::find(decrypt($this->selectedKey));
             $newStatus = $news->status == "draft"? "publish" : "draft";
-            $news->status = $newStatus; 
+            $news->status = $newStatus;
             $news->save();
             $this->success($newStatus == 'publish'? 'Berita berhasil dipublish' : 'Berita berhasil ditarik dari publikasi');
-            $this->changeStatusModal = false;
+            $this->statusModalState = false;
         } catch (\Exception $e) {
             $this->error("Error mengubah status", "Terjadi kesalahan saat mengubah status berita.");
         }
     }
+
+    public function showDeleteModal() {
+        $this->statusModalState = true;
+    }
+
+    public function delete()
+    {
+        $this->authorize('delete', Auth::user());
+        News::find(decrypt($this->selectedKey))->delete();
+        $this->success('Berita berhasil dihapus');
+        $this->deleteModalState = false;
+    }
+
 
     public function render()
     {

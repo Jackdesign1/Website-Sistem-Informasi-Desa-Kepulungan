@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Livewire\Pages\Dashboard\Information\News;
+namespace App\Livewire\Pages\Dashboard\Information\Report;
 
 use App\Models\News;
 use Mary\Traits\Toast;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Validate;
@@ -17,21 +16,25 @@ class Create extends Component
 {
     use WithFileUploads, WithMediaSync, Toast;
 
-    public $createNewsModalState = false;
+    public $createModalState = false;
 
     #[Validate('required|min:3')]
     public $title;
     #[Validate('required|min:3|unique:news,slug|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
     public $slug;
     #[Validate('required')]
-    public $content;
+    public $description;
 
     // Temporary files
-    #[Rule(['files.*' => 'image|max:2048'])]
-    public array $files = [];
+    #[Validate(['imageFiles.*' => 'image|max:2048'])]
+    public array $imageFiles = [];
+
+    // Temporary files
+    #[Validate(['reportFiles.*' => 'mimes:pdf|max:2048'])]
+    public array $reportFiles = [];
 
     // Library metadata (optional validation)
-    #[Rule('required')]
+    #[Validate('required')]
     public Collection $library;
 
 
@@ -44,24 +47,36 @@ class Create extends Component
         $this->slug = Str::slug($this->title);
     }
 
+    public function showNewsModal() {
+        $this->validate();
+        $this->createModalState = true;
+    }
+
     public function createDraft() {
+        $this->validate();
         $this->create('draft');
     }
 
     public function create($status = 'publish') {
-        $this->validate();
-
-        $imagePaths = null;
-
+        $mediaPaths = null;
         try {
-            $imagePaths = collect($this->files)->map(function($file) {
+            $imagePaths = collect($this->imageFiles)->map(function($file) {
                 return [
                     'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'image',
                 ];
-            })->toArray();
+            });
+            $reportPaths = collect($this->reportFiles)->map(function($file) {
+                return [
+                    'url' => '/storage/'.$file->store('news', 'public'),
+                    'type' => 'file',
+                    'name' => $file->getClientOriginalName(),
+                    'alt' => $file->getClientOriginalName(),
+                ];
+            });
+            $mediaPaths = $imagePaths->merge($reportPaths);
         } catch (\Exception $e) {
-            $this->error('Error upload gambar');
+            $this->error('Error upload file');
         }
 
         try {
@@ -69,35 +84,30 @@ class Create extends Component
                 $news = News::create([
                     'title' => $this->title,
                     'slug' => $this->slug,
-                    'type' => 'news',
+                    'type' => 'report',
                     'status' => $status,
-                    'content' => $this->content,
+                    'content' => $this->description,
                 ]);
 
             $news->media()->createMany(
-                $imagePaths
+                $mediaPaths
             );
 
             DB::commit();
-            $this->success('Berita berhasil dibuat');
-            $this->redirectRoute('dashboard.information.news.index', navigate: true);
+            $this->success('Report berhasil dibuat');
+            $this->redirectRoute('dashboard.information.report.index', navigate: true);
         } catch (\Exception $e) {
             DB::rollback();
-            $this->error("Error membuat artikel berita: ".$e->getMessage());
+            $this->error("Error membuat artikel report: ".$e->getMessage());
         }
     }
 
-    public function showNewsModal() {
-        $this->validate();
-        $this->createNewsModalState = true;
-    }
-
     public function mount() {
-        $this->library = new Collection();
+        $this->library = collect();
     }
 
     public function render()
     {
-        return view('livewire.pages.dashboard.information.news.create');
+        return view('livewire.pages.dashboard.information.report.create');
     }
 }

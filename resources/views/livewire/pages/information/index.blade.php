@@ -76,15 +76,21 @@
 
     <div class="flex gap-8 pt-24" id="news-content">
         <div class="flex-1">
-            <x-mary-tabs wire:model="selectedTab">
+            <x-mary-tabs wire:model="selectedTab" class="py-3">
                 <x-mary-tab name="news" label="Berita">
-                    <livewire:pages.information.news.index lazy/>
+                    <div>
+                        <livewire:pages.information.news.index lazy/>
+                    </div>
                 </x-mary-tab>
                 <x-mary-tab name="report" label="Laporan">
-                    <livewire:pages.information.report.index lazy/>
+                    <div>
+                        <livewire:pages.information.report.index lazy/>
+                    </div>
                 </x-mary-tab>
                 <x-mary-tab name="jobs" label="Lowongan Kerja">
-                    <livewire:pages.information.job-vacancy.index lazy/>
+                    <div>
+                        <livewire:pages.information.job-vacancy.index lazy/>
+                    </div>
                 </x-mary-tab>
             </x-mary-tabs>
         </div>

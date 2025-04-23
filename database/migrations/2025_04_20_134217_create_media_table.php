@@ -18,12 +18,13 @@ return new class extends Migration
             // $table->unsignedBigInteger('mediable_id');
             // $table->string('mediable_type');
 
-            $table->foreignIdFor(News::class)->constrained();
+            $table->foreignIdFor(News::class)->constrained()->cascadeOnDelete();
 
             // Media-specific fields
             $table->enum('type', ['image', 'file'])->default('image');
+            $table->string('name')->nullable(); // stored path or URL
             $table->string('url'); // stored path or URL
-            $table->string('alt_text')->nullable();
+            $table->string('alt')->nullable();
 
             // Index for better polymorphic performance
             // $table->index(['mediable_id', 'mediable_type']);

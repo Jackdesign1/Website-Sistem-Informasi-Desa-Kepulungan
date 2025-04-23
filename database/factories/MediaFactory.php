@@ -19,7 +19,7 @@ class MediaFactory extends Factory
         $urls = fake()->randomElement(["berita1", "berita2", "berita3"]);
         return [
             'url' => "assets/images/$urls.png",
-            'alt_text' => mt_rand(0, 1)? fake()->words(mt_rand(2, 6), true) : null,
+            'alt' => mt_rand(0, 1)? fake()->words(mt_rand(2, 6), true) : null,
         ];
     }
 }

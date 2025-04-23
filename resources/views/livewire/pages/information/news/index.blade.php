@@ -3,20 +3,21 @@
     <div class="flex flex-wrap gap-5">
         @foreach ($news as $item)
             <x-mary-card :title="$item->title" class="flex-1 border shadow-lg min-w-64">
-                <span class="line-clamp-3">{!! Str::limit($item->content, 200) !!}</span>
-
+                <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}" class="line-clamp-3">{!! Str::limit($item->content, 200) !!}</a>
                 <x-slot:figure>
-                    @if ($item->media->first()->url)
-                        <img src="{{ asset($item->media->first()->url) }}" class="aspect-[2/1] object-cover"/>
-                    @else
-                        <div class="w-full aspect-[2/1] skeleton"></div>
-                    @endif
+                    <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">
+                        @if ($item->imageMedia->first()->url)
+                            <img src="{{ asset($item->imageMedia->first()->url) }}" class="aspect-[2/1] object-cover"/>
+                        @else
+                            <div class="w-full aspect-[2/1] skeleton"></div>
+                        @endif
+                    </a>
                 </x-slot:figure>
                 <x-slot:menu>
-                    <x-mary-button icon="o-share" class="btn-circle btn-sm" />
+                    <x-mary-button icon="o-share" class="btn-circle" />
                 </x-slot:menu>
                 <x-slot:actions separator>
-                    <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => $item->type, 'slug' => $item->slug])"/>
+                    <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => 'news', 'slug' => $item->slug])"/>
                 </x-slot:actions>
             </x-mary-card>
         @endforeach

@@ -1,22 +1,51 @@
 <div>
-    <ul class="list bg-gray-100 rounded-lg">
-        @for ($i = 0; $i < 10; $i++)
-        <li class="list-row">
-            <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/></div>
-            <div>
-                <div>Dio Lupa</div>
-                <div class="text-xs uppercase font-semibold opacity-60">Remaining Reason</div>
+    <div>
+        <x-header class="text-lg">Berita Terbaru</x-header>
+        <div class="px-4">
+            <ul class="list bg-gray-100 rounded-lg">
+                @foreach ($news as $item)
+                    <li class="list-row">
+                        <div><img class="size-10 rounded-box" src="{{ asset($item->imageMedia->first()->url) }}"/></div>
+                        <div>
+                            <div>{{ $item->title }}</div>
+                            <div class="text-xs capitalize font-semibold opacity-60">{{ $item->updated_at->diffForHumans() }}</div>
+                        </div>
+                        <p class="list-col-wrap text-xs line-clamp-4 max-h-20">
+                            {{ Str::limit($item->content, 255) }}
+                        </p>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="text-center">
+                <x-mary-button label="Lihat Semua" :link="route('information.index')" icon-right="tabler.arrow-narrow-right" class="btn-ghost btn-sm"></x-mary-button>
             </div>
-            <p class="list-col-wrap text-xs">
-                "Remaining Reason" became an instant hit, praised for its haunting sound and emotional depth. A viral performance brought it widespread recognition, making it one of Dio Lupa’s most iconic tracks.
-            </p>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M6 3L20 12 6 21 6 3z"></path></g></svg>
-            </button>
-            <button class="btn btn-square btn-ghost">
-                <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></g></svg>
-            </button>
-        </li>
-        @endfor
-    </ul>
+        </div>
+    </div>
+    <div>
+        <x-header class="text-lg">Laporan Terbaru</x-header>
+        <div class="px-4">
+            <ul class="list bg-gray-100 rounded-lg">
+                @foreach ($reports as $report)
+                    <li class="list-row">
+                        <div><img class="size-10 rounded-box" src="{{ asset($report->imageMedia->first()->url) }}"/></div>
+                        <div>
+                            <div>{{ $report->title }}</div>
+                            <div class="text-xs capitalize font-semibold opacity-60">{{ $report->updated_at->diffForHumans() }}</div>
+                        </div>
+                        <p class="list-col-wrap text-xs line-clamp-4 max-h-20">
+                            {{ Str::limit($report->content, 255) }}
+                        </p>
+                        <x-mary-dropdown label="Report" class="btn-sm">
+                            @foreach ($report->fileMedia as $fileMedia)
+                                <x-mary-menu-item title="{{ $fileMedia->name }}" :link="$fileMedia->url" external icon="tabler.file-description" />
+                            @endforeach
+                        </x-mary-dropdown>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="text-center">
+                <x-mary-button label="Lihat Semua" :link="route('information.index')" icon-right="tabler.arrow-narrow-right" class="btn-ghost btn-sm"></x-mary-button>
+            </div>
+        </div>
+    </div>
 </div>

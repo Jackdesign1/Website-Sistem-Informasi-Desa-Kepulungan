@@ -13,8 +13,9 @@ class Media extends Model
     protected $fillable = [
         'news_id',
         'type',
+        'name',
         'url',
-        'alt_text'
+        'alt',
     ];
 
     public function scopeOnlyImage($query) {

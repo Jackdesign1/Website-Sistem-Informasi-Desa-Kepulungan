@@ -18,7 +18,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pages.information.news.index', [
-            'news' => News::onlyNews()->latest()->paginate(10, pageName: 'news')
+            'news' => News::onlyNews()->onlyPublish()->with('imageMedia')->latest()->paginate(10, pageName: 'news')
         ]);
     }
 }

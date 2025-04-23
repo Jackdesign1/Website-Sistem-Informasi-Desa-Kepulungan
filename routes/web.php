@@ -7,15 +7,17 @@ use App\Livewire\Pages\Budget\Index as BudgetIndex;
 use App\Livewire\Pages\Information\NewsContent;
 use App\Livewire\Pages\Information\Index as InformationIndex;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
+use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 use App\Livewire\Pages\VillageProfile\Index as VillageProfileIndex;
 use App\Livewire\Pages\Dashboard\Budget\Income\Index as IncomeIndex;
 use App\Livewire\Pages\Dashboard\Information\News\Index as NewsIndex;
 use App\Livewire\Pages\Dashboard\Budget\Village\Index as VillageIndex;
 use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
+use App\Livewire\Pages\Dashboard\Information\Report\Edit as ReportEdit;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
+use App\Livewire\Pages\Dashboard\Information\Report\Create as ReportCreate;
 use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
-use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 
 // Route::view('/', 'welcome');
 
@@ -46,8 +48,14 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
             Route::get('/edit/{key}', NewsEdit::class)
                 ->name('edit');
         });
-        Route::get('/laporan', ReportIndex::class)
-            ->name('report');
+        Route::prefix('/laporan')->name('report.')->group(function() {
+            Route::get('/', ReportIndex::class)
+                ->name('index');
+            Route::get('/create', ReportCreate::class)
+                ->name('create');
+            Route::get('/edit/{key}', ReportEdit::class)
+                ->name('edit');
+        });
         Route::get('/lowongan-kerja', JobVacancyIndex::class)
             ->name('jobs-vacancy');
     });

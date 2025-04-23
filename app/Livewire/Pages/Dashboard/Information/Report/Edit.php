@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Livewire\Pages\Dashboard\Information\News;
+namespace App\Livewire\Pages\Dashboard\Information\Report;
 
 use App\Models\News;
 use Mary\Traits\Toast;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Computed;
@@ -23,6 +22,14 @@ class Edit extends Component
     public $id;
     public $originalSlug;
     public $status;
+    // public $uploadedImageMedia;
+    // public $uploadedFileMedia;
+
+    #[Computed]
+    public function news() {
+        $news = News::findOrFail($this->id)->load('imageMedia', 'fileMedia');
+        return $news->setRelation('uploadedImageMedia', $news->imageMedia)->setRelation('uploadedFileMedia', $news->fileMedia);
+    }
 
     #[Validate('required|min:3')]
     public $title;
@@ -30,9 +37,13 @@ class Edit extends Component
     #[Validate('required')]
     public $content;
 
-    // Temporary files
-    #[Rule(['files.*' => 'image|max:2048'])]
-    public $files = [];
+    // Temporary imageFiles
+    #[Validate(['imageFiles.*' => 'image|max:2048'])]
+    public $imageFiles = [];
+
+    // Temporary reportFiles
+    #[Validate(['reportFiles.*' => 'mimes:pdf|max:2048'])]
+    public $reportFiles = [];
 
     public Collection $library;
 
@@ -40,11 +51,6 @@ class Edit extends Component
         'license_key' => 'gpl',
         'plugins' => 'autoresize',
     ];
-
-    public function uploadedMedia() {
-        return News::findOrFail($this->id)->media;
-    }
-
 
     public function rules() {
         $slug_rules = 'required|min:3|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/';
@@ -66,6 +72,7 @@ class Edit extends Component
     }
 
     public function editDraft() {
+        $this->validate();
         $this->edit('draft');
     }
 
@@ -73,72 +80,75 @@ class Edit extends Component
         $imagePaths = null;
 
         try {
-            $imagePaths = collect($this->files)->map(function($file) {
+            $imagePaths = collect($this->imageFiles)->map(function($file) {
                 return [
                     'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'image',
                 ];
-            })->toArray();
+            });
+            $reportPaths = collect($this->reportFiles)->map(function($file) {
+                return [
+                    'url' => '/storage/'.$file->store('news', 'public'),
+                    'type' => 'file',
+                    'name' => $file->getClientOriginalName(),
+                    'alt' => $file->getClientOriginalName(),
+                ];
+            });
+            $mediaPaths = $imagePaths->merge($reportPaths);
+
         } catch (\Exception $e) {
-            $this->error('Error upload gambar');
+            $this->error('Error upload file');
         }
 
         try {
             DB::beginTransaction();
             $news = News::find($this->id);
 
-            // $news->update([
-            //     'title' => $this->title,
-            //     'slug' => $this->slug,
-            //     'status' => $status,
-            //     'content' => $this->content,
-            // ]);
             $news->title = $this->title;
             $news->slug = $this->slug;
             $news->status = $status;
             $news->content = $this->content;
 
             $newMedia = $news->media()->createMany(
-                $imagePaths
+                $mediaPaths
             );
-
 
             $toastMessage = 'Tidak ada perubahan data';
             if ($news->isDirty() || $newMedia->count() > 0) {
-                $toastMessage = 'Berita berhasil diedit';
+                $toastMessage = 'Laporan berhasil diubah';
             }
 
             $news->save();
             DB::commit();
             $this->success($toastMessage);
-            $this->redirectRoute('dashboard.information.news.index', navigate: true);
+            $this->redirectRoute('dashboard.information.report.index', navigate: true);
         } catch (\Exception $e) {
             DB::rollback();
-            $this->error("Error mengedit artikel berita: ".$e->getMessage());
+            $this->error("Error mengedit artikel laporan: ".$e->getMessage());
         }
     }
 
     public function removeUploadedMedia($mediaId) {
         try {
             News::find($this->id)->media()->find($mediaId)->delete();
-            $this->success("Berhasil menghapus gambar");
+            $this->success("Berhasil menghapus media");
         } catch (\Exception $e) {
             $this->error("Error menghapus data");
         }
     }
 
     public function mount($key) {
-        $news = News::find(decrypt($key));
+        $this->id = decrypt($key);
+        $this->fill($this->news);
+        $this->originalSlug = $this->news->slug;
 
         $this->library = collect();
-        $this->fill($news);
-        $this->originalSlug = $news->slug;
     }
 
     public function render()
     {
-        return view('livewire.pages.dashboard.information.news.edit', [
-            'uploaded_media' => $this->uploadedMedia()
+        return view('livewire.pages.dashboard.information.report.edit', [
+            'news' => $this->news
         ]);
     }
 }

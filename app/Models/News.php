@@ -37,7 +37,23 @@ class News extends Model
         return $query->where('type', 'news');
     }
 
-    public function scopeOnlyReports($query) {
+    public function scopeOnlyReport($query) {
         return $query->where('type', 'report');
+    }
+
+    public function scopeOnlyPublish($query) {
+        return $query->where('status', 'publish');
+    }
+
+    public function scopeOnlyDraft($query) {
+        return $query->where('status', 'draft');
+    }
+
+    public function fileMedia() {
+        return $this->media()->onlyFile();
+    }
+
+    public function imageMedia() {
+        return $this->media()->onlyImage();
     }
 }
