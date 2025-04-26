@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Media;
 use App\Models\Apparatus;
 use App\Models\JobVacancy;
+use App\Models\VillageBudget;
+use App\Models\VillageBudgetDetail;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -40,5 +42,9 @@ class DatabaseSeeder extends Seeder
         });
 
         JobVacancy::factory(20)->create();
+
+        $this->call(
+            VillageBudgetSeeder::class,
+        );
     }
 }

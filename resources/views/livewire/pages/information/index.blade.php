@@ -76,6 +76,22 @@
 
     <div class="flex gap-8 pt-24" id="news-content">
         <div class="flex-1">
+            {{-- <div class="tabs tabs-lift">
+                <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 1" />
+                <div class="p-6 tab-content bg-base-100 border-base-300">
+                    <livewire:pages.information.news.index lazy/>
+                </div>
+                <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 2" checked="checked" />
+                <div class="p-6 tab-content bg-base-100 border-base-300">
+                    <livewire:pages.information.report.index lazy/>
+                </div>
+                <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 3" />
+                <div class="p-6 tab-content bg-base-100 border-base-300">
+                    <livewire:pages.information.job-vacancy.index lazy/>
+                </div>
+            </div> --}}
+
+            {{-- bellow has bug where if u press alt + <-, it wont show the page --}}
             <x-mary-tabs wire:model="selectedTab" class="py-3">
                 <x-mary-tab name="news" label="Berita">
                     <div>

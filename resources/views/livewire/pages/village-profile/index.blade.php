@@ -3,7 +3,6 @@
         <div class="flex-1 space-y-4">
             <x-header>Sejarah Desa Kapulungan</x-header>
             <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi</p>
-            <x-mary-button class="btn btn-primary" link="profil-desa"  label="Lebih Detail"/>
         </div>
         <div class="flex-[.8]">
             <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">

@@ -1,9 +1,6 @@
 <div id="calendar" class="rounded-xl"></div>
 
 @pushOnce('scripts')
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
-
     @script
         <script>
             const calendar = $('#calendar')

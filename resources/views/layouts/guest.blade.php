@@ -50,9 +50,9 @@
                     <x-mary-button label="Profil Desa" :link="route('village-profile')" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Anggaran" :link="route('budget')" class="text-sm btn-ghost btn-sm" responsive />
                     <x-mary-button label="Informasi" :link="route('information.index')" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="BUMDes" link="###" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Galeri" link="###" class="text-sm btn-ghost btn-sm" responsive />
-                    <x-mary-button label="Kontak" link="###" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="BUMDes" :link="route('bumdes')" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Galeri" :link="route('galery')" class="text-sm btn-ghost btn-sm" responsive />
+                    <x-mary-button label="Kontak" :link="route('contact')" class="text-sm btn-ghost btn-sm" responsive />
                 </div>
             </x-slot:actions>
         </x-mary-nav>
@@ -69,6 +69,8 @@
         <x-mary-toast />
 
         {{-- mary ui plugin --}}
+        <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.js"></script>
 
         @stack('scripts')

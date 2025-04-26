@@ -1,4 +1,4 @@
-<div class="py-20 space-y-40">
+<div class="py-20 space-y-40" x-data >
     <x-container class="flex items-center justify-between gap-8">
         <div class="flex-1">
             <div class="max-w-sm text-xl text-center ms-auto">
@@ -165,65 +165,6 @@
         </div>
     </x-container>
 
-    <x-container class="!max-w-4xl">
-        <div class="text-center">
-            <x-header class="mb-8">Belanja Desa Berdasarkan Klasifikasi Kegiatan</x-header>
-            <div class="px-5 mx-auto">
-                <x-mary-accordion class="shadow-lg">
-                    <x-mary-collapse name="group1" separator>
-                        <x-slot:heading class="bg-red-200">
-                            <div class="flex items-center justify-between">
-                                <span>Operasional Pemerintahan Desa</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
-                                </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Gaji Perangkat Desa</li>
-                                <li>Biaya Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                    <x-mary-collapse name="group2" separator>
-                        <x-slot:heading class="bg-blue-200">
-                            <div class="flex items-center justify-between">
-                                <span>Biaya Pembangunan</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
-                                </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Pelaksanaan Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                    <x-mary-collapse name="group3" separator>
-                        <x-slot:heading class="bg-orange-200">
-                            <div class="flex items-center justify-between">
-                                <span>Pelaksanaan Pembangunan</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
-                                </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Pelaksanaan Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                </x-mary-accordion>
-            </div>
-        </div>
-    </x-container>
-
     <x-container>
         <x-header class="mb-3 text-center">Presentase Belanja</x-header>
         <div class="flex items-center justify-center">
@@ -254,64 +195,125 @@
         </div>
     </x-container>
 
-    <x-container class="!max-w-4xl">
-        <div class="text-center">
-            <x-header class="mb-8">Prioritas Penggunaan Dana Desa Tahun 2025</x-header>
-            <div class="px-5 mx-auto">
-                <x-mary-accordion class="shadow-lg">
-                    <x-mary-collapse name="group1" separator>
-                        <x-slot:heading class="bg-red-200">
-                            <div class="flex items-center justify-between">
-                                <span>Operasional Pemerintahan Desa</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
+    <x-container class="flex gap-5">
+        <div class="flex-1">
+            <div class="text-center">
+                <x-header class="mb-8">Belanja Desa Berdasarkan Klasifikasi Kegiatan</x-header>
+                <div class="px-5 mx-auto">
+                    <x-mary-accordion class="shadow-lg">
+                        <x-mary-collapse name="group1" separator>
+                            <x-slot:heading class="bg-red-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Operasional Pemerintahan Desa</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
                                 </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Gaji Perangkat Desa</li>
-                                <li>Biaya Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                    <x-mary-collapse name="group2" separator>
-                        <x-slot:heading class="bg-blue-200">
-                            <div class="flex items-center justify-between">
-                                <span>Biaya Pembangunan</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Gaji Perangkat Desa</li>
+                                    <li>Biaya Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                        <x-mary-collapse name="group2" separator>
+                            <x-slot:heading class="bg-blue-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Biaya Pembangunan</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
                                 </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Pelaksanaan Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                    <x-mary-collapse name="group3" separator>
-                        <x-slot:heading class="bg-orange-200">
-                            <div class="flex items-center justify-between">
-                                <span>Pelaksanaan Pembangunan</span>
-                                <div class="flex items-center gap-3">
-                                    <span>Rp 400.000,000</span>
-                                    <x-mary-badge value="45%" class="badge-soft" />
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Pelaksanaan Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                        <x-mary-collapse name="group3" separator>
+                            <x-slot:heading class="bg-orange-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Pelaksanaan Pembangunan</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
                                 </div>
-                            </div>
-                        </x-slot:heading>
-                        <x-slot:content>
-                            <ol class="px-5 list-decimal text-start">
-                                <li>Pelaksanaan Pembangunan</li>
-                            </ol>
-                        </x-slot:content>
-                    </x-mary-collapse>
-                </x-mary-accordion>
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Pelaksanaan Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                    </x-mary-accordion>
+                </div>
             </div>
         </div>
-    </x-container>
+    
+        <div class="flex-1">
+            <div class="text-center">
+                <x-header class="mb-8">Prioritas Penggunaan Dana Desa Tahun 2025</x-header>
+                <div class="px-5 mx-auto">
+                    <x-mary-accordion class="shadow-lg">
+                        <x-mary-collapse name="group1" separator>
+                            <x-slot:heading class="bg-red-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Operasional Pemerintahan Desa</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
+                                </div>
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Gaji Perangkat Desa</li>
+                                    <li>Biaya Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                        <x-mary-collapse name="group2" separator>
+                            <x-slot:heading class="bg-blue-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Biaya Pembangunan</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
+                                </div>
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Pelaksanaan Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                        <x-mary-collapse name="group3" separator>
+                            <x-slot:heading class="bg-orange-200">
+                                <div class="flex items-center justify-between">
+                                    <span>Pelaksanaan Pembangunan</span>
+                                    <div class="flex items-center gap-3">
+                                        <span>Rp 400.000,000</span>
+                                        <x-mary-badge value="45%" class="badge-soft" />
+                                    </div>
+                                </div>
+                            </x-slot:heading>
+                            <x-slot:content>
+                                <ol class="px-5 list-decimal text-start">
+                                    <li>Pelaksanaan Pembangunan</li>
+                                </ol>
+                            </x-slot:content>
+                        </x-mary-collapse>
+                    </x-mary-accordion>
+                </div>
+            </div>
+        </div>
+    </x-contain>
 </div>
 
 

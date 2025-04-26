@@ -21,6 +21,10 @@
         {{-- TinyMCE --}}
         <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 
+        {{-- Flatpickr  --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
         <style>
             .crop-false button[data-tip="false"] {
                 display: none !important;

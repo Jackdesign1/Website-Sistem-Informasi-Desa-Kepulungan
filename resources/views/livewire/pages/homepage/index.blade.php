@@ -30,7 +30,7 @@
         <div class="flex-1 space-y-4">
             <x-header>Profil Desa Kapulungan</x-header>
             <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi</p>
-            <x-mary-button class="btn btn-primary" link="profil-desa"  label="Lebih Detail"/>
+            <x-mary-button class="btn btn-success" link="profil-desa"  label="Lebih Detail"/>
         </div>
         <div class="flex-[.8]">
             <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
@@ -60,7 +60,7 @@
         <x-header class="mb-7">Anggaran Desa</x-header>
         <div class="flex items-center justify-between mb-5">
             <x-mary-datetime/>
-            <x-mary-button label="Baca Anggaran Desa" class="btn btn-primary" />
+            <x-mary-button label="Baca Anggaran Desa" class="btn btn-success" :link="route('budget')"/>
         </div>
         <div class="w-full border shadow-lg stats rounded-xl">
             <div class="stat">
@@ -94,13 +94,13 @@
         <x-header class="mb-7">Layanan</x-header>
         <div class="flex flex-wrap w-full gap-5 carousel-item">
             <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
+                <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
             <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
+                <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Kontak" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
+            <x-mary-card title="Laporan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
+                <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=report#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
             <x-mary-card title="Layanan Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
@@ -263,7 +263,7 @@
                                     Wisata Pemandian Air Panas Langsung <br>
                                     Dari Sumbernya yang Sangat Menyejukkan Badan
                                 </div>
-                                <x-mary-button label="Kunjungi Website" class="btn-primary"/>
+                                <x-mary-button label="Kunjungi Website" class="btn-success"/>
                             </div>
                         </x-container>
                     </div>
@@ -275,7 +275,7 @@
     <x-container>
         <div class="flex items-center justify-between mb-8">
             <x-header>Galeri Desa</x-header>
-            <x-mary-button class="btn-primary" label="Lihat Galeri" />
+            <x-mary-button class="btn-success" label="Lihat Galeri" :link="route('galery')" />
         </div>
         {{-- galery --}}
         <div class="grid grid-cols-2 gap-3 min-h-96">

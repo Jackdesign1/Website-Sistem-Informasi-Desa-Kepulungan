@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Livewire\Pages\Information;
+namespace App\Livewire\Pages\Contact;
 
 use Illuminate\Http\Request;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('layouts.guest')]
 class Index extends Component
 {
-    public $selectedTab;
+    public $selectedContactTab;
 
     public function mount(Request $request) {
-        $this->selectedTab = $request->set?? 'news';
+        $this->selectedContactTab = $request->set?? 'report';
     }
 
     public function render()
     {
-        return view('livewire.pages.information.index');
+        return view('livewire.pages.contact.index');
     }
 }

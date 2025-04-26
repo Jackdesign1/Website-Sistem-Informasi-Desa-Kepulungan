@@ -4,6 +4,8 @@ use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Homepage\Index;
 use App\Livewire\Pages\Budget\Index as BudgetIndex;
+use App\Livewire\Pages\Bumdes\Index as BumdesIndex;
+use App\Livewire\Pages\Contact\Index as ContactIndex;
 use App\Livewire\Pages\Information\NewsContent;
 use App\Livewire\Pages\Information\Index as InformationIndex;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
@@ -18,6 +20,7 @@ use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Create as ReportCreate;
 use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
+use App\Livewire\Pages\Galery\Index as GaleryIndex;
 
 // Route::view('/', 'welcome');
 
@@ -65,17 +68,19 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Volt::route('volt', 'pages.test.counter');
+// Volt::route('volt', 'pages.test.counter');
 
+
+// Guest Route
 Route::get('/', Index::class)->name('homepage');
-
 Route::get('/profil-desa', VillageProfileIndex::class)->name('village-profile');
-
 Route::get('/anggaran', BudgetIndex::class)->name('budget');
-
 Route::prefix('informasi')->name('information.')->group(function() {
     Route::get('/', InformationIndex::class)->name('index');
     Route::get('/{type}/{slug}', NewsContent::class)->name('news-content');
 });
+Route::get('/galeri', GaleryIndex::class)->name('galery');
+Route::get('/bumdes', BumdesIndex::class)->name('bumdes');
+Route::get('/kontak', ContactIndex::class)->name('contact');
 
 require __DIR__.'/auth.php';
