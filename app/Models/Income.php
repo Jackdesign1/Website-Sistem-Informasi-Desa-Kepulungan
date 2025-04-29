@@ -9,4 +9,12 @@ class Income extends Model
 {
     /** @use HasFactory<\Database\Factories\IncomeFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'year',
+    ];
+
+    public function details() {
+        return $this->hasMany(IncomeDetail::class);
+    }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('village_budgets', function (Blueprint $table) {
             $table->id();
-            $table->date('year');
+            $table->year('year');
             $table->decimal('silpa', 15, 2);
             $table->timestamps();
         });

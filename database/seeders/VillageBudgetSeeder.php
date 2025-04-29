@@ -17,7 +17,7 @@ class VillageBudgetSeeder extends Seeder
         foreach ([2023, 2024, 2025] as $year) {
             $village = VillageBudget::create([
                 'silpa' => mt_rand(1_000_000, 999_999_999),
-                'year' => "$year-01-01",
+                'year' => "$year",
             ]);
         
             foreach (['APBDes Pembelanjaan', 'APBDes Pelaksanaan', 'APBDes Pendapatan'] as $type) {

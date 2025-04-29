@@ -9,4 +9,13 @@ class BudgetPriority extends Model
 {
     /** @use HasFactory<\Database\Factories\BudgetPriorityFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'year',
+    ];
+
+    public function details()
+    {
+        return $this->hasMany(BudgetPriorityDetail::class);
+    }
 }

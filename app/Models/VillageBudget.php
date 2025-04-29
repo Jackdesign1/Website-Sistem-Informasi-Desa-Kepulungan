@@ -15,7 +15,7 @@ class VillageBudget extends Model
         'silpa'
     ];
 
-    public function detail()
+    public function details()
     {
         return $this->hasMany(VillageBudgetDetail::class);
     }

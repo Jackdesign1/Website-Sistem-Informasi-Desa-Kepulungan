@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BudgetPriority;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,9 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incomes', function (Blueprint $table) {
+        Schema::create('budget_priority_details', function (Blueprint $table) {
             $table->id();
-            $table->year('year');
+            $table->foreignIdFor(BudgetPriority::class)->constrained()->cascadeOnDelete();
+            $table->string('priority_name');
+            $table->decimal('value', 15, 2);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incomes');
+        Schema::dropIfExists('budget_priority_details');
     }
 };

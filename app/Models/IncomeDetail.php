@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VillageBudgetDetail extends Model
+class IncomeDetail extends Model
 {
-    /** @use HasFactory<\Database\Factories\VillageBudgetDetailFactory> */
+    /** @use HasFactory<\Database\Factories\IncomeDetailFactory> */
     use HasFactory;
 
     protected $fillable = [
-        'village_budget_id',
-        'type',
+        'income_id',
+        'income_name',
         'value',
     ];
 }

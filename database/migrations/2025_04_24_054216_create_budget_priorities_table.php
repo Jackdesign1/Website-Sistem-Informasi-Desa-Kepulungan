@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('budget_priorities', function (Blueprint $table) {
             $table->id();
+            $table->year('year');
             $table->timestamps();
         });
     }

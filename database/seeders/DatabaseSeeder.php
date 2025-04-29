@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call([
+            VillageBudgetSeeder::class,
+            BudgetPrioritySeeder::class,
+            IncomeSeeder::class
+        ]);
+
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'user@gmail.com',
@@ -42,9 +48,5 @@ class DatabaseSeeder extends Seeder
         });
 
         JobVacancy::factory(20)->create();
-
-        $this->call(
-            VillageBudgetSeeder::class,
-        );
     }
 }

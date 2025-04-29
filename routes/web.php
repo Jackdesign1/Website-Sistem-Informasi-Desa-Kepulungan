@@ -9,14 +9,17 @@ use App\Livewire\Pages\Contact\Index as ContactIndex;
 use App\Livewire\Pages\Information\NewsContent;
 use App\Livewire\Pages\Information\Index as InformationIndex;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
+use App\Livewire\Pages\Dashboard\Budget\Income\Edit as IncomeEdit;
 use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 use App\Livewire\Pages\VillageProfile\Index as VillageProfileIndex;
 use App\Livewire\Pages\Dashboard\Budget\Income\Index as IncomeIndex;
+use App\Livewire\Pages\Dashboard\Budget\Priority\Edit as PriorityEdit;
 use App\Livewire\Pages\Dashboard\Information\News\Index as NewsIndex;
 use App\Livewire\Pages\Dashboard\Budget\Village\Index as VillageIndex;
 use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
 use App\Livewire\Pages\Dashboard\Information\Report\Edit as ReportEdit;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
+use App\Livewire\Pages\Dashboard\Budget\Village\Edit;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Create as ReportCreate;
 use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
@@ -34,12 +37,30 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::prefix('anggaran')->name('budget.')->group(function() {
         // Route::get('/', BudgetIndex::class)
         //     ->name('index');
-        Route::get('/desa', VillageIndex::class)
-            ->name('village');
-        Route::get('/prioritas', PriorityIndex::class)
-            ->name('priority');
-        Route::get('/pendapatan', IncomeIndex::class)
-            ->name('income');
+        Route::prefix('desa')->name('village.')->group(function() {
+            Route::get('/', VillageIndex::class)
+                ->name('index');
+            // Route::get('/create', \App\Livewire\Pages\Dashboard\Budget\Village\Create::class)
+            //     ->name('create');
+            Route::get('/edit/{key}', Edit::class)
+                ->name('edit');
+        });
+        Route::prefix('prioritas')->name('priority.')->group(function() {
+            Route::get('/', PriorityIndex::class)
+                ->name('index');
+            // Route::get('/create', \App\Livewire\Pages\Dashboard\Budget\Priority\Create::class)
+            //     ->name('create');
+            Route::get('edit/{key}', PriorityEdit::class)
+                ->name('edit');
+        });
+        Route::prefix('pendapatan')->name('income.')->group(function() {
+            Route::get('/', IncomeIndex::class)
+                ->name('index');
+            // Route::get('/create', \App\Livewire\Pages\Dashboard\Budget\Income\Create::class)
+            //     ->name('create');
+            Route::get('/edit/{key}', IncomeEdit::class)
+                ->name('edit');
+        });
     });
 
     Route::prefix('informasi')->name('information.')->group(function() {

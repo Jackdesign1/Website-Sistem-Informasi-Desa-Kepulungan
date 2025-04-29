@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Pages\Dashboard\Budget\Village;
+namespace App\Livewire\Pages\Dashboard\Budget\Income;
 
-use App\Models\VillageBudget;
+use App\Models\Income;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -11,39 +11,37 @@ class Create extends Component
 {
     use Toast;
 
-    #[Validate('required|date_format:Y|unique:village_budgets,year')]
+    #[Validate('required|date_format:Y|unique:incomes,year')]
     public $year;
-    #[Validate('required')]
-    public $silpa = null;
 
     #[Validate([
-        'detailBudgets.*.type' => 'required|string',
-        'detailBudgets.*.value' => 'required',
+        'incomes.*.income_name' => 'required|string',
+        'incomes.*.value' => 'required',
     ])]
-    public $detailBudgets = [
+    public $incomes = [
         [
-            'type' => 'APBDes Pembelanjaan',
+            'income_name' => 'Pendapatan Transfer',
             'value' => null,
         ], 
         [
-            'type' => 'APBDes Pelaksanan',
+            'income_name' => 'Pendapatan Asli Desa',
             'value' => null,
         ], 
         [
-            'type' => 'APBDes Pembelian',
+            'income_name' => 'APBDes Pelaksanaan',
             'value' => null,
         ], 
     ];
 
-    public function addDetailBudget() {
-        $this->detailBudgets[] = [
-            'type' => null,
+    public function addDetailIncome() {
+        $this->incomes[] = [
+            'income_name' => null,
             'value' => null,
         ];
     }
 
-    public function removeDetailBudget($index) {
-        unset($this->detailBudgets[$index]);
+    public function removeDetailIncome($index) {
+        unset($this->incomes[$index]);
     }
 
     public function resetPage() {
@@ -53,12 +51,12 @@ class Create extends Component
     public function create() {
         $this->validate();
         try {
-            $villageBudget = VillageBudget::create([
+            $income = Income::create([
                 'year' => $this->year,
-                'silpa' => $this->silpa, 
             ]);
 
-            $villageBudget->details()->createMany($this->detailBudgets);
+            $income->details()->createMany($this->incomes);
+
             $this->reset();
             $this->dispatch('refresh');
             $this->dispatch('closeCreateModal');
@@ -67,9 +65,9 @@ class Create extends Component
             $this->error('Error', 'Terjadi error saat menambahkan data');
         }
     }
-
+    
     public function render()
     {
-        return view('livewire..pages.dashboard.budget.village.create');
+        return view('livewire.pages.dashboard.budget.income.create');
     }
 }

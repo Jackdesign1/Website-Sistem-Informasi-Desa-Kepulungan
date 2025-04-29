@@ -25,6 +25,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+        {{--  Currency  --}}
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js"></script>
+        </head>
+
         <style>
             .crop-false button[data-tip="false"] {
                 display: none !important;
@@ -61,9 +65,9 @@
                     <x-mary-menu-item title="Aparatur" icon="tabler.users" :link="route('dashboard.apparatus')" />
                     {{-- <x-mary-menu-item  :link="route('dashboard.budget')" /> --}}
                     <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
-                        <x-mary-menu-item title="Anggaran Desa" :link="route('dashboard.budget.village')" />
-                        <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority')" />
-                        <x-mary-menu-item title="Pendapatan" :link="route('dashboard.budget.income')" />
+                        <x-mary-menu-item title="Anggaran Desa" :link="route('dashboard.budget.village.index')" />
+                        <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority.index')" />
+                        <x-mary-menu-item title="Pendapatan" :link="route('dashboard.budget.income.index')" />
                     </x-mary-menu-sub>
                     <x-mary-menu-sub title="Informasi" icon="hugeicons.apple-news">
                         <x-mary-menu-item title="Berita" :link="route('dashboard.information.news.index')" />
