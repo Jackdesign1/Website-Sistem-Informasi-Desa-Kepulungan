@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Budget;
 
+use App\Models\VillageBudget;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -82,8 +83,43 @@ class Index extends Component
         }, range(1, 3));
     }
 
+    public function getVillageBudgets() {
+        return VillageBudget::where('year', date('Y'))
+        ->with(['details' => function ($query) {
+            $query->select('id', 'village_budget_id', 'type', 'value');
+        }])
+        ->get()
+        ->map(function ($budget) {
+            $budget->details = $budget->details->map(function ($detail) {
+                $detail->backgroundColor = $this->randomBackgroundColors();
+                return $detail;
+            });
+            return $budget;
+        });
+    }
+
+    public function getIncomes() {
+        return VillageBudget::where('year', date('Y'))
+        ->with(['details' => function ($query) {
+            $query->select('id', 'village_budget_id', 'type', 'value');
+        }])
+        ->get()
+        ->map(function ($budget) {
+            $budget->details = $budget->details->map(function ($detail) {
+                $detail->backgroundColor = $this->randomBackgroundColors();
+                return $detail;
+            });
+            return $budget;
+        });
+    }
+
+    // public function get
+
     public function render()
     {
-        return view('livewire.pages.budget.index');
+        return view('livewire.pages.budget.index', [
+            'villageBudgets' => $this->getVillageBudgets(),
+            'incomes' => $this->getIncomes(),
+        ]);
     }
 }

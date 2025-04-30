@@ -9,10 +9,11 @@ use App\Livewire\Pages\Contact\Index as ContactIndex;
 use App\Livewire\Pages\Information\NewsContent;
 use App\Livewire\Pages\Information\Index as InformationIndex;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
-use App\Livewire\Pages\Dashboard\Budget\Income\Edit as IncomeEdit;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Create as OperationalCreate;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Edit as OperationalEdit;
 use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 use App\Livewire\Pages\VillageProfile\Index as VillageProfileIndex;
-use App\Livewire\Pages\Dashboard\Budget\Income\Index as IncomeIndex;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Index as OperationalIndex;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Edit as PriorityEdit;
 use App\Livewire\Pages\Dashboard\Information\News\Index as NewsIndex;
 use App\Livewire\Pages\Dashboard\Budget\Village\Index as VillageIndex;
@@ -53,12 +54,12 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
             Route::get('edit/{key}', PriorityEdit::class)
                 ->name('edit');
         });
-        Route::prefix('pendapatan')->name('income.')->group(function() {
-            Route::get('/', IncomeIndex::class)
-                ->name('index');
-            // Route::get('/create', \App\Livewire\Pages\Dashboard\Budget\Income\Create::class)
-            //     ->name('create');
-            Route::get('/edit/{key}', IncomeEdit::class)
+        Route::prefix('operasional')->name('operational.')->group(function() {
+            Route::get('/', OperationalIndex::class)
+            ->name('index');
+            Route::get('/create', OperationalCreate::class)
+                ->name('create');
+            Route::get('/edit/{key}', OperationalEdit::class)
                 ->name('edit');
         });
     });

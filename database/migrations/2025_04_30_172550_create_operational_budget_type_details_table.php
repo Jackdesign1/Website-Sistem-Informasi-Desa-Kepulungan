@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\IncomeType;
+use App\Models\OperationalBudgetType;
+use App\Models\OperationalBudgetTypeDetail;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('income_details', function (Blueprint $table) {
+        Schema::create('operational_budget_type_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(IncomeType::class)
-                ->constrained()
+            $table->foreignIdFor(OperationalBudgetType::class)
+                ->constrained(indexName: 'operational_budget_type_id')
                 ->cascadeOnDelete();
-            $table->string('income_detail_name');
+            $table->string('operational_detail_name');
             $table->decimal('value', 15, 2);
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('income_details');
+        Schema::dropIfExists('operational_budget_type_details');
     }
 };

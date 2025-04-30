@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VillageBudgetSeeder::class,
             BudgetPrioritySeeder::class,
-            IncomeSeeder::class
+            // IncomeSeeder::class,
+            OperationalBudgetSeeder::class,
         ]);
 
         User::factory()->create([

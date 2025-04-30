@@ -14,7 +14,13 @@ class Income extends Model
         'year',
     ];
 
-    public function details() {
-        return $this->hasMany(IncomeDetail::class);
+    public function incomeTypes()
+    {
+        return $this->hasMany(IncomeType::class);
+    }
+
+    public function incomeDetails()
+    {
+        return $this->hasManyThrough(IncomeDetail::class, IncomeType::class);
     }
 }

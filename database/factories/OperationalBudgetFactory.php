@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\IncomeDetail>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OperationalBudget>
  */
-class IncomeDetailFactory extends Factory
+class OperationalBudgetFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class IncomeDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            'income_detail_name' => $this->faker->word(),
-            'value' => $this->faker->numberBetween(1000000, 999999999),
+            //
         ];
     }
 }

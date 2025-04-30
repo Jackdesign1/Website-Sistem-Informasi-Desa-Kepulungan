@@ -11,8 +11,13 @@ class IncomeDetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        'income_id',
-        'income_name',
+        'income_type_id',
+        'income_detail_name',
         'value',
     ];
+
+    public function incomeType()
+    {
+        return $this->belongsTo(IncomeType::class);
+    }
 }

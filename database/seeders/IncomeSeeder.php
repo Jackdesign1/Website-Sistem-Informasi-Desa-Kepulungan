@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Income;
 use App\Models\IncomeDetail;
+use App\Models\IncomeType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,9 +19,13 @@ class IncomeSeeder extends Seeder
             $income = Income::create([
                 'year' => "$year",
             ]);
-            IncomeDetail::factory(mt_rand(2, 8))->create([
+            IncomeType::factory(mt_rand(2, 5))->create([
                 'income_id' => $income->id,
-            ]);
+            ])->each(function($type) {
+                IncomeDetail::factory(mt_rand(1, 10))->create([
+                    'income_type_id' => $type->id,
+                ]);
+            });
         }
     }
 }

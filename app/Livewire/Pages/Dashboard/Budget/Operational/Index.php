@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pages\Dashboard\Budget\Income;
+namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
 use App\Models\Income;
 use Livewire\Component;
@@ -23,7 +23,7 @@ class Index extends Component
     }
 
     public function incomes() {
-        $incomes = Income::latest('year')->with('details')->get();
+        $incomes = Income::latest('year')->with('incomeTypes', 'incomeTypes.details', 'incomeDetails')->get();
         return $incomes;
     }
 
@@ -34,7 +34,7 @@ class Index extends Component
     
     public function render()
     {
-        return view('livewire.pages.dashboard.budget.income.index', [
+        return view('livewire.pages.dashboard.budget.operational.index', [
             'incomes' => $this->incomes()
         ]);
     }

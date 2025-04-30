@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\IncomeType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('income_details', function (Blueprint $table) {
+        Schema::create('operational_budgets', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(IncomeType::class)
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->string('income_detail_name');
-            $table->decimal('value', 15, 2);
+            $table->year('year');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('income_details');
+        Schema::dropIfExists('operational_budgets');
     }
 };

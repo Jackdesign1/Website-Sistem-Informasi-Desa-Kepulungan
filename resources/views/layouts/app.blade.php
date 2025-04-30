@@ -67,7 +67,7 @@
                     <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
                         <x-mary-menu-item title="Anggaran Desa" :link="route('dashboard.budget.village.index')" />
                         <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority.index')" />
-                        <x-mary-menu-item title="Pendapatan" :link="route('dashboard.budget.income.index')" />
+                        <x-mary-menu-item title="Operasional" :link="route('dashboard.budget.operational.index')" />
                     </x-mary-menu-sub>
                     <x-mary-menu-sub title="Informasi" icon="hugeicons.apple-news">
                         <x-mary-menu-item title="Berita" :link="route('dashboard.information.news.index')" />
@@ -86,5 +86,8 @@
 
         {{--  TOAST area --}}
         <x-mary-toast />
+        
+        {{-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script> --}}
+
     </body>
 </html>
