@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
 use App\Models\Income;
+use App\Models\OperationalBudget;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -22,20 +23,20 @@ class Index extends Component
         $this->createModal = false;
     }
 
-    public function incomes() {
-        $incomes = Income::latest('year')->with('incomeTypes', 'incomeTypes.details', 'incomeDetails')->get();
-        return $incomes;
+    public function operationals() {
+        $operationals = OperationalBudget::latest('year')->with('operationalTypes', 'operationalTypes.details', 'operationalDetails')->get();
+        return $operationals;
     }
 
     public function delete($key) {
-        Income::destroy(decrypt($key));
+        OperationalBudget::destroy(decrypt($key));
         $this->info('Anggaran pendapatan berhasil dihapus');
     }
     
     public function render()
     {
         return view('livewire.pages.dashboard.budget.operational.index', [
-            'incomes' => $this->incomes()
+            'operationals' => $this->operationals()
         ]);
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
-use App\Models\Income;
+use App\Models\Operational;
+use App\Models\OperationalBudget;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -12,104 +13,104 @@ class Create extends Component
 {
     use Toast;
 
-    #[Validate('required|date_format:Y|unique:incomes,year')]
+    #[Validate('required|date_format:Y|unique:operational_budgets,year')]
     public $year;
 
     // #[Validate([
-    //     'incomeTypes.*.income_type_name' => 'string',
-    //     'incomeTypes.*.value' => 'integer',
-    //     'incomeTypes.*.details.*.income_detail_name' => 'string',
-    //     'incomeTypes.*.details.*.value' => 'integer',
+    //     'operationalTypes.*.operational_type_name' => 'string',
+    //     'operationalTypes.*.value' => 'integer',
+    //     'operationalTypes.*.details.*.operational_detail_name' => 'string',
+    //     'operationalTypes.*.details.*.value' => 'integer',
     // ])]
-    public $incomeTypes = [
+    public $operationalTypes = [
         [
-            'income_type_name' => 'Bidang Pemerintahan',
+            'operational_type_name' => 'Bidang Pemerintahan',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
         [
-            'income_type_name' => 'Bidang Pembangunan',
+            'operational_type_name' => 'Bidang Pembangunan',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
         [
-            'income_type_name' => 'Bidang Pembinaan Masyarakat',
+            'operational_type_name' => 'Bidang Pembinaan Masyarakat',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
         [
-            'income_type_name' => 'Bidang Pemberdayaan Masyarakat',
+            'operational_type_name' => 'Bidang Pemberdayaan Masyarakat',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
         [
-            'income_type_name' => 'Penyertaan Modal BUMDes',
+            'operational_type_name' => 'Penyertaan Modal BUMDes',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
         [
-            'income_type_name' => 'Bidang Penanggulangan Bencana',
+            'operational_type_name' => 'Bidang Penanggulangan Bencana',
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ],
     ];
 
-    public function addIncomeType() {
-        $this->incomeTypes[] = [
-            'income_type_name' => null,
+    public function addOperationalType() {
+        $this->operationalTypes[] = [
+            'operational_type_name' => null,
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ];
     }
 
-    public function addIncomeDetail($typeIndex) {
-        $this->incomeTypes[$typeIndex]['details'][] = [
-            'income_detail_name' => null,
+    public function addOperationalDetail($typeIndex) {
+        $this->operationalTypes[$typeIndex]['details'][] = [
+            'operational_detail_name' => null,
             'value' => null
         ];
     }
 
-    public function removeIncomeType($index) {
-        unset($this->incomeTypes[$index]);
+    public function removeOperationalType($index) {
+        unset($this->operationalTypes[$index]);
     }
 
-    public function removeIncomeDetail($typeIndex, $detailIndex) {
-        unset($this->incomeTypes[$typeIndex]['details'][$detailIndex]);
+    public function removeOperationalDetail($typeIndex, $detailIndex) {
+        unset($this->operationalTypes[$typeIndex]['details'][$detailIndex]);
     }
 
     public function resetPage() {
@@ -121,17 +122,17 @@ class Create extends Component
         try {
             DB::beginTransaction();
 
-            $income = Income::create([
+            $operational = OperationalBudget::create([
                 'year' => $this->year,
             ]);
 
-            $incomeTypesData = collect($this->incomeTypes)->map(function ($incomeType) use ($income) {
+            $operationalTypesData = collect($this->operationalTypes)->map(function ($operationalType) use ($operational) {
                 $data = [
-                    'income_id' => $income->id,
-                    'income_type_name' => $incomeType['income_type_name'],
+                    'operational_budget_id' => $operational->id,
+                    'operational_type_name' => $operationalType['operational_type_name'],
                 ];
 
-                $details = collect($incomeType['details'])->reject(function($detail) {
+                $details = collect($operationalType['details'])->reject(function($detail) {
                     return in_array(null, $detail, true);
                 });
 
@@ -141,9 +142,9 @@ class Create extends Component
                 return $data;
             })->toArray();
 
-            $incomeTypes = $income->incomeTypes()->createMany($incomeTypesData)->each(function ($incomeType, $key) use ($incomeTypesData) {
-                if (isset($incomeTypesData[$key]['details'])) {
-                    $incomeType->details()->createMany($incomeTypesData[$key]['details']);
+            $operationalTypes = $operational->operationalTypes()->createMany($operationalTypesData)->each(function ($operationalType, $key) use ($operationalTypesData) {
+                if (isset($operationalTypesData[$key]['details'])) {
+                    $operationalType->details()->createMany($operationalTypesData[$key]['details']);
                 }
             });
 

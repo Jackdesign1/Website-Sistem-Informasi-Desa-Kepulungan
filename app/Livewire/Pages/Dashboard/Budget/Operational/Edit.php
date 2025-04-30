@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
-use App\Models\Income;
-use App\Models\IncomeDetail;
+use App\Models\Operational;
+use App\Models\OperationalBudget;
+use App\Models\OperationalBudgetTypeDetail;
+use App\Models\OperationalDetail;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -13,25 +15,25 @@ class Edit extends Component
 {
     use Toast;
 
-    // this is the id for Income
+    // this is the id for Operational
     public $key;
 
     public $originalYear;
     public $year;
 
     // #[Validate([
-    //     'incomeTypes.*.income_type_name' => 'string',
-    //     'incomeTypes.*.value' => 'integer',
-    //     'incomeTypes.*.details.*.income_detail_name' => 'string',
-    //     'incomeTypes.*.details.*.value' => 'integer',
+    //     'operationalTypes.*.operational_type_name' => 'string',
+    //     'operationalTypes.*.value' => 'integer',
+    //     'operationalTypes.*.details.*.operational_detail_name' => 'string',
+    //     'operationalTypes.*.details.*.value' => 'integer',
     // ])]
-    public $incomeTypes = [
+    public $operationalTypes = [
         [
-            'income_type_name' => null,
+            'operational_type_name' => null,
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
@@ -41,48 +43,48 @@ class Edit extends Component
     public function rules() {
         $yearRule = 'required|date_format:Y';
         if ($this->originalYear !== $this->year) {
-            $yearRule .= '|unique:incomes,year';
+            $yearRule .= '|unique:operational_budgets,year';
         }
         return [
             'year' => $yearRule,
         ];
     }
 
-    public function addIncomeType() {
-        $this->incomeTypes[] = [
-            'income_type_name' => null,
+    public function addOperationalType() {
+        $this->operationalTypes[] = [
+            'operational_type_name' => null,
             'value' => null,
             'details' => [
                 [
-                    'income_detail_name' => null,
+                    'operational_detail_name' => null,
                     'value' => null
                 ],
             ]
         ];
     }
 
-    public function addIncomeDetail($typeIndex) {
-        $this->incomeTypes[$typeIndex]['details'][] = [
-            'income_detail_name' => null,
+    public function addOperationalDetail($typeIndex) {
+        $this->operationalTypes[$typeIndex]['details'][] = [
+            'operational_detail_name' => null,
             'value' => null
         ];
     }
 
-    public function removeIncomeType($index) {
-        $incomeTypeId = $this->incomeTypes[$index]['id'] ?? null;
-        if ($incomeTypeId) {
-            Income::find(decrypt($this->key))->incomeTypes()->where('id', $incomeTypeId)->delete();
+    public function removeOperationalType($index) {
+        $operationalTypeId = $this->operationalTypes[$index]['id'] ?? null;
+        if ($operationalTypeId) {
+            OperationalBudget::find(decrypt($this->key))->operationalTypes()->where('id', $operationalTypeId)->delete();
         }
-        unset($this->incomeTypes[$index]);
+        unset($this->operationalTypes[$index]);
         $this->info('Berhasil menghapus data');
     }
 
-    public function removeIncomeDetail($typeIndex, $detailIndex) {
-        $incomeDetailId = $this->incomeTypes[$typeIndex]['details'][$detailIndex]['id'] ?? null;
-        if ($incomeDetailId) {
-            IncomeDetail::find($incomeDetailId)->delete();
+    public function removeOperationalDetail($typeIndex, $detailIndex) {
+        $operationalDetailId = $this->operationalTypes[$typeIndex]['details'][$detailIndex]['id'] ?? null;
+        if ($operationalDetailId) {
+            OperationalBudgetTypeDetail::find($operationalDetailId)->delete();
         }
-        unset($this->incomeTypes[$typeIndex]['details'][$detailIndex]);
+        unset($this->operationalTypes[$typeIndex]['details'][$detailIndex]);
         $this->info('Berhasil menghapus data');
     }
 
@@ -95,28 +97,28 @@ class Edit extends Component
         try {
             DB::beginTransaction();
 
-            $income = Income::find(decrypt($this->key));
+            $operational = OperationalBudget::find(decrypt($this->key));
 
-            $income->update([
+            $operational->update([
                 'year' => $this->year,
             ]);
 
-            foreach ($this->incomeTypes as $incomeTypeData) {
-                $incomeType = $income->incomeTypes()->updateOrCreate(
-                    ['id' => $incomeTypeData['id'] ?? null],
+            foreach ($this->operationalTypes as $operationalTypeData) {
+                $operationalType = $operational->operationalTypes()->updateOrCreate(
+                    ['id' => $operationalTypeData['id'] ?? null],
                     [
-                        'income_type_name' => $incomeTypeData['income_type_name'],
-                        'value' => $incomeTypeData['value'],
+                        'operational_type_name' => $operationalTypeData['operational_type_name'],
+                        'value' => $operationalTypeData['value'],
                     ]
                 );
 
-                if (isset($incomeTypeData['details'])) {
-                    foreach ($incomeTypeData['details'] as $detailData) {
-                        if ($detailData['income_detail_name'] || $detailData['value']) {
-                            $incomeType->details()->updateOrCreate(
+                if (isset($operationalTypeData['details'])) {
+                    foreach ($operationalTypeData['details'] as $detailData) {
+                        if ($detailData['operational_detail_name'] || $detailData['value']) {
+                            $operationalType->details()->updateOrCreate(
                                 ['id' => $detailData['id'] ?? null],
                                 [
-                                    'income_detail_name' => $detailData['income_detail_name'],
+                                    'operational_detail_name' => $detailData['operational_detail_name'],
                                     'value' => $detailData['value'],
                                 ]
                             );
@@ -124,7 +126,6 @@ class Edit extends Component
                     }
                 }
             }
-            
             DB::commit();
             $this->success('Data berhasil diubah', redirectTo: route('dashboard.budget.operational.index'));
         } catch (\Exception $e) {
@@ -135,29 +136,29 @@ class Edit extends Component
 
     public function mount($key) {
         $this->key = $key;
-        $income = Income::find(decrypt($this->key));
-        if ($income) {
-            $this->year = $income->year;
-            $this->originalYear = $income->year;
-            $this->incomeTypes = $income->incomeTypes()->with('details')->get()->map(function ($incomeType) {
+        $operational = OperationalBudget::find(decrypt($this->key));
+        if ($operational) {
+            $this->year = $operational->year;
+            $this->originalYear = $operational->year;
+            $this->operationalTypes = $operational->operationalTypes()->with('details')->get()->map(function ($operationalType) {
                 return [
-                    'id' => $incomeType->id,
-                    'income_type_name' => $incomeType->income_type_name,
-                    'value' => $incomeType->value,
-                    'details' => $incomeType->details()->get()->map(function ($detail) {
+                    'id' => $operationalType->id,
+                    'operational_type_name' => $operationalType->operational_type_name,
+                    'value' => $operationalType->value,
+                    'details' => $operationalType->details()->get()->map(function ($detail) {
                         return [
                             'id' => $detail->id,
-                            'income_detail_name' => $detail->income_detail_name,
+                            'operational_detail_name' => $detail->operational_detail_name,
                             'value' => $detail->value,
                         ];
                     })->toArray(),
                 ];
-            })->map(function($incomeType) {
-                $incomeType['details'][] = [
-                    'income_detail_name' => null,
+            })->map(function($operationalType) {
+                $operationalType['details'][] = [
+                    'operational_detail_name' => null,
                     'value' => null
                 ];
-                return $incomeType;
+                return $operationalType;
             })->toArray();
         }
     }

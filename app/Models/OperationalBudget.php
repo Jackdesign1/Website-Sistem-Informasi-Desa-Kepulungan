@@ -16,7 +16,7 @@ class OperationalBudget extends Model
 
     public function operationalTypes()
     {
-        return $this->hasMany(OperationalBudget::class);
+        return $this->hasMany(OperationalBudgetType::class);
     }
 
     public function operationalDetails()
