@@ -18,7 +18,6 @@ class Index extends Component
     ];
     public $createModal = false;
     public $editModal = false;
-    public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
     public function setApparatusCreateModal(bool $state) {
         $this->createModal = $state;
@@ -30,7 +29,7 @@ class Index extends Component
 
     public function apparatuses() {
         return Apparatus::query()
-            ->orderBy(...array_values($this->sortBy))
+            ->latest()
             ->paginate(15);
     }
 

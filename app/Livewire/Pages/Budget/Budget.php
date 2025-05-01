@@ -8,61 +8,63 @@ use Livewire\Component;
 
 class Budget extends Component
 {
-    public $withChart;
-    public $selectedYear;
-    public $years;
-
+    public bool $withChart;
+    public $onlyPreview;
+    
+    public $year;
     public $budgetChart;
 
-    public function mount($withChart = false)
+    public $villageBudget;
+    public $operationalBudget;
+
+    public function getVillageBudgetProperty()
     {
-        $this->withChart = $withChart;
-        
-        $villageBudgetYears = VillageBudget::select('year')->distinct()->pluck('year');
-        $operationalBudgetYears = OperationalBudget::select('year')->distinct()->pluck('year');
-        
-        $years = $villageBudgetYears->merge($operationalBudgetYears)->unique()->sortDesc()->values();
-        $years = $years->map(function ($year) {
-            return [
-                'year' => $year,
-                'label' => $year,
-            ];
-        });
+        $villageBudget = VillageBudget::where("year", $this->year)->first();
+        if ($villageBudget) {
+            return $villageBudget->details->sum("value");
+        }
+        return 0;
+    }
+    public function getOperationalBudgetProperty()
+    {
+        $operationalBudget = OperationalBudget::where("year", $this->year)->first();
+        if ($operationalBudget) {
+            return $operationalBudget->operationalDetails->sum("value");
+        }
+        return 0;
+    }
 
-        $this->years = $years->toArray();
+    public function getBudgetChartProperty()
+    {
+        $villageBudget = $this->villageBudget;
+        $operationalBudget = $this->operationalBudget;
 
-        $currentYear = now()->year;
-        $this->selectedYear = $years->firstWhere('year', $currentYear) ?? $years->first() ?? null;
-
-        $this->budgetChart = [
-            'type' => 'pie',
-            'data' => [
-                'labels' => ['Mary', 'Joe', 'Ana'],
-                'datasets' => [
+        return [
+            "type" => "pie",
+            "data" => [
+                "labels" => ["Pembelanjaan", "Pelaksanaan", "Pendapatan"],
+                "datasets" => [
                     [
-                        'label' => '# of Votes',
-                        'data' => [12, 19, 3],
-                        // 'backgroundColor' => array_map(function () {
-                        //     $r = rand(160, 240);
-                        //     $g = rand(160, 240);
-                        //     $b = rand(160, 240);
-                        //     $a = 1;
-
-                        //     return "rgba($r, $g, $b, $a)";
-                        // }, range(1, 3)),
+                        "label" => "Total",
+                        "data" => [0, $operationalBudget, $villageBudget],
+                        "backgroundColor" => [
+                            "#FF6384",  // Red
+                            "#36A2EB",  // Blue
+                            "#4BC0C0",  // Green
+                        ],
                     ]
                 ]
             ],
-            'options' => [
-                'plugins' => [
-                    'title' => [
-                        'display' => true,
+            "options" => [
+                "plugins" => [
+                    "title" => [
+                        "display" => true,
                     ],
-                    'legend' => [
-                        'position' => 'right',
-                        'labels' => [
-                            'font' => [
-                                'size' => 24,
+                    "legend" => [
+                        "position" => "right",
+                        "labels" => [
+                            "font" => [
+                                "size" => 18,
                             ],
                         ],
                     ]
@@ -71,8 +73,44 @@ class Budget extends Component
         ];
     }
 
+    public function updatedYear()
+    {
+        $this->budgetChart = $this->getBudgetChartProperty();
+    }
+
+    public function mount($withChart = false, $year)
+    {
+        $this->withChart = $withChart !== "false"? true : false;
+        $this->year = $year;
+
+        $this->villageBudget = $this->getVillageBudgetProperty();
+        $this->operationalBudget = $this->getOperationalBudgetProperty();
+        
+        $this->budgetChart = $this->getBudgetChartProperty();
+    }
+
     public function render()
     {
-        return view('livewire.pages.budget.budget');
+        return view("livewire.pages.budget.budget", [
+            // 'villageBudget' => $this->getVillageBudgetProperty(),
+            // 'operationalBudget' => $this->getOperationalBudgetProperty(),
+        ]);
+    }
+
+    public function placeholder() {
+        return '<div class="w-full border shadow-lg stats rounded-xl">
+            <div class="stat">
+                <div class="stat-title">APBDes ---- Pembelanjaan</div>
+                <div class="h-8 stat-value skeleton text-dark"></div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">APBDes ---- Pelaksanaan</div>
+                <div class="h-8 stat-value skeleton text-dark"></div>
+            </div>
+            <div class="stat">
+                <div class="stat-title">APBDes ---- Pendapatan</div>
+                <div class="h-8 stat-value skeleton text-dark"></div>
+            </div>
+        </div>';
     }
 }

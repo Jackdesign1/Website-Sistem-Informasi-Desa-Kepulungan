@@ -20,7 +20,7 @@ class ApparatusFactory extends Factory
             'name' => fake()->name(),
             'position' => fake()->jobTitle(),
             'nipd' => fake()->randomNumber(9).fake()->randomNumber(9),
-            'image' => fake()->imageUrl(),
+            'image' => 'assets/icons/blank-user-profile.png',
         ];
     }
 }

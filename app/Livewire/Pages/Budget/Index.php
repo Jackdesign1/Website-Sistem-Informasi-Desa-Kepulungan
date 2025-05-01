@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Budget;
 
+use App\Models\OperationalBudget;
 use App\Models\VillageBudget;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -10,31 +11,26 @@ use Livewire\Component;
 class Index extends Component
 {   
     public array $myChart;
-
     public $belanjaChart;
+
+    public $years = [];
+    public $selectedYear = null;
 
     public function mount()
     {
-        $this->belanjaChart = [
-            'type' => 'doughnut',
-            'data' => [
-                'labels' => ['Belanja 1', 'Belanja 2', 'Belanja 3'],
-                'datasets' => [
-                    [
-                        'label' => '# of Votes',
-                        'data' => [11000000, 100000000, 123009000],
-                        'backgroundColor' => array_map(function () {
-                            $r = rand(160, 240);
-                            $g = rand(160, 240);
-                            $b = rand(160, 240);
-                            $a = 1;
-
-                            return "rgba($r, $g, $b, $a)";
-                        }, range(1, 3)),
-                    ]
-                ]
-            ],
-        ];
+        $villageBudgetYears = VillageBudget::select("year")->distinct()->pluck("year");
+        $operationalBudgetYears = OperationalBudget::select("year")->distinct()->pluck("year");
+        
+        $years = $villageBudgetYears->merge($operationalBudgetYears)->unique()->sortDesc()->values();
+        $years = $years->map(function ($year) {
+            return [
+                "year" => $year,
+                "label" => $year,
+            ];
+        });
+        $this->years = $years->toArray();
+        $currentYear = now()->year;
+        $this->selectedYear = $years->firstWhere("year", $currentYear)["year"] ?? $years->first()["year"] ?? null;
     }
 
     public function randomBackgroundColors() {
@@ -62,28 +58,11 @@ class Index extends Component
         });
     }
 
-    public function getIncomes() {
-        return VillageBudget::where('year', date('Y'))
-        ->with(['details' => function ($query) {
-            $query->select('id', 'village_budget_id', 'type', 'value');
-        }])
-        ->get()
-        ->map(function ($budget) {
-            $budget->details = $budget->details->map(function ($detail) {
-                $detail->backgroundColor = $this->randomBackgroundColors();
-                return $detail;
-            });
-            return $budget;
-        });
-    }
-
-    // public function get
-
     public function render()
     {
         return view('livewire.pages.budget.index', [
-            'villageBudgets' => $this->getVillageBudgets(),
-            'incomes' => $this->getIncomes(),
+            // 'villageBudgets' => $this->getVillageBudgets(),
+            // 'incomes' => $this->getIncomes(),
         ]);
     }
 }

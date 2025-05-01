@@ -84,13 +84,13 @@
         <img src="{{ asset('assets/images/struktur-desa.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-3xl mx-auto">
     </x-container>
 
-    <x-container>
+    {{-- <x-container>
         <x-header class="mb-8">
             Kalender Desa
         </x-header>
 
         @livewire('pages.village-profile.calendar')
-    </x-container>
+    </x-container> --}}
 
     <x-container>
         <x-header class="mb-8">

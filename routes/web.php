@@ -56,7 +56,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
         });
         Route::prefix('operasional')->name('operational.')->group(function() {
             Route::get('/', OperationalIndex::class)
-            ->name('index');
+                ->name('index');
             Route::get('/create', OperationalCreate::class)
                 ->name('create');
             Route::get('/edit/{key}', OperationalEdit::class)
@@ -99,6 +99,7 @@ Route::get('/profil-desa', VillageProfileIndex::class)->name('village-profile');
 Route::get('/anggaran', BudgetIndex::class)->name('budget');
 Route::prefix('informasi')->name('information.')->group(function() {
     Route::get('/', InformationIndex::class)->name('index');
+    // type: news/report
     Route::get('/{type}/{slug}', NewsContent::class)->name('news-content');
 });
 Route::get('/galeri', GaleryIndex::class)->name('galery');

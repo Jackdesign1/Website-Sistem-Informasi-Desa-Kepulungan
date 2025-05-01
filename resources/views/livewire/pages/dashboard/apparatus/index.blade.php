@@ -17,19 +17,19 @@
             @php
                 $headers = [
                     ['key' => "id", 'label' => "#"],
-                    ['key' => "image", 'label' => "Image", 'shortable' => false],
+                    ['key' => "image", 'label' => "Image"],
                     ['key' => "name", 'label' => "Name"],
                     ['key' => "position", 'label' => "Jabatan"],
                     ['key' => "nipd", 'label' => "NIPD"],
                 ]
             @endphp
 
-            <x-mary-table :headers="$headers" :rows="$apparatuses" with-pagination :sort-by="$sortBy">
+            <x-mary-table :headers="$headers" :rows="$apparatuses" with-pagination>
                 @scope('cell_id', $apparatus, $apparatuses)
                     <x-number-indicator :data="$apparatuses" :loop="$loop->iteration"></x-number-indicator>
                 @endscope
                 @scope('cell_image', $apparatus)
-                    <img src="{{ asset($apparatus->image) }}" :alt="$apparatus->image" class="min-w-20 w-20 aspect-square rounded-lg object-cover">
+                    <img src="{{ asset($apparatus->image) }}" :alt="$apparatus->image" class="object-cover w-20 rounded-lg min-w-20 aspect-square">
                 @endscope
                 @scope('actions', $apparatus)
                     <div class="flex gap-3">
