@@ -14,45 +14,7 @@
     </x-container>
 
     <x-container>
-        <div class="flex items-center gap-8">
-            <div class="flex-[.75] text-center">
-                <x-header class="mb-5 text-center">Anggaran Desa</x-header>
-                <div class="flex justify-center">
-                    <x-mary-chart wire:model="myChart" class="w-full max-w-xl"/>
-                </div>
-            </div>
-            <div class="flex-1">
-                <div class="w-5/6 mx-auto">
-                    <x-mary-datetime class="w-40 mb-5"/>
-                    <div class="w-full border shadow-lg stats rounded-xl stats-vertical">
-                        <div class="stat">
-                            <div class="stat-figure text-dark">
-                                <x-tabler-chart-arrows class="w-7 h-7"/>
-                            </div>
-                            <div class="stat-title">APBDes 2025 Pembelanjaan</div>
-                            <div class="stat-value text-dark">Rp1.000.500,300</div>
-                            <div class="stat-desc">21% more than previous</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-figure text-dark">
-                                <x-tabler-file-text class="w-7 h-7"/>
-                            </div>
-                            <div class="stat-title">APBDes 2025 Pelaksanaan</div>
-                            <div class="stat-value text-dark">Rp1.000.500,300</div>
-                            <div class="stat-desc">21% more than previous</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-figure text-dark">
-                                <x-iconpark-incomeone-o class="w-7 h-7"/>
-                            </div>
-                            <div class="stat-title">APBDes 2025 Pendapatan</div>
-                            <div class="stat-value text-dark">Rp1.000.500,300</div>
-                            <div class="stat-desc">21% more than previous</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <livewire:pages.budget.budget withChart="true"/>
     </x-container>
 
     <x-container>

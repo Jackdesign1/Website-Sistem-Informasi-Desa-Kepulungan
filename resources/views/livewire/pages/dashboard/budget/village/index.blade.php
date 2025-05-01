@@ -13,14 +13,17 @@
       <div class="flex flex-col gap-5">
          @foreach ($villageBudgets as $index => $budget)
             @if ($index % 2 == 0)
-               <x-mary-card title="Anggaran Desa Tahun: {{ $budget->year }}" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
+               <x-mary-card title="Anggaran Desa ({{ $budget->year }})" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
                   <div class="absolute flex flex-col gap-1.5 top-1.5 right-3">
                      <x-mary-button icon="tabler.edit" :link="route('dashboard.budget.village.edit', ['key' => Crypt::encrypt($budget->id)])" class="btn-sm btn-circle"></x-mary-button>
                      <x-mary-button icon="tabler.trash" @click="confirm('Anda yakin ingin menghapus data anggaran tahun {{ $budget->year }}?')? $wire.delete('{{ Crypt::encrypt($budget->id) }}') : ''" class="btn-sm btn-circle"></x-mary-button>
                   </div>
                   <x-mary-collapse :name="'group'.$index" separator>
                      <x-slot:heading>
-                        <span>Detail Anggaran</span>
+                        <div class="flex items-center justify-between gap-2">
+                           <span>Anggaran</span>
+                           <span>Total: Rp {{ number_format($budget->details->sum('value'), 2) }}</span>
+                        </div>
                      </x-slot:heading>
                      <x-slot:content>
                         <ol class="px-5 text-start">
@@ -37,25 +40,28 @@
             @endif
          @endforeach
       </div>
-      
+
       <div class="flex flex-col gap-5">
          @foreach ($villageBudgets as $index => $budget)
             @if ($index % 2 == 1)
-               <x-mary-card title="Anggaran Desa Tahun: {{ $budget->year }}" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
+               <x-mary-card title="Anggaran Desa ({{ $budget->year }})" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
                   <div class="absolute flex flex-col gap-1.5 top-1.5 right-3">
                      <x-mary-button icon="tabler.edit" :link="route('dashboard.budget.village.edit', ['key' => Crypt::encrypt($budget->id)])" class="btn-sm btn-circle"></x-mary-button>
                      <x-mary-button icon="tabler.trash" @click="confirm('Anda yakin ingin menghapus data anggaran tahun {{ $budget->year }}?')? $wire.delete('{{ Crypt::encrypt($budget->id) }}') : ''" class="btn-sm btn-circle"></x-mary-button>
                   </div>
                   <x-mary-collapse :name="'group'.$index" separator>
                      <x-slot:heading>
-                        <span>Detail Anggaran</span>
+                        <div class="flex items-center justify-between gap-2">
+                           <span>Anggaran</span>
+                           <span>Total: Rp {{ number_format($budget->details->sum('value'), 2) }}</span>
+                        </div>
                      </x-slot:heading>
                      <x-slot:content>
                         <ol class="px-5 text-start">
                            @foreach ($budget->details as $detail)
                               <li class="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                                  <span>{{ $detail->type }}</span>
-                                 <span>Rp{{ number_format($detail->value) }}</span>
+                                 <span>Rp{{ number_format($detail->value, 2) }}</span>
                               </li>
                            @endforeach
                         </ol>
@@ -65,8 +71,6 @@
             @endif
          @endforeach
       </div>
-
-
 
    </div>
 </x-dashboard-container>

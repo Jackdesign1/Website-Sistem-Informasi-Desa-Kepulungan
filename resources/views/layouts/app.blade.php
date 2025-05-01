@@ -65,8 +65,8 @@
                     <x-mary-menu-item title="Aparatur" icon="tabler.users" :link="route('dashboard.apparatus')" />
                     {{-- <x-mary-menu-item  :link="route('dashboard.budget')" /> --}}
                     <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
-                        <x-mary-menu-item title="Anggaran Desa" :link="route('dashboard.budget.village.index')" />
-                        <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority.index')" />
+                        <x-mary-menu-item title="Pendapatan Desa" :link="route('dashboard.budget.village.index')" />
+                        {{-- <x-mary-menu-item title="Prioritas Anggaran" :link="route('dashboard.budget.priority.index')" /> --}}
                         <x-mary-menu-item title="Operasional" :link="route('dashboard.budget.operational.index')" />
                     </x-mary-menu-sub>
                     <x-mary-menu-sub title="Informasi" icon="hugeicons.apple-news">

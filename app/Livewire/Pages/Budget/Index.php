@@ -15,42 +15,6 @@ class Index extends Component
 
     public function mount()
     {
-        $this->myChart = [
-            'type' => 'pie',
-            'data' => [
-                'labels' => ['Mary', 'Joe', 'Ana'],
-                'datasets' => [
-                    [
-                        'label' => '# of Votes',
-                        'data' => [12, 19, 3],
-                        'backgroundColor' => array_map(function () {
-                            $r = rand(160, 240);
-                            $g = rand(160, 240);
-                            $b = rand(160, 240);
-                            $a = 1;
-
-                            return "rgba($r, $g, $b, $a)";
-                        }, range(1, 3)),
-                    ]
-                ]
-            ],
-            'options' => [
-                'plugins' => [
-                    'title' => [
-                        'display' => true,
-                    ],
-                    'legend' => [
-                        'position' => 'right',
-                        'labels' => [
-                            'font' => [
-                                'size' => 24,
-                            ],
-                        ],
-                    ]
-                ]
-            ]
-        ];
-
         $this->belanjaChart = [
             'type' => 'doughnut',
             'data' => [

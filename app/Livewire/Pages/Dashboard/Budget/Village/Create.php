@@ -22,15 +22,23 @@ class Create extends Component
     ])]
     public $detailBudgets = [
         [
-            'type' => 'APBDes Pembelanjaan',
+            'type' => 'PAB',
             'value' => null,
         ], 
         [
-            'type' => 'APBDes Pelaksanan',
+            'type' => 'DD',
             'value' => null,
         ], 
         [
-            'type' => 'APBDes Pembelian',
+            'type' => 'BHPD',
+            'value' => null,
+        ], 
+        [
+            'type' => 'ADD',
+            'value' => null,
+        ], 
+        [
+            'type' => 'BKK',
             'value' => null,
         ], 
     ];
