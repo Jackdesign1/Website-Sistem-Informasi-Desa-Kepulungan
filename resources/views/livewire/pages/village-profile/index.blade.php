@@ -43,7 +43,7 @@
         </x-container>
     </div>
 
-    <x-container>
+    {{-- <x-container>
         <x-header class="mb-8">
             Program Desa
         </x-header>
@@ -74,7 +74,7 @@
                 <a href="http://{{ $row['dokumen'] }}" class="link link-hover link-primary">Unduh</a>
             @endscope
         </x-mary-table>
-    </x-container>
+    </x-container> --}}
 
     <x-container>
         <x-header class="mb-8">

@@ -103,11 +103,11 @@
                         <livewire:pages.information.report.index lazy/>
                     </div>
                 </x-mary-tab>
-                <x-mary-tab name="jobs" label="Lowongan Kerja">
+                {{-- <x-mary-tab name="jobs" label="Lowongan Kerja">
                     <div>
                         <livewire:pages.information.job-vacancy.index lazy/>
                     </div>
-                </x-mary-tab>
+                </x-mary-tab> --}}
             </x-mary-tabs>
         </div>
         <div class="flex-[.5]">

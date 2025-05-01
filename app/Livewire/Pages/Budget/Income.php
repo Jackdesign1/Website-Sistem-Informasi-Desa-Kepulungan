@@ -33,46 +33,45 @@ class Income extends Component
         $this->withChart = $withChart;
         $this->year = $year;
 
-        $this->villageBudget = VillageBudget::firstWhere('year', $this->year)->load('details');
-        $this->villageBudget->total = $this->villageBudget->details->sum('value');
-        
-        $chartData = [];
+        $this->villageBudget = VillageBudget::firstWhere('year', $this->year);
+        if ($this->villageBudget) {
+            $this->villageBudget->load('details');
+            $this->villageBudget->total = $this->villageBudget->details->sum('value');
 
-        $labels = $this->villageBudget->details->pluck('type')->toArray();
+            $labels = $this->villageBudget->details->pluck('type')->toArray();
 
-        $chartData = [
-            [
-            'label' => 'Pendapatan Desa',
-            'data' => $this->villageBudget->details->map(function ($detail) {
-                return $detail->value;
-            })->toArray(),
-                'backgroundColor' => collect($labels)->map(function () {
-            return $this->generateColor();
-            })->toArray(),
-            ],
-        ];
-
-        $this->villageBudgetChart = [
-            'type' => 'doughnut',
-            'data' => [
-            'labels' => $labels,
-            'datasets' => $chartData,
-            ],
-            'options' => [
-            'plugins' => [
-                'title' => [
-                'display' => true,
-                'text' => "Pendapatan Desa Tahun {$this->year}",
+            $chartData = [
+                [
+                'label' => 'Pendapatan Desa',
+                'data' => $this->villageBudget->details->map(function ($detail) {
+                    return $detail->value;
+                })->toArray(),
+                    'backgroundColor' => collect($labels)->map(function () {
+                return $this->generateColor();
+                })->toArray(),
                 ],
-                'legend' => [
-                'display' => true,
-                'position' => 'top',
-                ],
-            ],
-            ],
-        ];
+            ];
 
-        // dd($this->villageBudgetChart);
+            $this->villageBudgetChart = [
+                'type' => 'doughnut',
+                'data' => [
+                'labels' => $labels,
+                'datasets' => $chartData,
+                ],
+                'options' => [
+                'plugins' => [
+                    'title' => [
+                    'display' => true,
+                    'text' => "Pendapatan Desa Tahun {$this->year}",
+                    ],
+                    'legend' => [
+                    'display' => true,
+                    'position' => 'top',
+                    ],
+                ],
+                ],
+            ];
+        }
     }
 
     public function render()

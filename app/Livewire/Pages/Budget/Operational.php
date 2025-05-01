@@ -33,44 +33,47 @@ class Operational extends Component
         $this->withChart = $withChart;
         $this->year = $year;
 
-        $this->operationalBudget = OperationalBudget::firstWhere('year', $this->year)->load('operationalTypes', 'operationalTypes.details');
-        $this->operationalBudget->total = $this->operationalBudget->operationalDetails->sum('value');
-        
-        $chartData = [];
-
-        $labels = $this->operationalBudget->operationalTypes->pluck('operational_type_name')->toArray();
-
-        $chartData = [
-            [
-            'label' => 'Anggaran Pelaksanaan',
-            'data' => $this->operationalBudget->operationalTypes->map(function ($type) {
-                return $type->details->sum('value');
-            })->toArray(),
-                'backgroundColor' => collect($labels)->map(function () {
-            return $this->generateColor();
-            })->toArray(),
-            ],
-        ];
-
-        $this->operationalChart = [
-            'type' => 'doughnut',
-            'data' => [
-            'labels' => $labels,
-            'datasets' => $chartData,
-            ],
-            'options' => [
-            'plugins' => [
-                'title' => [
-                'display' => true,
-                'text' => "Anggaran Pelaksanaan Tahun {$this->year}",
+        $this->operationalBudget = OperationalBudget::firstWhere('year', $this->year);
+        if ($this->operationalBudget) {
+            $this->operationalBudget->load('operationalDetails', 'operationalTypes');
+            $this->operationalBudget->total = $this->operationalBudget->operationalDetails->sum('value');
+            
+            $chartData = [];
+    
+            $labels = $this->operationalBudget->operationalTypes->pluck('operational_type_name')->toArray();
+    
+            $chartData = [
+                [
+                'label' => 'Anggaran Pelaksanaan',
+                'data' => $this->operationalBudget->operationalTypes->map(function ($type) {
+                    return $type->details->sum('value');
+                })->toArray(),
+                    'backgroundColor' => collect($labels)->map(function () {
+                return $this->generateColor();
+                })->toArray(),
                 ],
-                'legend' => [
-                'display' => true,
-                'position' => 'top',
+            ];
+    
+            $this->operationalChart = [
+                'type' => 'doughnut',
+                'data' => [
+                'labels' => $labels,
+                'datasets' => $chartData,
                 ],
-            ],
-            ],
-        ];
+                'options' => [
+                'plugins' => [
+                    'title' => [
+                    'display' => true,
+                    'text' => "Anggaran Pelaksanaan Tahun {$this->year}",
+                    ],
+                    'legend' => [
+                    'display' => true,
+                    'position' => 'top',
+                    ],
+                ],
+                ],
+            ];
+        }
     }
 
     public function render()
