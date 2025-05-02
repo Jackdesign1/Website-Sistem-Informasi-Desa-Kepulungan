@@ -1,19 +1,5 @@
 <div class="pb-20 space-y-40">
-    <x-carousel class="h-96 md:h-[500px] lg:h-[600px]">
-        @for ($i = 1; $i <= 4; $i++)
-            <div id="slide{{ $i }}" class="relative w-full carousel-item">
-                <img
-                    src="/assets/images/hero-image.png"
-                    class="object-cover w-full" />
-                <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
-                    <x-carousel-nav name="slide" :index="$i"></x-carousel-nav>
-                    <div class="absolute text-white md:text-4xl bottom-24 max-w-96 left-20">
-                        Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan {{ $i }}
-                    </div>
-                </x-container>
-            </div>
-        @endfor
-    </x-carousel>
+    <livewire:pages.homepage.hero-carousel />
 
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
