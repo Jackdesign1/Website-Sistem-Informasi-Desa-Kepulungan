@@ -3,17 +3,16 @@
         Badan Usaha Milik Desa Kepulungan
     </x-header>
     <div class="grid grid-cols-3 gap-5">
-        @foreach (collect()->range(3, 6) as $bumdes)
             <div class="overflow-hidden transition duration-300 transform border rounded-lg shadow-lg bg-gray-50">
                 <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="BUMDes Maju Jaya" class="object-cover w-full h-48">
                 <div class="p-6">
-                    <h3 class="mb-2 text-xl font-semibold text-black">BUMDes Maju Jaya</h3>
-                    <p class="mb-4 text-gray-600">Mengolah hasil pertanian desa menjadi produk olahan seperti keripik singkong dan sari buah segar.</p>
+                    <h3 class="mb-2 text-xl font-semibold text-black">BUMDes Wisata Air Panas</h3>
+                    <p class="mb-4 text-gray-600">Wisata transit pemandian air panas kepulungan yang dikelola oleh karang taruna desa kepulungan, satu - satunya pemandian air panas yang ada di wilayah pasuruan</p>
                     <div class="space-y-2">
-                        <p><span class="font-medium text-gray-700">Jenis Usaha:</span> Agribisnis</p>
-                        <p><span class="font-medium text-gray-700">Tahun Berdiri:</span> 2018</p>
+                        <p><span class="font-medium text-gray-700">Jenis Usaha:</span> Wisata</p>
+                        <p><span class="font-medium text-gray-700">Tahun Berdiri:</span> 2022</p>
                         <p><span class="font-medium text-gray-700">Kontak:</span> 0812-3456-7890</p>
-                        <p><span class="font-medium text-gray-700">Produk Unggulan:</span> Keripik Singkong Rasa Balado</p>
+                        <p><span class="font-medium text-gray-700">Produk Unggulan:</span> Wisata Air Panas</p>
                     </div>
                     <!-- Social Media Links -->
                     <div class="flex mt-4 space-x-3">
@@ -38,6 +37,6 @@
                     {{-- <x-mary-button label="Lihat Detail" /> --}}
                 </div>
             </div>
-        @endforeach
+
     </div>
 </x-contai>

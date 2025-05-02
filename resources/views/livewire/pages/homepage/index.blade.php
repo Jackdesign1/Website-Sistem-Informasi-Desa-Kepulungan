@@ -1,3 +1,5 @@
+
+
 <div class="pb-20 space-y-40">
     <x-carousel class="h-96 md:h-[500px] lg:h-[600px]">
         @for ($i = 1; $i <= 4; $i++)
@@ -17,23 +19,25 @@
 
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
-            <img src="{{ asset('assets/images/kepala-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
+            <img src="{{ asset('assets/images/Pak_Didik.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
         </div>
         <div class="flex-1">
             <x-header>Sambutan Kepala Desa</x-header>
-            <h4 class="text-2xl font-semibold">Muhammad Zaky S.H.,M.H</h4>
-            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span> <br> incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </p>
+            <h4 class="text-2xl font-semibold">Didik Hartono S.H.,M.H</h4>
+            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span>
+                <br> selamat datang di website resmi Pemerintah Desa Kepulungan. Dengan rasa syukur kepada Allah SWT, kami hadirkan platform ini sebagai wujud komitmen untuk transparansi dan kemudahan akses informasi. Di tengah pesatnya teknologi, website ini menjadi sarana menyampaikan perkembangan, kegiatan, dan capaian pembangunan desa secara faktual dan real-time, mengundang seluruh masyarakat desa kepulungan untuk memanfaatkannya demi kemajuan bersama. Penghargaan setinggi-tingginya serta terima kasih kami sampaikan kepada Tim Dosen dan Mahasiswa Program Studi Teknik Informatika PSDKU Sidoarjo Politeknik Negeri Jember yang telah membantu mewujudkan Website Pemerintah desa Kepulungan.
+            </p>
         </div>
     </x-container>
 
     <x-container class="flex items-center gap-16">
         <div class="flex-1 space-y-4">
             <x-header>Profil Desa Kapulungan</x-header>
-            <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi</p>
+            <p>Desa Kepulungan berlokasi di Kecamatan Gempol, Kabupaten Pasuruan, Provinsi Jawa Timur, dulunya dikenal sebagai pintu gerbang menuju Gunung Pawitra, sebuah wilayah yang pernah menjadi bagian dari Kerajaan Negeri Aryapada pada masa Hindu-Buddha sekitar abad ke-10 hingga 13. Banyak prasasti yang ditemukan di Desa Kepulungan menjadi bukti bahwa desa ini memiliki peran penting sebagai pusat kegiatan keagamaan dan administratif pada masa itu, dengan peninggalan berupa situs-situs kuno dan benda-benda arkeologi yang menggambarkan kehidupan masyarakat yang kental dengan budaya Hindu. Seiring berjalannya waktu, Desa Kepulungan berkembang menjadi pemukiman agraris yang memanfaatkan kesuburan tanah di sekitar Gunung Pawitra, sambil tetap melestarikan jejak sejarahnya sebagai bagian dari warisan budaya Pasuruan.</p>
             <x-mary-button class="btn btn-success" link="profil-desa"  label="Lebih Detail"/>
         </div>
         <div class="flex-[.8]">
-            <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
+            <img src="{{ asset('assets/images/Foto_Desa.jpg') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
         </div>
     </x-container>
 
@@ -60,6 +64,10 @@
             <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
+
+
+
+
             <x-mary-card title="Laporan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=report#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
@@ -82,7 +90,7 @@
                 <x-mary-tab name="news-tab" label="Berita" icon="forkawesome.newspaper-o">
                     <livewire:pages.homepage.news lazy />
                 </x-mary-tab>
-                
+
                 <x-mary-tab name="reports-tab" label="Laporan" icon="tabler.report-analytics">
                     <livewire:pages.homepage.reports lazy />
                 </x-mary-tab>
@@ -121,7 +129,7 @@
             ];
         @endphp
 
-        
+
         <div class="flex items-center gap-8">
             <div>
                 <x-header class="mb-8">Kalender Desa</x-header>
@@ -199,18 +207,95 @@
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
                 <div class="flex-1 overflow-hidden shadow-lg rounded-xl">
-                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                    <img src="{{ asset('assets/images/Galeri_1.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
             <div class="flex flex-col min-h-0 gap-3">
                 <div class="rounded-xl overflow-hidden shadow-lg flex-[1.8]">
-                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                    <img src="{{ asset('assets/images/Galeri_2.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
                 <div class="flex-1 overflow-hidden shadow-lg rounded-xl">
-                    <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
+                    <img src="{{ asset('assets/images/Galeri_3.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
         </div>
+    </x-container>
+
+
+    <x-container>
+
+                <div class="container mx-auto px-6">
+                    <div class="flex flex-col md:flex-row items-center justify-between">
+                        <!-- Logo and Title -->
+                        <div class="flex items-center mb-4 md:mb-0">
+                            <div class="">
+                                <img src="{{ asset('assets/images/logo-desa-kapulungan.png
+') }}">
+                            </div>
+                            <div>
+                                <h1 class="text-lg font-bold text-gray-800">Pemerintah Desa Kepulungan</h1>
+                                <p class="text-xs text-gray-600">Kabupaten Pasuruan</p>
+                            </div>
+                        </div>
+                        <!-- Contact Info -->
+                        <div class="text-right">
+                            <p class="text-xs text-gray-600">Kantor Desa Kepulungan</p>
+                            <p class="text-xs text-gray-600">Kepulungan - Gempol jl. surabaya malang, </p>
+                            <p class="text-xs text-gray-600">Kabupaten Pasuruan, Jawa Timur 67155, Indonesia.</p>
+                            <div class="flex justify-end space-x-2 mt-1">
+                                <a href="#" class="text-[#003087]"><i class="fab fa-facebook-f text-xs"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="fab fa-youtube text-xs"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="fab fa-instagram text-xs"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="fab fa-linkedin-in text-xs"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Menu -->
+                    <nav class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6 text-xs">
+                        <!-- Tentang -->
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <ul class="space-y-0.5">
+                                <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
+
+                            </ul>
+                        </div>
+                        <!-- Fasilitas -->
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <ul class="space-y-0.5">
+                                <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
+                                </ul>
+                        </div>
+                        <!-- Layanan -->
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <ul class="space-y-0.5">
+                                <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
+
+                            </ul>
+                        </div>
+                        <!-- Informasi Umum -->
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <ul class="space-y-0.5">
+                                <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <footer class="bg-white py-2 mt-4 border-t border-gray-200">
+                <div class="container mx-auto px-6 text-center">
+                    <p class="text-gray-600 text-xs">Program Studi Teknik Informatika PSDKU Sidoarjo</p>
+                    <p class="text-gray-600 text-xs">Politeknik Negeri Jember © Copyright 2025</p>
+                </div>
+            </footer>
+
 
     </x-container>
+
 </div>
