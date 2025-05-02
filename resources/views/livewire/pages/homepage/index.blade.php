@@ -50,10 +50,6 @@
             <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
-
-
-
-
             <x-mary-card title="Laporan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=report#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
@@ -157,16 +153,16 @@
         <x-container class="py-20">
             <x-header class="mb-8 text-center text-white">Badan Usaha Milik Desa</x-header>
             <x-carousel class="h-96 md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-lg">
-                @for ($i = 1; $i <= 4; $i++)
-                    <div id="bumdes{{ $i }}" class="relative w-full carousel-item">
+                {{-- @for ($i = 1; $i <= 4; $i++) --}}
+                    <div id="bumdes" class="relative w-full carousel-item">
                         <img
                             src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}"
                             class="object-cover w-full" />
                         <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
-                            <x-carousel-nav :index="$i" name="bumdes"></x-carousel-nav>
+                            <x-carousel-nav index="1" name="bumdes"></x-carousel-nav>
                             <div class="absolute space-y-3 text-white bottom-20 left-24 lg:w-1/2">
                                 <x-header>
-                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan {{ $i }}
+                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan 
                                 </x-header>
                                 <div class="text-xl">
                                     Wisata Pemandian Air Panas Langsung <br>
@@ -176,7 +172,7 @@
                             </div>
                         </x-container>
                     </div>
-                @endfor
+                {{-- @endfor --}}
             </x-carousel>
         </x-container>
     </div>
@@ -210,8 +206,8 @@
 
     <x-container>
 
-                <div class="container mx-auto px-6">
-                    <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="container px-6 mx-auto">
+                    <div class="flex flex-col items-center justify-between md:flex-row">
                         <!-- Logo and Title -->
                         <div class="flex items-center mb-4 md:mb-0">
                             <div class="">
@@ -228,20 +224,20 @@
                             <p class="text-xs text-gray-600">Kantor Desa Kepulungan</p>
                             <p class="text-xs text-gray-600">Kepulungan - Gempol jl. surabaya malang, </p>
                             <p class="text-xs text-gray-600">Kabupaten Pasuruan, Jawa Timur 67155, Indonesia.</p>
-                            <div class="flex justify-end space-x-2 mt-1">
-                                <a href="#" class="text-[#003087]"><i class="fab fa-facebook-f text-xs"></i></a>
-                                <a href="#" class="text-[#003087]"><i class="fab fa-youtube text-xs"></i></a>
-                                <a href="#" class="text-[#003087]"><i class="fab fa-instagram text-xs"></i></a>
-                                <a href="#" class="text-[#003087]"><i class="fab fa-linkedin-in text-xs"></i></a>
+                            <div class="flex justify-end mt-1 space-x-2">
+                                <a href="#" class="text-[#003087]"><i class="text-xs fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="text-xs fab fa-youtube"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="text-xs fab fa-instagram"></i></a>
+                                <a href="#" class="text-[#003087]"><i class="text-xs fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Navigation Menu -->
-                    <nav class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6 text-xs">
+                    <nav class="grid grid-cols-1 gap-6 mt-6 text-xs md:grid-cols-4">
                         <!-- Tentang -->
                         <div>
-                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <h3 class="mb-1 font-semibold text-gray-800">Lorem</h3>
                             <ul class="space-y-0.5">
                                 <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
 
@@ -249,14 +245,14 @@
                         </div>
                         <!-- Fasilitas -->
                         <div>
-                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <h3 class="mb-1 font-semibold text-gray-800">Lorem</h3>
                             <ul class="space-y-0.5">
                                 <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
                                 </ul>
                         </div>
                         <!-- Layanan -->
                         <div>
-                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <h3 class="mb-1 font-semibold text-gray-800">Lorem</h3>
                             <ul class="space-y-0.5">
                                 <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
 
@@ -264,7 +260,7 @@
                         </div>
                         <!-- Informasi Umum -->
                         <div>
-                            <h3 class="font-semibold text-gray-800 mb-1">Lorem</h3>
+                            <h3 class="mb-1 font-semibold text-gray-800">Lorem</h3>
                             <ul class="space-y-0.5">
                                 <li><a href="#" class="text-gray-600 hover:text-[#003087]">Lorem</a></li>
 
@@ -274,10 +270,10 @@
                 </div>
             </header>
 
-            <footer class="bg-white py-2 mt-4 border-t border-gray-200">
-                <div class="container mx-auto px-6 text-center">
-                    <p class="text-gray-600 text-xs">Program Studi Teknik Informatika PSDKU Sidoarjo</p>
-                    <p class="text-gray-600 text-xs">Politeknik Negeri Jember © Copyright 2025</p>
+            <footer class="py-2 mt-4 bg-white border-t border-gray-200">
+                <div class="container px-6 mx-auto text-center">
+                    <p class="text-xs text-gray-600">Program Studi Teknik Informatika PSDKU Sidoarjo</p>
+                    <p class="text-xs text-gray-600">Politeknik Negeri Jember © Copyright 2025</p>
                 </div>
             </footer>
 

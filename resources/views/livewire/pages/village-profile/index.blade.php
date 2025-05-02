@@ -11,12 +11,12 @@
 
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
-            <img src="{{ asset('assets/images/kepala-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
+            <img src="{{ asset('assets/images/Pak_Didik.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
         </div>
         <div class="flex-1">
             <x-header>Kepala Desa Kepulungan Periode 2020-2025</x-header>
             <h4 class="text-2xl font-semibold">Didik Hartono S.H.,M.H</h4>
-            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span> <br> incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </p>
+            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span> <br> selamat datang di website resmi Pemerintah Desa Kepulungan. Dengan rasa syukur kepada Allah SWT, kami hadirkan platform ini sebagai wujud komitmen untuk transparansi dan kemudahan akses informasi. Di tengah pesatnya teknologi, website ini menjadi sarana menyampaikan perkembangan, kegiatan, dan capaian pembangunan desa secara faktual dan real-time, mengundang seluruh masyarakat desa kepulungan untuk memanfaatkannya demi kemajuan bersama. Penghargaan setinggi-tingginya serta terima kasih kami sampaikan kepada Tim Dosen dan Mahasiswa Program Studi Teknik Informatika PSDKU Sidoarjo Politeknik Negeri Jember yang telah membantu mewujudkan Website Pemerintah desa Kepulungan.</p>
         </div>
     </x-container>
 
@@ -82,7 +82,7 @@
             Struktur Desa Kepulungan
         </x-header>
 
-        <img src="{{ asset('assets/images/struktur-desa.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-3xl mx-auto">
+        {{-- <img src="{{ asset('assets/images/struktur-desa.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-3xl mx-auto"> --}}
     </x-container>
 
     {{-- <x-container>
