@@ -2,20 +2,20 @@
     <x-container class="flex items-center gap-16">
         <div class="flex-1 space-y-4">
             <x-header>Sejarah Desa Kapulungan</x-header>
-            <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi</p>
+            <p>Desa Kepulungan berlokasi di Kecamatan Gempol, Kabupaten Pasuruan, Provinsi Jawa Timur, dulunya dikenal sebagai pintu gerbang menuju Gunung Pawitra, sebuah wilayah yang pernah menjadi bagian dari Kerajaan Negeri Aryapada pada masa Hindu-Buddha sekitar abad ke-10 hingga 13. Banyak prasasti yang ditemukan di Desa Kepulungan menjadi bukti bahwa desa ini memiliki peran penting sebagai pusat kegiatan keagamaan dan administratif pada masa itu, dengan peninggalan berupa situs-situs kuno dan benda-benda arkeologi yang menggambarkan kehidupan masyarakat yang kental dengan budaya Hindu. Seiring berjalannya waktu, Desa Kepulungan berkembang menjadi pemukiman agraris yang memanfaatkan kesuburan tanah di sekitar Gunung Pawitra, sambil tetap melestarikan jejak sejarahnya sebagai bagian dari warisan budaya Pasuruan.</p>
         </div>
         <div class="flex-[.8]">
             <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
         </div>
     </x-container>
-    
+
     <x-container class="flex items-center gap-16">
         <div class="flex-shrink">
             <img src="{{ asset('assets/images/kepala-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
         </div>
         <div class="flex-1">
             <x-header>Kepala Desa Kepulungan Periode 2020-2025</x-header>
-            <h4 class="text-2xl font-semibold">Muhammad Zaky S.H.,M.H</h4>
+            <h4 class="text-2xl font-semibold">Didik Hartono S.H.,M.H</h4>
             <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span> <br> incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </p>
         </div>
     </x-container>
@@ -25,12 +25,13 @@
         <div class="py-10 text-center bg-gray-200 mb-7">
             <x-header>Visi & Misi</x-header>
         </div>
-    
+
         <x-container class="flex items-center justify-center rounded-full text-end">
             <!-- Visi Section -->
             <div class="w-1/3 px-5">
                 <h4 class="text-xl font-semibold">Visi</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                <p>Terwujudnya Desa Kepulungan yang maju, mandiri, damai dan sejahtera,
+                    melalui tata kelola pemerintahan yang baik dan berkualitas</p>
             </div>
 
             <div class="h-40 border-r-4"></div>
@@ -38,7 +39,7 @@
             <!-- Misi Section -->
             <div class="w-1/3 p-5 text-start md:text-start">
                 <h4 class="text-xl font-semibold">Misi</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+                <p>meningkatkan pengolahan dan penggalian potensi sumber daya desa guna mendongkrak pendapatan masyarakat dan desa, sekaligus memperkuat ketahanan pangan serta sektor perekonomian desa melalui pembangunan yang berkelanjutan.</p>
             </div>
         </x-container>
     </div>
