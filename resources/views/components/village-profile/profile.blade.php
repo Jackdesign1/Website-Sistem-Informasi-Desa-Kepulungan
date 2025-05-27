@@ -1,4 +1,4 @@
-<x-container class="flex flex-col items-center gap-16 text-justify md:flex-row md:text-left">
+<div class="flex flex-col items-center gap-16 text-justify md:flex-row md:text-left">
    <div class="flex-1 space-y-4">
       <x-header>Profil Desa Kapulungan</x-header>
 
@@ -10,4 +10,4 @@
    <div class="flex-[.8] hidden md:block">
       <img src="{{ asset('assets/images/Foto_Desa.jpg') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
    </div>
-</x-container>
+</div>

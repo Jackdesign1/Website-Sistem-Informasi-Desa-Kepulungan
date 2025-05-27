@@ -3,8 +3,13 @@
 <div class="pb-20 space-y-40">
     <livewire:pages.homepage.hero-carousel />
 
-    <x-village-profile.speech />
-    <x-village-profile.profile />
+    <x-container>
+        <x-village-profile.speech />
+    </x-container>
+
+    <x-container>
+        <x-village-profile.profile />
+    </x-container>
 
     <x-container>
         <x-header class="mb-7">Aparatur Desa</x-header>

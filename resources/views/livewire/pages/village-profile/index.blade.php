@@ -1,23 +1,10 @@
 <div class="py-20 space-y-40">
-    <x-container class="flex items-center gap-16">
-        <div class="flex-1 space-y-4">
-            <x-header>Sejarah Desa Kapulungan</x-header>
-            <p>Desa Kepulungan berlokasi di Kecamatan Gempol, Kabupaten Pasuruan, Provinsi Jawa Timur, dulunya dikenal sebagai pintu gerbang menuju Gunung Pawitra, sebuah wilayah yang pernah menjadi bagian dari Kerajaan Negeri Aryapada pada masa Hindu-Buddha sekitar abad ke-10 hingga 13. Banyak prasasti yang ditemukan di Desa Kepulungan menjadi bukti bahwa desa ini memiliki peran penting sebagai pusat kegiatan keagamaan dan administratif pada masa itu, dengan peninggalan berupa situs-situs kuno dan benda-benda arkeologi yang menggambarkan kehidupan masyarakat yang kental dengan budaya Hindu. Seiring berjalannya waktu, Desa Kepulungan berkembang menjadi pemukiman agraris yang memanfaatkan kesuburan tanah di sekitar Gunung Pawitra, sambil tetap melestarikan jejak sejarahnya sebagai bagian dari warisan budaya Pasuruan.</p>
-        </div>
-        <div class="flex-[.8]">
-            <img src="{{ asset('assets/images/profil-desa.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
-        </div>
+    <x-container>
+        <x-village-profile.profile />
     </x-container>
 
-    <x-container class="flex items-center gap-16">
-        <div class="flex-shrink">
-            <img src="{{ asset('assets/images/Pak_Didik.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
-        </div>
-        <div class="flex-1">
-            <x-header>Kepala Desa Kepulungan Periode 2020-2025</x-header>
-            <h4 class="text-2xl font-semibold">Didik Hartono S.H.,M.H</h4>
-            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span> <br> selamat datang di website resmi Pemerintah Desa Kepulungan. Dengan rasa syukur kepada Allah SWT, kami hadirkan platform ini sebagai wujud komitmen untuk transparansi dan kemudahan akses informasi. Di tengah pesatnya teknologi, website ini menjadi sarana menyampaikan perkembangan, kegiatan, dan capaian pembangunan desa secara faktual dan real-time, mengundang seluruh masyarakat desa kepulungan untuk memanfaatkannya demi kemajuan bersama. Penghargaan setinggi-tingginya serta terima kasih kami sampaikan kepada Tim Dosen dan Mahasiswa Program Studi Teknik Informatika PSDKU Sidoarjo Politeknik Negeri Jember yang telah membantu mewujudkan Website Pemerintah desa Kepulungan.</p>
-        </div>
+    <x-container>
+        <x-village-profile.speech />
     </x-container>
 
     <div>
@@ -26,18 +13,16 @@
             <x-header>Visi & Misi</x-header>
         </div>
 
-        <x-container class="flex justify-center rounded-full text-end">
+        <x-container class="flex flex-col items-center justify-center text-center rounded-full md:flex-row md:items-start">
             <!-- Visi Section -->
-            <div class="w-1/3 p-5">
+            <div class="flex-1 p-5 max-w-96 md:text-end">
                 <h4 class="text-xl font-semibold">Visi</h4>
                 <p>Terwujudnya Desa Kepulungan yang maju, mandiri, damai dan sejahtera,
                     melalui tata kelola pemerintahan yang baik dan berkualitas</p>
             </div>
 
-            <div class="h-48 border-r-4"></div>
-
             <!-- Misi Section -->
-            <div class="w-1/3 p-5 text-start md:text-start">
+            <div class="flex-1 p-5 border-t-4 border-gray-200 md:border-t-0 md:border-l-4 max-w-96 md:text-start">
                 <h4 class="text-xl font-semibold">Misi</h4>
                 <p>meningkatkan pengolahan dan penggalian potensi sumber daya desa guna mendongkrak pendapatan masyarakat dan desa, sekaligus memperkuat ketahanan pangan serta sektor perekonomian desa melalui pembangunan yang berkelanjutan.</p>
             </div>
@@ -97,7 +82,7 @@
         <x-header class="mb-8">
             Peta Lokasi Desa
         </x-header>
-        <div class="grid grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div class="flex flex-col flex-1 gap-3 p-5 border shadow-lg rounded-xl">
                 <div>
                     <span class="font-semibold">Batas Desa</span>

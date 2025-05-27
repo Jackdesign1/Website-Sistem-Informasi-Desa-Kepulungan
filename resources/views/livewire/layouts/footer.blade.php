@@ -2,17 +2,17 @@
    <div class="px-6 mx-auto">
       <div class="flex flex-col items-center justify-between md:flex-row">
          <!-- Logo and Title -->
-         <div class="flex items-center gap-3 mb-2 md:mb-0">
+         <div class="flex items-center gap-3 mb-4 md:mb-0">
             <div class="">
                   <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}">
             </div>
-            <div>
+            <div class="text-center md:text-left">
                   <h1 class="text-lg font-bold text-gray-800">Pemerintah Desa Kepulungan</h1>
                   <p class="text-gray-600">Kabupaten Pasuruan</p>
             </div>
          </div>
          <!-- Contact Info -->
-         <div class="text-right">
+         <div class="text-center md:text-right">
             <p class="text-gray-600">Kantor Desa Kepulungan</p>
             <p class="text-gray-600">Kepulungan - Gempol jl. surabaya malang, </p>
             <p class="text-gray-600">Kabupaten Pasuruan, Jawa Timur 67155, Indonesia.</p>
