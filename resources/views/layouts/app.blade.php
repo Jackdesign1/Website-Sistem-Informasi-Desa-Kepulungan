@@ -39,8 +39,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased" x-data>
-
-        @livewire('layouts.dashboard-navigation')
+        {{-- @livewire('layouts.dashboard-navigation') --}}
 
         {{-- The main content with `full-width` --}}
         <x-mary-main with-nav full-width>
@@ -49,13 +48,8 @@
             {{-- Notice the `main-drawer` reference here --}}
             <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-200">
                 {{-- User --}}
-                @if($user = auth()->user())
-                    <x-mary-list-item :item="$user" value="name" sub-value="email" no-separator no-hover class="pt-2">
-                        <x-slot:actions>
-                                <x-mary-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" no-wire-navigate link="/logout" />
-                        </x-slot:actions>
-                    </x-mary-list-item>
-
+                @if(Auth::check())
+                    <livewire:layouts.logout>
                     <x-mary-menu-separator />
                 @endif
 
