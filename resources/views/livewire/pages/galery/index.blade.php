@@ -7,10 +7,10 @@
         @foreach ($imageChunks as $imageChunk)
             <div class="flex flex-col gap-5">
                 @foreach ($imageChunk as $image)
-                    <img src="{{ asset($image->url) }}" alt="{{ $image->alt }}" class="w-full h-auto transition rounded-lg shadow-lg hover:scale-105">
+                    <img loading="lazy" src="{{ asset($image->url) }}" alt="{{ $image->alt }}" class="w-full h-auto transition rounded-lg shadow-lg hover:scale-105">
                 @endforeach
             </div>
         @endforeach
     </div>
-</x-contain>
+</x-container>
  

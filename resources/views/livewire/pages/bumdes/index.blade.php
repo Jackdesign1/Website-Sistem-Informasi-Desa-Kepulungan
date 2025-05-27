@@ -2,7 +2,7 @@
     <x-header class="mb-8">
         Badan Usaha Milik Desa Kepulungan
     </x-header>
-    <div class="grid grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <div class="overflow-hidden transition duration-300 transform border rounded-lg shadow-lg bg-gray-50">
                 <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="BUMDes Maju Jaya" class="object-cover w-full h-48">
                 <div class="p-6">
