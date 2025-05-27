@@ -1,14 +1,16 @@
 <div class="py-20 space-y-40" x-data >
     <x-container class="flex items-center justify-between gap-8">
         <div class="flex-1">
-            <div class="max-w-sm text-xl text-center ms-auto">
+            <img src="{{ asset('assets/icons/transparancy-budget.png') }}" alt="" class="mx-auto mb-5 w-60 md:hidden">
+
+            <div class="max-w-sm mx-auto text-xl text-center md:ms-auto md:me-0 md:text-end">
                 <x-header class="mb-3">
                     Transparansi Anggaran <br>Desa Kepulungan
                 </x-header>
                 Komitmen Kami untuk Keterbukaan dan Akuntabilitas dalam Pengelolaan Anggaran    
             </div>
         </div>
-        <div class="flex flex-[.8] ps-8">
+        <div class="flex-[.8] ps-8 hidden md:block">
             <img src="{{ asset('assets/icons/transparancy-budget.png') }}" alt="" class="w-60">
         </div>
     </x-container>

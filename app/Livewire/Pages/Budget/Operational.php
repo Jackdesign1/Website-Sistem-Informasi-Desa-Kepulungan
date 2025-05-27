@@ -35,7 +35,7 @@ class Operational extends Component
 
         $this->operationalBudget = OperationalBudget::firstWhere('year', $this->year);
         if ($this->operationalBudget) {
-            $this->operationalBudget->load('operationalDetails', 'operationalTypes');
+            $this->operationalBudget->load('operationalDetails', 'operationalTypes.details');
             $this->operationalBudget->total = $this->operationalBudget->operationalDetails->sum('value');
             
             $chartData = [];
