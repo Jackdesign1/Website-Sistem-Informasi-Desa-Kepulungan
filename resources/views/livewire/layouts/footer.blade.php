@@ -1,8 +1,8 @@
-<x-container class="!max-w-[100rem]">
+<div class="pt-5 space-y-7">
    <div class="px-6 mx-auto">
       <div class="flex flex-col items-center justify-between md:flex-row">
          <!-- Logo and Title -->
-         <div class="flex items-center mb-4 md:mb-0">
+         <div class="flex items-center gap-3 mb-2 md:mb-0">
             <div class="">
                   <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}">
             </div>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Navigation Menu -->
-      <nav class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-4">
+      <div class="grid grid-cols-1 gap-6 px-4 mt-6 md:grid-cols-4">
          <!-- Tentang -->
          <div>
             <h3 class="mb-1 font-semibold text-gray-800">Lorem</h3>
@@ -58,13 +58,13 @@
 
             </ul>
          </div>
-      </nav>
+      </div>
    </div>
 
-   <footer class="py-2 mt-4 bg-white border-t border-gray-200">
+   <footer class="py-3 border-t border-gray-200">
       <div class="container px-6 mx-auto text-center">
          <p class="text-gray-600">Program Studi Teknik Informatika PSDKU Sidoarjo</p>
          <p class="text-gray-600">Politeknik Negeri Jember © Copyright 2025</p>
       </div>
    </footer>
-</x-container>
+</div>

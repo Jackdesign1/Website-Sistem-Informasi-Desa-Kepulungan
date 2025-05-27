@@ -78,9 +78,11 @@
         </main>
 
         @if (!request()->routeIs('login'))
-            <livewire:layouts.footer />
+            <x-container class="!max-w-[100rem] ">
+                <livewire:layouts.footer />
+            </x-container>
         @endif
-            
+
         {{--  TOAST area --}}
         <x-mary-toast />
 

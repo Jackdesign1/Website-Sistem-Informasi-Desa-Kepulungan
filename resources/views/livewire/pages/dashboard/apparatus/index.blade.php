@@ -1,6 +1,6 @@
 <div>
     <x-mary-modal wire:model="createModal">
-        <livewire:pages.dashboard.apparatus.create />
+        <livewire:pages.dashboard.apparatus.create wire:key='{{ $apparatuses->count() }}'/>
     </x-mary-modal>
 
     <x-mary-modal wire:model="editModal">

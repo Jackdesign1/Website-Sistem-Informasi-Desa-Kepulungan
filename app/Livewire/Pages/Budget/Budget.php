@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Budget;
 
 use App\Models\OperationalBudget;
 use App\Models\VillageBudget;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Budget extends Component
@@ -14,12 +15,18 @@ class Budget extends Component
     public $year;
     public $budgetChart;
 
+    public $silpa;
     public $villageBudget;
     public $operationalBudget;
 
+    #[Computed()]
+    public function villageBudget() {
+        return VillageBudget::where("year", $this->year)->first();
+    }
+
     public function getVillageBudgetProperty()
     {
-        $villageBudget = VillageBudget::where("year", $this->year)->first();
+        $villageBudget = $this->villageBudget;
         if ($villageBudget) {
             return $villageBudget->details->sum("value");
         }
@@ -83,6 +90,7 @@ class Budget extends Component
         $this->withChart = $withChart !== "false"? true : false;
         $this->year = $year;
 
+        $this->silpa = $this->villageBudget->silpa ?? 0;
         $this->villageBudget = $this->getVillageBudgetProperty();
         $this->operationalBudget = $this->getOperationalBudgetProperty();
         

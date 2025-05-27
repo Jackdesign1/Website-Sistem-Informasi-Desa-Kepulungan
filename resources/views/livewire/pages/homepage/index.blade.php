@@ -3,29 +3,8 @@
 <div class="pb-20 space-y-40">
     <livewire:pages.homepage.hero-carousel />
 
-    <x-container class="flex items-center gap-16">
-        <div class="flex-shrink">
-            <img src="{{ asset('assets/images/Pak_Didik.png') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-square max-w-96">
-        </div>
-        <div class="flex-1">
-            <x-header>Sambutan Kepala Desa</x-header>
-            <h4 class="text-2xl font-semibold">Didik Hartono S.H.,M.H</h4>
-            <p class="mt-4"><span class="font-semibold">Assalamualaikum Wr. Wb.</span>
-                <br> selamat datang di website resmi Pemerintah Desa Kepulungan. Dengan rasa syukur kepada Allah SWT, kami hadirkan platform ini sebagai wujud komitmen untuk transparansi dan kemudahan akses informasi. Di tengah pesatnya teknologi, website ini menjadi sarana menyampaikan perkembangan, kegiatan, dan capaian pembangunan desa secara faktual dan real-time, mengundang seluruh masyarakat desa kepulungan untuk memanfaatkannya demi kemajuan bersama. Penghargaan setinggi-tingginya serta terima kasih kami sampaikan kepada Tim Dosen dan Mahasiswa Program Studi Teknik Informatika PSDKU Sidoarjo Politeknik Negeri Jember yang telah membantu mewujudkan Website Pemerintah desa Kepulungan.
-            </p>
-        </div>
-    </x-container>
-
-    <x-container class="flex items-center gap-16">
-        <div class="flex-1 space-y-4">
-            <x-header>Profil Desa Kapulungan</x-header>
-            <p>Desa Kepulungan berlokasi di Kecamatan Gempol, Kabupaten Pasuruan, Provinsi Jawa Timur, dulunya dikenal sebagai pintu gerbang menuju Gunung Pawitra, sebuah wilayah yang pernah menjadi bagian dari Kerajaan Negeri Aryapada pada masa Hindu-Buddha sekitar abad ke-10 hingga 13. Banyak prasasti yang ditemukan di Desa Kepulungan menjadi bukti bahwa desa ini memiliki peran penting sebagai pusat kegiatan keagamaan dan administratif pada masa itu, dengan peninggalan berupa situs-situs kuno dan benda-benda arkeologi yang menggambarkan kehidupan masyarakat yang kental dengan budaya Hindu. Seiring berjalannya waktu, Desa Kepulungan berkembang menjadi pemukiman agraris yang memanfaatkan kesuburan tanah di sekitar Gunung Pawitra, sambil tetap melestarikan jejak sejarahnya sebagai bagian dari warisan budaya Pasuruan.</p>
-            <x-mary-button class="btn btn-success" link="profil-desa"  label="Lebih Detail"/>
-        </div>
-        <div class="flex-[.8]">
-            <img src="{{ asset('assets/images/Foto_Desa.jpg') }}" alt="" class="object-cover w-full h-full shadow-lg rounded-xl aspect-video">
-        </div>
-    </x-container>
+    <x-village-profile.speech />
+    <x-village-profile.profile />
 
     <x-container>
         <x-header class="mb-7">Aparatur Desa</x-header>
@@ -41,28 +20,30 @@
         <livewire:pages.budget.budget :year="$selectedYear" withChart="false" wire:key='{{ $selectedYear }}' lazy/>
     </x-container>
 
-    <x-container>
+    <x-container x-data='{hideItem: true}'>
         <x-header class="mb-7">Layanan</x-header>
-        <div class="flex flex-wrap w-full gap-5 carousel-item">
-            <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
+        <div class="relative flex flex-wrap w-full gap-5 mb-5 overflow-hidden transition-all carousel-item md:max-h-screen" :class="hideItem? 'max-h-[39rem]' : 'max-h-screen'" x-cloak>
+            <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
+            <x-mary-card title="Informasi" subtitle="Informasi Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Laporan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
+            <x-mary-card title="Laporan" subtitle="Informasi Laporan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=report#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
-            <x-mary-card title="Layanan Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
-            </x-mary-card>
-            <x-mary-card title="Aspirasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
-            </x-mary-card>
-            <x-mary-card title="Panduan" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator>
-                <a class="text-sm link link-hover link-secondary" href="#">Baca Selengkapnya</a>
-            </x-mary-card>
+            <x-mary-card title="Layanan Informasi" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator />
+            <x-mary-card title="Aspirasi" subtitle="Aspirasi Terhadap Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator />
+            <x-mary-card title="Panduan" subtitle="Penduan Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-64" separator />
+            <div class="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white to-transparent md:hidden"></div>
         </div>
+        <div class="text-center md:hidden">
+            <template x-if="hideItem">
+                <x-mary-button class="btn btn-success" label="Lihat Semua Layanan" x-on:click="hideItem = false" />
+            </template>
+            <template x-if="!hideItem">
+                <x-mary-button class="btn btn-outline" label="Sembunyikan Sebagian Layanan" x-on:click="hideItem = true" />
+            </template>  </div>
     </x-container>
 
     <div class="bg-gradient-to-tr from-gray-300 to-gray-200">
@@ -152,19 +133,19 @@
     <div class="bg-gradient-to-tr from-red-600 to-red-400">
         <x-container class="py-20">
             <x-header class="mb-8 text-center text-white">Badan Usaha Milik Desa</x-header>
-            <x-carousel class="h-96 md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-lg">
+            <x-carousel class="h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-lg">
                 {{-- @for ($i = 1; $i <= 4; $i++) --}}
                     <div id="bumdes" class="relative w-full carousel-item">
                         <img
                             src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}"
                             class="object-cover w-full" />
                         <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
-                            <x-carousel-nav index="1" name="bumdes"></x-carousel-nav>
-                            <div class="absolute space-y-3 text-white bottom-20 left-24 lg:w-1/2">
-                                <x-header>
+                            {{-- <x-carousel-nav index="1" name="bumdes"></x-carousel-nav> --}}
+                            <div class="absolute space-y-3 text-center text-white translate-y-1/2 bottom-1/2 md:bottom-20 md:translate-y-0 md:left-14 lg:left-24 md:text-left lg:w-1/2">
+                                <x-header class="text-2xl md:text-3xl">
                                     Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan 
                                 </x-header>
-                                <div class="text-xl">
+                                <div class="text-base md:text-xl">
                                     Wisata Pemandian Air Panas Langsung <br>
                                     Dari Sumbernya yang Sangat Menyejukkan Badan
                                 </div>
