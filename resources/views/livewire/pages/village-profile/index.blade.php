@@ -26,15 +26,15 @@
             <x-header>Visi & Misi</x-header>
         </div>
 
-        <x-container class="flex items-center justify-center rounded-full text-end">
+        <x-container class="flex justify-center rounded-full text-end">
             <!-- Visi Section -->
-            <div class="w-1/3 px-5">
+            <div class="w-1/3 p-5">
                 <h4 class="text-xl font-semibold">Visi</h4>
                 <p>Terwujudnya Desa Kepulungan yang maju, mandiri, damai dan sejahtera,
                     melalui tata kelola pemerintahan yang baik dan berkualitas</p>
             </div>
 
-            <div class="h-40 border-r-4"></div>
+            <div class="h-48 border-r-4"></div>
 
             <!-- Misi Section -->
             <div class="w-1/3 p-5 text-start md:text-start">
