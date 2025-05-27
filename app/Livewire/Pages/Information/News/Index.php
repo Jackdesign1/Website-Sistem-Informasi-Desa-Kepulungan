@@ -17,8 +17,15 @@ class Index extends Component
 
     public function render()
     {
+        $news = News::onlyNews()->onlyPublish()->with('imageMedia')->latest()->paginate(10, pageName: 'news');
+        $newsChunks = [[], []];
+        foreach ($news as $i => $item) {
+            $newsChunks[$i % 2][] = $item;
+        }
+
         return view('livewire.pages.information.news.index', [
-            'news' => News::onlyNews()->onlyPublish()->with('imageMedia')->latest()->paginate(10, pageName: 'news')
+            'newsChunks' => $newsChunks,
+            'news' => $news, // keep original paginator for pagination links
         ]);
     }
 }

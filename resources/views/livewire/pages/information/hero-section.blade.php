@@ -1,6 +1,6 @@
-<div class="flex gap-5">
+<div class="flex flex-col gap-5 md:flex-row">
     <div class="flex-1">
-        <div class="w-full shadow card rounded-xl bg-base-100 h-full image-full aspect-[5/4]">
+        <div class="w-full shadow card rounded-xl bg-base-100 h-full image-full aspect-[5/3] md:aspect-[5/4]">
             <figure>
                 <img
                 src="{{ asset($news->first()->media->first()->url) }}"
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="flex flex-col flex-1 gap-5">
-        <div class="flex-1">
+        <div class="flex-1 hidden md:block">
             <div class="w-full shadow h-full card rounded-xl bg-base-100 image-full aspect-[2/1]">
                 <figure>
                     <img

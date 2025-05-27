@@ -3,7 +3,7 @@
         <livewire:pages.information.hero-section :news="$news" :reports="$reports"/>
     @endif
 
-    <div class="flex gap-8 pt-24" id="news-content">
+    <div class="flex gap-8 pt-24 flex-col md:flex-row" id="news-content">
         <div class="flex-1">
             {{-- bellow has bug where if u press alt + <-, it wont show the page --}}
             <x-mary-tabs wire:model="selectedTab" class="py-3">

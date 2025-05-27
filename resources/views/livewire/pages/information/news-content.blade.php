@@ -1,7 +1,7 @@
 <x-container class="py-12">
     <x-mary-header :title="$data->title"/>
 
-    <div class="flex gap-8">
+    <div class="flex flex-col gap-8 md:flex-row">
         <div class="flex-1 space-y-5">
             <div>
                 <x-mary-carousel :slides="$images" class="!h-96"/>
@@ -15,13 +15,13 @@
 
             @if ($type == 'report')
             <x-mary-header title="File Laporan" />
-                <div class="flex gap-5 pt-2 flex-wrap">
+                <div class="flex flex-wrap gap-5 pt-2">
                     @foreach ($data->fileMedia as $reportFile)
                     <div class="text-center w-28">
                         <a href="{{ asset($reportFile->url) }}" target="blank" title="{{ $reportFile->name }}">
-                            <x-mary-icon name='tabler.file-description' class="mb-2 w-12 h-12"></x-mary-icon>
+                            <x-mary-icon name='tabler.file-description' class="w-12 h-12 mb-2"></x-mary-icon>
                         </a>
-                        <a href="{{ asset($reportFile->url) }}" target="blank" class="link text-sm line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
+                        <a href="{{ asset($reportFile->url) }}" target="blank" class="text-sm link line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
                     </div>
                     @endforeach
                 </div>
