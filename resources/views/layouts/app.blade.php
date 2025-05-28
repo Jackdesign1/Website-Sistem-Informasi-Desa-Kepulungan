@@ -42,7 +42,7 @@
         {{-- @livewire('layouts.dashboard-navigation') --}}
 
         {{-- The main content with `full-width` --}}
-        <x-mary-main with-nav full-width>
+        <x-mary-main full-width>
 
             {{-- This is a sidebar that works also as a drawer on small screens --}}
             {{-- Notice the `main-drawer` reference here --}}
@@ -68,7 +68,7 @@
                         <x-mary-menu-item title="Laporan" :link="route('dashboard.information.report.index')" />
                         <x-mary-menu-item title="Lowongan Kerja" :link="route('dashboard.information.jobs-vacancy')" />
                     </x-mary-menu-sub>
-                    <x-mary-menu-item title="Galeri" icon="tabler.box-multiple-filled" link="###" />
+                    {{-- <x-mary-menu-item title="Galeri" icon="tabler.box-multiple-filled" link="###" /> --}}
                 </x-mary-menu>
             </x-slot:sidebar>
 

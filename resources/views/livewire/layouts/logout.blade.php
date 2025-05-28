@@ -17,7 +17,7 @@ new class extends Component
 }; ?>
 
 <span wire:click='logout'>
-    <x-mary-list-item :item="Auth::user()" value="name" sub-value="email" no-separator no-hover class="pt-2">
+    <x-mary-list-item :item="Auth::user()" value="name" sub-value="email" no-separator no-hover class="pt-2" :link="route('profile')">
         <x-slot:actions>
             <x-mary-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logout" no-wire-navigate />
         </x-slot:actions>
