@@ -6,12 +6,12 @@
                 <div class="flex flex-col gap-5">
                     @foreach ($chunk as $item)
                         <div>
-                            <x-mary-card :title="$item->title" class="border shadow-lg">
+                            <x-mary-card :title="$item->title" :subtitle="$item->updated_at->diffForHumans()" class="border shadow-lg">
                                 <div class="relative overflow-hidden max-h-56">
                                     <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent"></div>
-                                    <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}" class="line-clamp-3">
+                                    {{-- <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}" class="line-clamp-3">
                                         {!! Str::limit($item->content, 200) !!}
-                                    </a>
+                                    </a> --}}
                                 </div>
                                 <x-slot:figure>
                                     <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">
