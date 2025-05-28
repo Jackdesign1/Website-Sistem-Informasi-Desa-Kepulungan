@@ -6,8 +6,9 @@ use App\Models\News;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Title;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Informasi')]
 class NewsContent extends Component
 {
     public $slug;

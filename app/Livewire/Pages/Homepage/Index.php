@@ -7,8 +7,9 @@ use App\Models\OperationalBudget;
 use App\Models\VillageBudget;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Beranda')]
 class Index extends Component
 {
     public $selectedTab;

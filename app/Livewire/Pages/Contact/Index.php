@@ -4,9 +4,10 @@ namespace App\Livewire\Pages\Contact;
 
 use Illuminate\Http\Request;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Kontak')]
 class Index extends Component
 {
     public $selectedContactTab;

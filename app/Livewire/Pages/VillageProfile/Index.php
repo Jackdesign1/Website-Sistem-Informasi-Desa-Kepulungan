@@ -3,9 +3,10 @@
 namespace App\Livewire\Pages\VillageProfile;
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Profil')]
 class Index extends Component
 {
     public function render()

@@ -3,9 +3,10 @@
 namespace App\Livewire\Pages\Bumdes;
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('BUMDes')]
 class Index extends Component
 {
     public function render()

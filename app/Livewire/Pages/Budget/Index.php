@@ -5,9 +5,10 @@ namespace App\Livewire\Pages\Budget;
 use App\Models\OperationalBudget;
 use App\Models\VillageBudget;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Anggaran')]
 class Index extends Component
 {   
     public array $myChart;

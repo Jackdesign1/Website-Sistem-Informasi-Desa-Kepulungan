@@ -6,8 +6,9 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Informasi')]
 class Index extends Component
 {
     public $selectedTab;

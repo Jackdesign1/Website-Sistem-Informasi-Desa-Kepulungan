@@ -5,9 +5,10 @@ namespace App\Livewire\Pages\Galery;
 use App\Models\Media;
 use Jenssegers\Agent\Facades\Agent;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
+#[Layout('layouts.guest'), Title('Galeri')]
 class Index extends Component
 {
     // public $screenWidth = null;
