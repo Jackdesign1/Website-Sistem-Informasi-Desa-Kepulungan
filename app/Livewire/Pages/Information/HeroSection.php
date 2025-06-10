@@ -21,4 +21,8 @@ class HeroSection extends Component
     {
         return view('livewire.pages.information.hero-section');
     }
+
+    public function placeholder() {
+        return view('livewire.pages.information.placeholder.hero-section');
+    }
 }

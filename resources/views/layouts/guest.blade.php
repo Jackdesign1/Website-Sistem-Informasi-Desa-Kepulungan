@@ -19,6 +19,7 @@
 
         {{-- slick js --}}
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick-theme.css') }}"/>
 
         {{-- evo calendar library --}}
         <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">

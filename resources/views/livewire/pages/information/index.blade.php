@@ -1,6 +1,8 @@
 <div>
     @if ($news->isNotEmpty() && $reports->isNotEmpty())
-        <livewire:pages.information.hero-section :news="$news" :reports="$reports"/>
+        <div class="bg-gray-200 h-[45dvh] md:h-[500px] lg:h-[600px] flex items-center">
+            <livewire:pages.information.hero-section :news="$news" :reports="$reports" lazy/>
+        </div>
     @endif
     <x-container class="py-8">
             <div class="flex flex-col gap-8 pt-24 md:flex-row" id="news-content">
