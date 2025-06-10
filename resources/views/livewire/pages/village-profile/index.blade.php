@@ -89,19 +89,19 @@
                     <div class="grid grid-cols-2 gap-3 p-3 text-sm">
                         <div>
                             Utara <br>
-                            Desa Santan Ulu dan Desa Santan Ilir
+                            Desa Ngerong, Kecamatan Gempol
                         </div>
                         <div>
                             Timur <br>
-                            Selat Makasar
+                            Desa Randupitu, Kecamatan Gempol
                         </div>
                         <div>
                             Selatan <br>
-                            Selat Makassar dan Desa Semangko
+                            Desa Wonosari, Kecamatan Gempol
                         </div>
                         <div>
                             Barat <br>
-                            Desa Santan Ulu
+                            Desa Sumberejo, Kecamatan Pandaan
                         </div>
                     </div>
                 </div>

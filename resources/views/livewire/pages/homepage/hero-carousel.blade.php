@@ -1,4 +1,4 @@
-<x-carousel class="h-[45dvh] md:h-[500px] lg:h-[600px]">
+<x-carousel class="h-[45dvh] md:h-[500px] lg:h-[600px]" overlay="true">
     {{-- @for ($i = 1; $i <= 4; $i++) --}}
         <div id="slide" class="relative w-full carousel-item">
             <img

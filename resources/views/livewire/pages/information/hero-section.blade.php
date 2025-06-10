@@ -1,74 +1,33 @@
-<div class="flex flex-col gap-5 md:flex-row">
-    <div class="flex-1">
-        <div class="w-full shadow card rounded-xl bg-base-100 h-full image-full aspect-[5/3] md:aspect-[5/4]">
-            <figure>
-                <img
-                src="{{ asset($news->first()->media->first()->url) }}"
-                class="object-cover w-full"
-                alt="berita" />
-            </figure>
-            <div class="card-body">
-                <h2 class="text-2xl card-title line-clamp-3">{{ $news->first()->title }}</h2>
-                <p>Update {{ $news->first()->updated_at->format('d m Y') }}</p>
-                <div class="justify-end card-actions">
-                <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya" :link="route('information.news-content', ['type' => 'news', 'slug' => $news->first()->slug])"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flex flex-col flex-1 gap-5">
-        <div class="flex-1 hidden md:block">
-            <div class="w-full shadow h-full card rounded-xl bg-base-100 image-full aspect-[2/1]">
-                <figure>
-                    <img
-                    src="{{ asset($news->last()->media->first()->url) }}"
-                    class="object-cover w-full"
-                    alt="berita1" />
-                </figure>
-                <div class="card-body">
-                    <h2 class="text-xl card-title line-clamp-3">{{ $news->last()->title }}</h2>
-                    <p>Update {{ $news->last()->updated_at->format('d m Y') }}</p>
-                    <div class="justify-end card-actions">
-                    <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya" :link="route('information.news-content', ['type' => 'news', 'slug' => $news->last()->slug])"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-1 gap-5">
-            <div class="flex-1">
-                <div class="w-full shadow card rounded-xl bg-base-100 image-full aspect-[5/3]">
-                    <figure>
-                        <img
-                            src="{{ asset($reports->first()->media->first()->url) }}"
-                            class="object-cover w-full"
-                            alt="berita1" />
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="text-xl card-title line-clamp-1">{{ $reports->first()->title }}</h2>
-                        <p>Update {{ $reports->first()->updated_at->format('d m Y') }}</p>
-                        <div class="justify-end card-actions">
-                            <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya" :link="route('information.news-content', ['type' => 'news', 'slug' => $news->last()->slug])"/>
+<div class="h-[600px] bg-gray-200">
+    {{-- @dd($news) --}}
+    <x-carousel class="h-[45dvh] md:h-[500px] lg:h-[600px]">
+        @foreach ($news as $newsIndex => $items)
+            @foreach ($items as $index => $item)
+                <div id="slide-{{ $newsIndex == 0? $index : $news[0]->count()+$index }}" class="relative w-full carousel-item">
+                    <x-carousel-prev-nav name="slide-{{ $newsIndex == 0? $index-1 : ($news[0]->count()+$index)-1 }}"></x-carousel-prev-nav>
+                    <x-carousel-next-nav name="slide-{{ $newsIndex == 0? $index+1 : ($news[0]->count()+$index)+1 }}"></x-carousel-next-nav>
+                    <x-container class="absolute top-0 bottom-0 z-20 flex flex-col justify-center left-5 right-5">
+                        <div class="px-5">
+                            <h2 class="text-4xl font-bold">{{ $item->type == "news"? 'Berita' : 'Laporan' }}</h2>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex-1">
-                <div class="w-full shadow card rounded-xl bg-base-100 image-full aspect-[5/3]">
-                    <figure>
-                        <img
-                            src="{{ asset($reports->last()->media->first()->url) }}"
-                            class="object-cover w-full"
-                            alt="berita1" />
-                    </figure>
-                    <div class="card-body">
-                        <h2 class="text-xl card-title line-clamp-1">{{ $reports->last()->title }}</h2>
-                        <p>Update {{ $reports->last()->updated_at->format('d m Y') }}</p>
-                        <div class="justify-end card-actions">
-                            <x-mary-button class="btn-info btn-sm" label="Baca Selengkapnya" :link="route('information.news-content', ['type' => 'news', 'slug' => $news->last()->slug])"/>
+                        <div class="grid grid-cols-2 gap-10">
+                            <div class="w-full px-5">
+                                <img src="{{ $item->media->first()->url }}" alt="{{ $item->media->first()->name }}" class="object-cover w-full max-w-xl rounded-2xl shadow-xl aspect-[4/3]">
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <div>
+                                    <p>{{ $item->created_at->format('d F Y') }}</p>
+                                    <h2 class="text-3xl font-semibold">{{ $item->title }}</h2>
+                                    <div class="text-gray-700 line-clamp-3">
+                                        {!! truncateHTML($item->content, 300) !!}
+                                    </div>
+                                    <x-mary-button label="Baca Selengkapnya!" class="mt-3 btn-success" :link="route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug])"></x-mary-button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </x-container>
                 </div>
-            </div>
-        </div>
-    </div>
+            @endforeach
+        @endforeach
+    </x-carousel>
 </div>

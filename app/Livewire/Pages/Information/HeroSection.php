@@ -10,8 +10,11 @@ class HeroSection extends Component
     public $reports;
 
     public function mount($news, $reports) {
-        $this->news = $news;
-        $this->reports = $reports;
+        $this->news = [
+            $news,
+            $reports,
+        ];
+        // $this->reports = $reports;
     }
 
     public function render()

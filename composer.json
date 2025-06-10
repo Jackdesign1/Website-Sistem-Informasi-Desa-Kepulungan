@@ -19,7 +19,8 @@
         "livewire/volt": "^1.7",
         "robsontenorio/mary": "^2.2",
         "secondnetwork/blade-tabler-icons": "^3.31",
-        "tinymce/tinymce": "^7.8"
+        "tinymce/tinymce": "^7.8",
+        "urodoz/truncate-html": "@stable"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
@@ -37,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "bootstrap/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
