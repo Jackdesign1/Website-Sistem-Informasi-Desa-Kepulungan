@@ -20,6 +20,7 @@ class HeroSection extends Component
     public function render()
     {
         return view('livewire.pages.information.hero-section');
+        // return view('livewire.pages.information.placeholder.hero-section');
     }
 
     public function placeholder() {

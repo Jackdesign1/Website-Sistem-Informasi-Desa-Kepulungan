@@ -1,14 +1,12 @@
 <div>
     @if ($news->isNotEmpty() && $reports->isNotEmpty())
-        <div class="bg-gray-200 h-[45dvh] md:h-[500px] lg:h-[600px] flex items-center">
-            <livewire:pages.information.hero-section :news="$news" :reports="$reports" lazy/>
-        </div>
+        <livewire:pages.information.hero-section :news="$news" :reports="$reports" lazy wire:key='{{ now() }}'/>
     @endif
     <x-container class="py-8">
-            <div class="flex flex-col gap-8 pt-24 md:flex-row" id="news-content">
+        <div class="flex flex-col gap-8 pt-24 md:flex-row" id="news-content">
             <div class="flex-1">
                 {{-- bellow has bug where if u press alt + <-, it wont show the page --}}
-                <x-mary-tabs wire:model="selectedTab" class="py-3">
+                <x-mary-tabs wire:model="selectedTab" class="py-3" wire:key='{{ now() }}'>
                     <x-mary-tab name="news" label="Berita">
                         <div>
                             <livewire:pages.information.news.index lazy/>
