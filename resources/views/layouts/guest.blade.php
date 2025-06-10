@@ -13,9 +13,12 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         {{-- mary ui plugin --}}
-        <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        <link href="{{ asset('assets/css/vanilla-calendar.min.css') }}" rel="stylesheet">
+        <script src="{{ asset('assets/js/chart.umd.min.js') }}"></script>
         {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> --}}
+
+        {{-- slick js --}}
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick.css') }}"/>
 
         {{-- evo calendar library --}}
         <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">
@@ -92,7 +95,10 @@
         {{-- mary ui plugin --}}
         <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
         <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@2.9.6/build/vanilla-calendar.min.js"></script>
+        <script src="{{ asset('assets/js/vanilla-calendar.min.js') }}"></script>
+
+        {{-- slick js library --}}
+        <script type="text/javascript" src="{{ asset('assets/js/slick.min.js') }}"></script>
 
         @stack('scripts')
     </body>

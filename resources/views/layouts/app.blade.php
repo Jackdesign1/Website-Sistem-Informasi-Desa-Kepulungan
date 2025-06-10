@@ -13,22 +13,21 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         {{-- Cropper.js --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+        <script src="{{ asset('assets/js/cropper.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('assets/css/cropper.min.css') }}" />
 
         {{-- Sortable.js --}}
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
+        <script src="{{ asset('assets/js/Sortable.min.js') }}"></script>
 
         {{-- TinyMCE --}}
         <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 
         {{-- Flatpickr  --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="{{ asset('assets/css/flatpickr.min.css') }}">
+        <script src="{{ asset('assets/js/flatpickr.js') }}"></script>
 
         {{--  Currency  --}}
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js"></script>
-        </head>
+        <script type="text/javascript" src="{{ asset('assets/js/currency.js') }}"></script>
 
         <style>
             .crop-false button[data-tip="false"] {
