@@ -17,13 +17,13 @@ class HeroSection extends Component
         // $this->reports = $reports;
     }
 
+    public function placeholder() {
+        return view('livewire.pages.information.placeholder.hero-section');
+    }
+    
     public function render()
     {
         return view('livewire.pages.information.hero-section');
         // return view('livewire.pages.information.placeholder.hero-section');
-    }
-
-    public function placeholder() {
-        return view('livewire.pages.information.placeholder.hero-section');
     }
 }

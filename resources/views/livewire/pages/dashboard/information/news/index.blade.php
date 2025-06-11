@@ -6,7 +6,7 @@
         <template x-if="newsStatus == 'publish'">
             <p>Tarik publikasi berita? <br> Berita yang ditarik akan masuk ke list draft</p>
         </template>
-    <x-slot:actions>
+        <x-slot:actions>
             <x-mary-button label="Cancel" @click="$wire.statusModalState = false" />
             <x-mary-button x-text="newsStatus == 'draft'? 'Publish' : 'Draft'" wire:click="changeStatus()" spinner="changeStatus" class=" btn-warning" />
         </x-slot:actions>

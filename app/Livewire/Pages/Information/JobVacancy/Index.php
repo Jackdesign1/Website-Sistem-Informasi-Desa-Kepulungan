@@ -13,7 +13,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pages.information.job-vacancy.index', [
+    return view('livewire.pages.information.job-vacancy.index', [
             'job_vacancies' => JobVacancy::latest()->get(),
         ]);
     }
