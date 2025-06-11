@@ -1,5 +1,5 @@
 <x-container class="w-full">
-    <div id="hero-carousel" x-init="$('#hero-carousel').slick()">
+    <div id="hero-carousel" x-init="$('#hero-carousel').slick()" wire:cloak>
         @foreach ($news as $newsIndex => $items)
             @foreach ($items as $index => $item)
                 <div class="flex flex-col justify-center left-5 right-5">

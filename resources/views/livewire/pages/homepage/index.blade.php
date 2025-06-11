@@ -27,7 +27,7 @@
 
     <x-container x-data='{hideItem: true}'>
         <x-header class="mb-7">Layanan</x-header>
-        <div class="relative flex flex-wrap w-full gap-5 mb-5 overflow-hidden transition-all carousel-item md:max-h-screen" :class="hideItem? 'max-h-[39rem]' : 'max-h-screen'" x-cloak>
+        <div class="relative flex flex-wrap w-full gap-5 mb-5 overflow-hidden transition-all md:overflow-visible md:max-h-screen" :class="hideItem? 'max-h-[39rem]' : 'max-h-screen'" x-cloak>
             <x-mary-card title="Berita" subtitle="Informasi Berita Kegiatan Pemerintah Desa Kepulungan" class="flex-1 border shadow-lg rounded-xl min-w-72" separator>
                 <a class="text-sm link link-hover link-secondary" href="{{ route('information.index')."?set=news#news-content" }}" wire:navigate>Baca Selengkapnya</a>
             </x-mary-card>
@@ -63,9 +63,9 @@
                     <livewire:pages.homepage.reports lazy />
                 </x-mary-tab>
 
-                {{-- <x-mary-tab name="jobs-tab" label="Jobs" icon="hugeicons.job-search">
-                    <div>Jobs</div>
-                </x-mary-tab> --}}
+                <x-mary-tab name="jobs-tab" label="Lowongan Pekerjaan" icon="hugeicons.job-search">
+                    <livewire:pages.homepage.job-vacancies lazy />
+                </x-mary-tab>
             </x-mary-tabs>
         </x-container>
     </div>

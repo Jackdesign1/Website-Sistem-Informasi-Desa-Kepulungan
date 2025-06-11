@@ -1,7 +1,7 @@
 <div>
     @if ($news->isNotEmpty() && $reports->isNotEmpty())
         <div class="bg-gray-100 lg:h-[600px] flex items-center py-8">
-            <livewire:pages.information.hero-section :news="$news" :reports="$reports" lazy/>
+            <livewire:pages.information.hero-section :news="$news" :reports="$reports"/>
         </div>
     @endif
     <x-container class="py-8">

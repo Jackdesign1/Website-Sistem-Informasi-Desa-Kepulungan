@@ -46,7 +46,8 @@
                     <div class="text-sm font-semibold capitalize opacity-60">Batas Akhir Lowongan: <span class="font-semibold">{{ $jobs->expires_at? date('d M Y', strtotime($jobs->expires_at)) : '-' }}</span></div>
                 </div>
                 <div class="list-col-wrap pb-1.5">
-                    <div class="mb-1 text-xl font-semibold capitalize">{{ $jobs->title }}</div>
+                    <div class="text-xl font-semibold capitalize">{{ $jobs->title }}</div>
+                    <div class="text-sm font-semibold opacity-60">Nomor Kontak: <span class="font-semibold">{{ $jobs->contact_email }}</span></div>
                     {{-- <div class="text-sm" :class="!showMore? 'line-clamp-3' : ''">
                         {{ $jobs->description }}
                     </div> --}}
