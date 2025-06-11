@@ -8,16 +8,24 @@
                     </div>
                     <div class="grid grid-cols-1 gap-10 lg:grid-cols-2">
                         <div class="w-full lg:ps-10">
-                            <img src="{{ $item->media->first()->url }}" alt="{{ $item->media->first()->name }}" class="mx-auto lg:mx-0 object-cover w-full max-w-xl rounded-2xl shadow-xl aspect-[4/3]">
+                            <a wire:navigate href="{{ route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug]) }}">
+                                <img src="{{ $item->media->first()->url }}" alt="{{ $item->media->first()->name }}" class="mx-auto lg:mx-0 object-cover w-full max-w-xl rounded-2xl shadow-xl aspect-[4/3]">
+                            </a>
                         </div>
                         <div class="flex flex-col justify-center">
                             <div class="text-center lg:text-left">
                                 <p>{{ $item->created_at->format('d F Y') }}</p>
-                                <h2 class="text-3xl font-semibold">{{ $item->title }}</h2>
+                                <h2 class="text-3xl font-semibold">
+                                    <a wire:navigate href="{{ route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug]) }}">
+                                        {{ $item->title }}
+                                    </a>
+                                </h2>
                                 <div class="text-gray-700 line-clamp-3">
-                                    {!! truncateHTML($item->content, 300) !!}
+                                    <a wire:navigate href="{{ route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug]) }}">
+                                        {!! truncateHTML($item->content, 300) !!}
+                                    </a>
                                 </div>
-                                <x-mary-button label="Baca Selengkapnya!" class="mt-3 btn-success" :link="route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug])"></x-mary-button>
+                                <a wire:navigate class="inline-block mt-3 font-semibold text-primary" href="{{ route('information.news-content', ['type' => $newsIndex == 0? 'news' : 'report', 'slug' => $item->slug]) }}">Baca Selengkapnya <x-mary-icon name="tabler.arrow-right" /></a>
                             </div>
                         </div>
                     </div>
