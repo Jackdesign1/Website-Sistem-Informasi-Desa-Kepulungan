@@ -67,7 +67,7 @@
             Struktur Desa Kepulungan
         </x-header>
 
-        {{-- <img src="{{ asset('assets/images/struktur-desa.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-3xl mx-auto"> --}}
+        <img src="{{ asset('assets/images/bagan-organisasi.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-4xl mx-auto">
     </x-container>
 
     {{-- <x-container>
