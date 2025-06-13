@@ -29,7 +29,7 @@
                     <x-number-indicator :data="$apparatuses" :loop="$loop->iteration"></x-number-indicator>
                 @endscope
                 @scope('cell_image', $apparatus)
-                    <img src="{{ asset($apparatus->image) }}" :alt="$apparatus->image" class="object-cover w-20 rounded-lg min-w-20 aspect-square">
+                    <img src="{{ asset($apparatus->image) }}" alt="{{ $apparatus->image }}" class="object-cover w-20 rounded-lg min-w-20 aspect-square">
                 @endscope
                 @scope('actions', $apparatus)
                     <div class="flex gap-3">
@@ -38,7 +38,7 @@
                                 $wire.editModal = true;
                                 $wire.dispatch('initEditApparatus', {key:'{{ Crypt::encrypt($apparatus->id) }}'})
                             "/>
-                        <x-mary-button icon="hugeicons.delete-02" class="btn-warning btn-circle"/>
+                        <x-mary-button icon="hugeicons.delete-02" class="btn-warning btn-circle" @click="confirm('Anda yakin ingin menghapus aparatur desa {{ $apparatus->name }}?')? $wire.delete('{{ Crypt::encrypt($apparatus->id) }}') : ''"/>
                     </div>
                 @endscope
 

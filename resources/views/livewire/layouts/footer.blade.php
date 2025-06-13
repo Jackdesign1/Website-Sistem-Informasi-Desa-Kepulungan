@@ -71,9 +71,9 @@
 
 
 <footer class="px-8 py-12 text-gray-800"> 
-   <div class="grid grid-cols-1 gap-8 mx-auto max-w-7xl md:grid-cols-2 lg:grid-cols-5"> 
+   <div class="flex flex-wrap justify-between w-full gap-8 mx-auto max-w-7xl"> 
    <!-- Kolom 1: Logo dan Alamat --> 
-   <div> 
+   <div class="pe-5"> 
       <div class="flex items-start mb-4 space-x-4"> 
          <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}" alt="Logo" class="object-contain w-24 h-auto"> 
          <div> 
@@ -137,7 +137,6 @@
    </div> 
    </div> 
    <div class="pt-4 mt-10 text-sm text-center text-gray-600 border-t"> 
-      Program Studi Teknik Informatika PSDKU Sidoarjo<br> 
-      Politeknik Negeri Jember © Copyright 2023 
+      © 2025 Pemerintah Desa Kepulungan. Developed by Bara Api Digital 
    </div> 
 </footer> 

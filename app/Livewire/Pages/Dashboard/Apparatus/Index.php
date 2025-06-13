@@ -6,10 +6,11 @@ use Livewire\Component;
 use App\Models\Apparatus;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
+use Mary\Traits\Toast;
 
 class Index extends Component
 {
-    use WithPagination;
+    use WithPagination, Toast;
 
     protected $listeners = [
         'refreshApparatusIndex' => '$refresh',
@@ -31,6 +32,11 @@ class Index extends Component
         return Apparatus::query()
             ->latest()
             ->paginate(15);
+    }
+
+    public function delete($key) {
+        Apparatus::destroy(decrypt($key));
+        $this->info('Data aparatur berhasil dihapus');
     }
 
     public function render() {
