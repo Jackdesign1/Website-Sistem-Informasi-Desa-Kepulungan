@@ -17,9 +17,9 @@ class Budget extends Component
 
     public $silpa;
     public $villageBudget;
-    public $operationalBudget;
+    public $villageBudgetProperty;
+    public $operationalBudgetProperty;
 
-    #[Computed()]
     public function villageBudget() {
         return VillageBudget::where("year", $this->year)->first();
     }
@@ -43,19 +43,23 @@ class Budget extends Component
 
     public function getBudgetChartProperty()
     {
-        $villageBudget = $this->villageBudget;
-        $operationalBudget = $this->operationalBudget;
-
         return [
             "type" => "pie",
             "data" => [
-                "labels" => ["Pembelanjaan", "Pelaksanaan", "Pendapatan"],
+                "labels" => [
+                    // "Silpa", 
+                    "Pelaksanaan", 
+                    "Pendapatan"],
                 "datasets" => [
                     [
                         "label" => "Total",
-                        "data" => [0, $operationalBudget, $villageBudget],
+                        "data" => [
+                            // $this->silpa, 
+                            $this->villageBudgetProperty, 
+                            $this->operationalBudgetProperty
+                        ],
                         "backgroundColor" => [
-                            "#FF6384",  // Red
+                            // "#FF6384",  // Red
                             "#36A2EB",  // Blue
                             "#4BC0C0",  // Green
                         ],
@@ -90,9 +94,10 @@ class Budget extends Component
         $this->withChart = $withChart !== "false"? true : false;
         $this->year = $year;
 
+        $this->villageBudget = $this->villageBudget();
         $this->silpa = $this->villageBudget->silpa ?? 0;
-        $this->villageBudget = $this->getVillageBudgetProperty();
-        $this->operationalBudget = $this->getOperationalBudgetProperty();
+        $this->villageBudgetProperty = $this->getVillageBudgetProperty();
+        $this->operationalBudgetProperty = $this->getOperationalBudgetProperty();
         
         $this->budgetChart = $this->getBudgetChartProperty();
     }

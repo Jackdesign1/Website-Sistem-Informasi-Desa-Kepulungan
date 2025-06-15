@@ -54,7 +54,7 @@
             @endforeach
     
             <div class="mt-3 text-center">
-                <x-mary-button class="w-56 btn-success" icon="tabler.plus" wire:click="operationalType" spinner="operationalType"></x-mary-button>
+                <x-mary-button class="w-56 btn-success" icon="tabler.plus" wire:click="addOperationalType" spinner="addOperationalType"></x-mary-button>
             </div>
         </div>
     
