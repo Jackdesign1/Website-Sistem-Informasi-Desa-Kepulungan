@@ -21,6 +21,7 @@ use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
 use App\Livewire\Pages\Dashboard\Information\Report\Edit as ReportEdit;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
 use App\Livewire\Pages\Dashboard\Budget\Village\Edit;
+use App\Livewire\Pages\Dashboard\Homepage\HeroImage\Index as HeroImageIndex;
 use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Create;
 use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Edit as JobvacancyEdit;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
@@ -92,6 +93,14 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
             Route::get('/edit', JobvacancyEdit::class)
                 ->name('edit');
         });
+    });
+    Route::prefix('/hero-image')->name('hero-image.')->group(function() {
+        Route::get('/', HeroImageIndex::class)
+            ->name('index');
+        // Route::get('/create', Create::class)
+        //     ->name('create');
+        // Route::get('/edit/{key}', \App\Livewire\Pages\Dashboard\Information\HeroImage\Edit::class)
+        //     ->name('edit');
     });
 });
 

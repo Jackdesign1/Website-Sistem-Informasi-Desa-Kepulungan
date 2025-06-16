@@ -5,15 +5,229 @@
 (function () {
     'use strict';
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-    const eq = t => a => t === a;
-    const isNull = eq(null);
+    const hasProto = (v, constructor, predicate) => {
+      var _a;
+      if (predicate(v, constructor.prototype)) {
+        return true;
+      } else {
+        return ((_a = v.constructor) === null || _a === void 0 ? void 0 : _a.name) === constructor.name;
+      }
+    };
+    const typeOf = x => {
+      const t = typeof x;
+      if (x === null) {
+        return 'null';
+      } else if (t === 'object' && Array.isArray(x)) {
+        return 'array';
+      } else if (t === 'object' && hasProto(x, String, (o, proto) => proto.isPrototypeOf(o))) {
+        return 'string';
+      } else {
+        return t;
+      }
+    };
+    const isType$1 = type => value => typeOf(value) === type;
+    const isSimpleType = type => value => typeof value === type;
+    const eq$1 = t => a => t === a;
+    const isString = isType$1('string');
+    const isArray = isType$1('array');
+    const isBoolean = isSimpleType('boolean');
+    const isUndefined = eq$1(undefined);
+    const isNullable = a => a === null || a === undefined;
+    const isNonNullable = a => !isNullable(a);
+    const isFunction = isSimpleType('function');
+    const isNumber = isSimpleType('number');
 
+    const noop = () => {
+    };
+    const compose1 = (fbc, fab) => a => fbc(fab(a));
+    const constant = value => {
+      return () => {
+        return value;
+      };
+    };
     const identity = x => {
       return x;
     };
+    const tripleEquals = (a, b) => {
+      return a === b;
+    };
+    function curry(fn, ...initialArgs) {
+      return (...restArgs) => {
+        const all = initialArgs.concat(restArgs);
+        return fn.apply(null, all);
+      };
+    }
+    const call = f => {
+      f();
+    };
+    const never = constant(false);
+    const always = constant(true);
 
+    class Optional {
+      constructor(tag, value) {
+        this.tag = tag;
+        this.value = value;
+      }
+      static some(value) {
+        return new Optional(true, value);
+      }
+      static none() {
+        return Optional.singletonNone;
+      }
+      fold(onNone, onSome) {
+        if (this.tag) {
+          return onSome(this.value);
+        } else {
+          return onNone();
+        }
+      }
+      isSome() {
+        return this.tag;
+      }
+      isNone() {
+        return !this.tag;
+      }
+      map(mapper) {
+        if (this.tag) {
+          return Optional.some(mapper(this.value));
+        } else {
+          return Optional.none();
+        }
+      }
+      bind(binder) {
+        if (this.tag) {
+          return binder(this.value);
+        } else {
+          return Optional.none();
+        }
+      }
+      exists(predicate) {
+        return this.tag && predicate(this.value);
+      }
+      forall(predicate) {
+        return !this.tag || predicate(this.value);
+      }
+      filter(predicate) {
+        if (!this.tag || predicate(this.value)) {
+          return this;
+        } else {
+          return Optional.none();
+        }
+      }
+      getOr(replacement) {
+        return this.tag ? this.value : replacement;
+      }
+      or(replacement) {
+        return this.tag ? this : replacement;
+      }
+      getOrThunk(thunk) {
+        return this.tag ? this.value : thunk();
+      }
+      orThunk(thunk) {
+        return this.tag ? this : thunk();
+      }
+      getOrDie(message) {
+        if (!this.tag) {
+          throw new Error(message !== null && message !== void 0 ? message : 'Called getOrDie on None');
+        } else {
+          return this.value;
+        }
+      }
+      static from(value) {
+        return isNonNullable(value) ? Optional.some(value) : Optional.none();
+      }
+      getOrNull() {
+        return this.tag ? this.value : null;
+      }
+      getOrUndefined() {
+        return this.value;
+      }
+      each(worker) {
+        if (this.tag) {
+          worker(this.value);
+        }
+      }
+      toArray() {
+        return this.tag ? [this.value] : [];
+      }
+      toString() {
+        return this.tag ? `some(${ this.value })` : 'none()';
+      }
+    }
+    Optional.singletonNone = new Optional(false);
+
+    const keys = Object.keys;
+    const hasOwnProperty = Object.hasOwnProperty;
+    const each$1 = (obj, f) => {
+      const props = keys(obj);
+      for (let k = 0, len = props.length; k < len; k++) {
+        const i = props[k];
+        const x = obj[i];
+        f(x, i);
+      }
+    };
+    const objAcc = r => (x, i) => {
+      r[i] = x;
+    };
+    const internalFilter = (obj, pred, onTrue, onFalse) => {
+      each$1(obj, (x, i) => {
+        (pred(x, i) ? onTrue : onFalse)(x, i);
+      });
+    };
+    const filter$1 = (obj, pred) => {
+      const t = {};
+      internalFilter(obj, pred, objAcc(t), noop);
+      return t;
+    };
+    const mapToArray = (obj, f) => {
+      const r = [];
+      each$1(obj, (value, name) => {
+        r.push(f(value, name));
+      });
+      return r;
+    };
+    const values = obj => {
+      return mapToArray(obj, identity);
+    };
+    const size = obj => {
+      return keys(obj).length;
+    };
+    const get$4 = (obj, key) => {
+      return has(obj, key) ? Optional.from(obj[key]) : Optional.none();
+    };
+    const has = (obj, key) => hasOwnProperty.call(obj, key);
+    const hasNonNullableKey = (obj, key) => has(obj, key) && obj[key] !== undefined && obj[key] !== null;
+    const isEmpty$1 = r => {
+      for (const x in r) {
+        if (hasOwnProperty.call(r, x)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const nativeIndexOf = Array.prototype.indexOf;
+    const nativePush = Array.prototype.push;
+    const rawIndexOf = (ts, t) => nativeIndexOf.call(ts, t);
+    const contains = (xs, x) => rawIndexOf(xs, x) > -1;
+    const exists = (xs, pred) => {
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        if (pred(x, i)) {
+          return true;
+        }
+      }
+      return false;
+    };
+    const range = (num, f) => {
+      const r = [];
+      for (let i = 0; i < num; i++) {
+        r.push(f(i));
+      }
+      return r;
+    };
     const map = (xs, f) => {
       const len = xs.length;
       const r = new Array(len);
@@ -23,393 +237,3225 @@
       }
       return r;
     };
-
-    const punctuationStr = `[~\u2116|!-*+-\\/:;?@\\[-\`{}\u00A1\u00AB\u00B7\u00BB\u00BF;\u00B7\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1361-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u3008\u3009\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30\u2E31\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]`;
-    const regExps = {
-      aletter: '[A-Za-z\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u0527\u0531-\u0556\u0559\u0561-\u0587\u05d0-\u05ea\u05f0-\u05F3\u0620-\u064a\u066e\u066f\u0671-\u06d3\u06d5\u06e5\u06e6\u06ee\u06ef\u06fa-\u06fc\u06ff\u0710\u0712-\u072f\u074d-\u07a5\u07b1\u07ca-\u07ea\u07f4\u07f5\u07fa\u0800-\u0815\u081a\u0824\u0828\u0840-\u0858\u0904-\u0939\u093d\u0950\u0958-\u0961\u0971-\u0977\u0979-\u097f\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd\u09ce\u09dc\u09dd\u09df-\u09e1\u09f0\u09f1\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a59-\u0a5c\u0a5e\u0a72-\u0a74\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd\u0ad0\u0ae0\u0ae1\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d\u0b5c\u0b5d\u0b5f-\u0b61\u0b71\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bd0\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c33\u0c35-\u0c39\u0c3d\u0c58\u0c59\u0c60\u0c61\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd\u0cde\u0ce0\u0ce1\u0cf1\u0cf2\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d\u0d4e\u0d60\u0d61\u0d7a-\u0d7f\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f88-\u0f8c\u10a0-\u10c5\u10d0-\u10fa\u10fc\u1100-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u1380-\u138f\u13a0-\u13f4\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u16ee-\u16f0\u1700-\u170c\u170e-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176c\u176e-\u1770\u1820-\u1877\u1880-\u18a8\u18aa\u18b0-\u18f5\u1900-\u191c\u1a00-\u1a16\u1b05-\u1b33\u1b45-\u1b4b\u1b83-\u1ba0\u1bae\u1baf\u1bc0-\u1be5\u1c00-\u1c23\u1c4d-\u1c4f\u1c5a-\u1c7d\u1ce9-\u1cec\u1cee-\u1cf1\u1d00-\u1dbf\u1e00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fbc\u1fbe\u1fc2-\u1fc4\u1fc6-\u1fcc\u1fd0-\u1fd3\u1fd6-\u1fdb\u1fe0-\u1fec\u1ff2-\u1ff4\u1ff6-\u1ffc\u2071\u207f\u2090-\u209c\u2102\u2107\u210a-\u2113\u2115\u2119-\u211d\u2124\u2126\u2128\u212a-\u212d\u212f-\u2139\u213c-\u213f\u2145-\u2149\u214e\u2160-\u2188\u24B6-\u24E9\u2c00-\u2c2e\u2c30-\u2c5e\u2c60-\u2ce4\u2ceb-\u2cee\u2d00-\u2d25\u2d30-\u2d65\u2d6f\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u2e2f\u3005\u303b\u303c\u3105-\u312d\u3131-\u318e\u31a0-\u31ba\ua000-\ua48c\ua4d0-\ua4fd\ua500-\ua60c\ua610-\ua61f\ua62a\ua62b\ua640-\ua66e\ua67f-\ua697\ua6a0-\ua6ef\ua717-\ua71f\ua722-\ua788\ua78b-\ua78e\ua790\ua791\ua7a0-\ua7a9\ua7fa-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua822\ua840-\ua873\ua882-\ua8b3\ua8f2-\ua8f7\ua8fb\ua90a-\ua925\ua930-\ua946\ua960-\ua97c\ua984-\ua9b2\ua9cf\uaa00-\uaa28\uaa40-\uaa42\uaa44-\uaa4b\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uabc0-\uabe2\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\ufb00-\ufb06\ufb13-\ufb17\ufb1d\ufb1f-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a\uffa0-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc]',
-      midnumlet: `[-'\\.\u2018\u2019\u2024\uFE52\uFF07\uFF0E]`,
-      midletter: '[:\xB7\xB7\u05F4\u2027\uFE13\uFE55\uFF1A]',
-      midnum: '[\xB1+*/,;;\u0589\u060C\u060D\u066C\u07F8\u2044\uFE10\uFE14\uFE50\uFE54\uFF0C\uFF1B]',
-      numeric: '[0-9\u0660-\u0669\u066B\u06f0-\u06f9\u07c0-\u07c9\u0966-\u096f\u09e6-\u09ef\u0a66-\u0a6f\u0ae6-\u0aef\u0b66-\u0b6f\u0be6-\u0bef\u0c66-\u0c6f\u0ce6-\u0cef\u0d66-\u0d6f\u0e50-\u0e59\u0ed0-\u0ed9\u0f20-\u0f29\u1040-\u1049\u1090-\u1099\u17e0-\u17e9\u1810-\u1819\u1946-\u194f\u19d0-\u19d9\u1a80-\u1a89\u1a90-\u1a99\u1b50-\u1b59\u1bb0-\u1bb9\u1c40-\u1c49\u1c50-\u1c59\ua620-\ua629\ua8d0-\ua8d9\ua900-\ua909\ua9d0-\ua9d9\uaa50-\uaa59\uabf0-\uabf9]',
-      cr: '\\r',
-      lf: '\\n',
-      newline: '[\x0B\f\x85\u2028\u2029]',
-      extend: '[\u0300-\u036f\u0483-\u0489\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06dc\u06df-\u06e4\u06e7\u06e8\u06ea-\u06ed\u0711\u0730-\u074a\u07a6-\u07b0\u07eb-\u07f3\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0859-\u085b\u0900-\u0903\u093a-\u093c\u093e-\u094f\u0951-\u0957\u0962\u0963\u0981-\u0983\u09bc\u09be-\u09c4\u09c7\u09c8\u09cb-\u09cd\u09d7\u09e2\u09e3\u0a01-\u0a03\u0a3c\u0a3e-\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a70\u0a71\u0a75\u0a81-\u0a83\u0abc\u0abe-\u0ac5\u0ac7-\u0ac9\u0acb-\u0acd\u0ae2\u0ae3\u0b01-\u0b03\u0b3c\u0b3e-\u0b44\u0b47\u0b48\u0b4b-\u0b4d\u0b56\u0b57\u0b62\u0b63\u0b82\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcd\u0bd7\u0c01-\u0c03\u0c3e-\u0c44\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0c82\u0c83\u0cbc\u0cbe-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0d02\u0d03\u0d3e-\u0d44\u0d46-\u0d48\u0d4a-\u0d4d\u0d57\u0d62\u0d63\u0d82\u0d83\u0dca\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0df2\u0df3\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0eb1\u0eb4-\u0eb9\u0ebb\u0ebc\u0ec8-\u0ecd\u0f18\u0f19\u0f35\u0f37\u0f39\u0f3e\u0f3f\u0f71-\u0f84\u0f86\u0f87\u0f8d-\u0f97\u0f99-\u0fbc\u0fc6\u102b-\u103e\u1056-\u1059\u105e-\u1060\u1062-\u1064\u1067-\u106d\u1071-\u1074\u1082-\u108d\u108f\u109a-\u109d\u135d-\u135f\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b6-\u17d3\u17dd\u180b-\u180d\u18a9\u1920-\u192b\u1930-\u193b\u19b0-\u19c0\u19c8\u19c9\u1a17-\u1a1b\u1a55-\u1a5e\u1a60-\u1a7c\u1a7f\u1b00-\u1b04\u1b34-\u1b44\u1b6b-\u1b73\u1b80-\u1b82\u1ba1-\u1baa\u1be6-\u1bf3\u1c24-\u1c37\u1cd0-\u1cd2\u1cd4-\u1ce8\u1ced\u1cf2\u1dc0-\u1de6\u1dfc-\u1dff\u200c\u200d\u20d0-\u20f0\u2cef-\u2cf1\u2d7f\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua66f-\uA672\ua67c\ua67d\ua6f0\ua6f1\ua802\ua806\ua80b\ua823-\ua827\ua880\ua881\ua8b4-\ua8c4\ua8e0-\ua8f1\ua926-\ua92d\ua947-\ua953\ua980-\ua983\ua9b3-\ua9c0\uaa29-\uaa36\uaa43\uaa4c\uaa4d\uaa7b\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uabe3-\uabea\uabec\uabed\ufb1e\ufe00-\ufe0f\ufe20-\ufe26\uff9e\uff9f]',
-      format: '[\xAD\u0600-\u0603\u06DD\u070F\u17b4\u17b5\u200E\u200F\u202A-\u202E\u2060-\u2064\u206A-\u206F\uFEFF\uFFF9-\uFFFB]',
-      katakana: '[\u3031-\u3035\u309B\u309C\u30A0-\u30fa\u30fc-\u30ff\u31f0-\u31ff\u32D0-\u32FE\u3300-\u3357\uff66-\uff9d]',
-      extendnumlet: '[=_\u203f\u2040\u2054\ufe33\ufe34\ufe4d-\ufe4f\uff3f\u2200-\u22FF<>]',
-      punctuation: punctuationStr
+    const each = (xs, f) => {
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        f(x, i);
+      }
     };
-    const characterIndices = {
-      ALETTER: 0,
-      MIDNUMLET: 1,
-      MIDLETTER: 2,
-      MIDNUM: 3,
-      NUMERIC: 4,
-      CR: 5,
-      LF: 6,
-      NEWLINE: 7,
-      EXTEND: 8,
-      FORMAT: 9,
-      KATAKANA: 10,
-      EXTENDNUMLET: 11,
-      AT: 12,
-      OTHER: 13
+    const eachr = (xs, f) => {
+      for (let i = xs.length - 1; i >= 0; i--) {
+        const x = xs[i];
+        f(x, i);
+      }
     };
-    const SETS$1 = [
-      new RegExp(regExps.aletter),
-      new RegExp(regExps.midnumlet),
-      new RegExp(regExps.midletter),
-      new RegExp(regExps.midnum),
-      new RegExp(regExps.numeric),
-      new RegExp(regExps.cr),
-      new RegExp(regExps.lf),
-      new RegExp(regExps.newline),
-      new RegExp(regExps.extend),
-      new RegExp(regExps.format),
-      new RegExp(regExps.katakana),
-      new RegExp(regExps.extendnumlet),
-      new RegExp('@')
-    ];
-    const EMPTY_STRING$1 = '';
-    const PUNCTUATION$1 = new RegExp('^' + regExps.punctuation + '$');
-    const WHITESPACE$1 = /^\s+$/;
-
-    const SETS = SETS$1;
-    const OTHER = characterIndices.OTHER;
-    const getType = char => {
-      let type = OTHER;
-      const setsLength = SETS.length;
-      for (let j = 0; j < setsLength; ++j) {
-        const set = SETS[j];
-        if (set && set.test(char)) {
-          type = j;
+    const partition = (xs, pred) => {
+      const pass = [];
+      const fail = [];
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        const arr = pred(x, i) ? pass : fail;
+        arr.push(x);
+      }
+      return {
+        pass,
+        fail
+      };
+    };
+    const filter = (xs, pred) => {
+      const r = [];
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        if (pred(x, i)) {
+          r.push(x);
+        }
+      }
+      return r;
+    };
+    const foldr = (xs, f, acc) => {
+      eachr(xs, (x, i) => {
+        acc = f(acc, x, i);
+      });
+      return acc;
+    };
+    const foldl = (xs, f, acc) => {
+      each(xs, (x, i) => {
+        acc = f(acc, x, i);
+      });
+      return acc;
+    };
+    const findUntil = (xs, pred, until) => {
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        if (pred(x, i)) {
+          return Optional.some(x);
+        } else if (until(x, i)) {
           break;
         }
       }
-      return type;
+      return Optional.none();
     };
-    const memoize = func => {
-      const cache = {};
-      return char => {
-        if (cache[char]) {
-          return cache[char];
-        } else {
-          const result = func(char);
-          cache[char] = result;
-          return result;
+    const find = (xs, pred) => {
+      return findUntil(xs, pred, never);
+    };
+    const flatten$1 = xs => {
+      const r = [];
+      for (let i = 0, len = xs.length; i < len; ++i) {
+        if (!isArray(xs[i])) {
+          throw new Error('Arr.flatten item ' + i + ' was not an array, input: ' + xs);
         }
-      };
+        nativePush.apply(r, xs[i]);
+      }
+      return r;
     };
-    const classify = characters => {
-      const memoized = memoize(getType);
-      return map(characters, memoized);
-    };
-
-    const isWordBoundary = (map, index) => {
-      const type = map[index];
-      const nextType = map[index + 1];
-      if (index < 0 || index > map.length - 1 && index !== 0) {
-        return false;
-      }
-      if (type === characterIndices.ALETTER && nextType === characterIndices.ALETTER) {
-        return false;
-      }
-      const nextNextType = map[index + 2];
-      if (type === characterIndices.ALETTER && (nextType === characterIndices.MIDLETTER || nextType === characterIndices.MIDNUMLET || nextType === characterIndices.AT) && nextNextType === characterIndices.ALETTER) {
-        return false;
-      }
-      const prevType = map[index - 1];
-      if ((type === characterIndices.MIDLETTER || type === characterIndices.MIDNUMLET || nextType === characterIndices.AT) && nextType === characterIndices.ALETTER && prevType === characterIndices.ALETTER) {
-        return false;
-      }
-      if ((type === characterIndices.NUMERIC || type === characterIndices.ALETTER) && (nextType === characterIndices.NUMERIC || nextType === characterIndices.ALETTER)) {
-        return false;
-      }
-      if ((type === characterIndices.MIDNUM || type === characterIndices.MIDNUMLET) && nextType === characterIndices.NUMERIC && prevType === characterIndices.NUMERIC) {
-        return false;
-      }
-      if (type === characterIndices.NUMERIC && (nextType === characterIndices.MIDNUM || nextType === characterIndices.MIDNUMLET) && nextNextType === characterIndices.NUMERIC) {
-        return false;
-      }
-      if ((type === characterIndices.EXTEND || type === characterIndices.FORMAT) && (nextType === characterIndices.ALETTER || nextType === characterIndices.NUMERIC || nextType === characterIndices.KATAKANA || nextType === characterIndices.EXTEND || nextType === characterIndices.FORMAT) || (nextType === characterIndices.EXTEND || nextType === characterIndices.FORMAT && (nextNextType === characterIndices.ALETTER || nextNextType === characterIndices.NUMERIC || nextNextType === characterIndices.KATAKANA || nextNextType === characterIndices.EXTEND || nextNextType === characterIndices.FORMAT)) && (type === characterIndices.ALETTER || type === characterIndices.NUMERIC || type === characterIndices.KATAKANA || type === characterIndices.EXTEND || type === characterIndices.FORMAT)) {
-        return false;
-      }
-      if (type === characterIndices.CR && nextType === characterIndices.LF) {
-        return false;
-      }
-      if (type === characterIndices.NEWLINE || type === characterIndices.CR || type === characterIndices.LF) {
-        return true;
-      }
-      if (nextType === characterIndices.NEWLINE || nextType === characterIndices.CR || nextType === characterIndices.LF) {
-        return true;
-      }
-      if (type === characterIndices.KATAKANA && nextType === characterIndices.KATAKANA) {
-        return false;
-      }
-      if (nextType === characterIndices.EXTENDNUMLET && (type === characterIndices.ALETTER || type === characterIndices.NUMERIC || type === characterIndices.KATAKANA || type === characterIndices.EXTENDNUMLET)) {
-        return false;
-      }
-      if (type === characterIndices.EXTENDNUMLET && (nextType === characterIndices.ALETTER || nextType === characterIndices.NUMERIC || nextType === characterIndices.KATAKANA)) {
-        return false;
-      }
-      if (type === characterIndices.AT) {
-        return false;
+    const bind = (xs, f) => flatten$1(map(xs, f));
+    const forall = (xs, pred) => {
+      for (let i = 0, len = xs.length; i < len; ++i) {
+        const x = xs[i];
+        if (pred(x, i) !== true) {
+          return false;
+        }
       }
       return true;
     };
+    const mapToObject = (xs, f) => {
+      const r = {};
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        r[String(x)] = f(x, i);
+      }
+      return r;
+    };
+    const get$3 = (xs, i) => i >= 0 && i < xs.length ? Optional.some(xs[i]) : Optional.none();
+    const head = xs => get$3(xs, 0);
+    const last = xs => get$3(xs, xs.length - 1);
+    const findMap = (arr, f) => {
+      for (let i = 0; i < arr.length; i++) {
+        const r = f(arr[i], i);
+        if (r.isSome()) {
+          return r;
+        }
+      }
+      return Optional.none();
+    };
 
-    const EMPTY_STRING = EMPTY_STRING$1;
-    const WHITESPACE = WHITESPACE$1;
-    const PUNCTUATION = PUNCTUATION$1;
-    const isProtocol = str => str === 'http' || str === 'https';
-    const findWordEnd = (characters, startIndex) => {
-      let i;
-      for (i = startIndex; i < characters.length; i++) {
-        if (WHITESPACE.test(characters[i])) {
+    const COMMENT = 8;
+    const DOCUMENT = 9;
+    const DOCUMENT_FRAGMENT = 11;
+    const ELEMENT = 1;
+    const TEXT = 3;
+
+    const fromHtml = (html, scope) => {
+      const doc = scope || document;
+      const div = doc.createElement('div');
+      div.innerHTML = html;
+      if (!div.hasChildNodes() || div.childNodes.length > 1) {
+        const message = 'HTML does not have a single root node';
+        console.error(message, html);
+        throw new Error(message);
+      }
+      return fromDom$1(div.childNodes[0]);
+    };
+    const fromTag = (tag, scope) => {
+      const doc = scope || document;
+      const node = doc.createElement(tag);
+      return fromDom$1(node);
+    };
+    const fromText = (text, scope) => {
+      const doc = scope || document;
+      const node = doc.createTextNode(text);
+      return fromDom$1(node);
+    };
+    const fromDom$1 = node => {
+      if (node === null || node === undefined) {
+        throw new Error('Node cannot be null or undefined');
+      }
+      return { dom: node };
+    };
+    const fromPoint = (docElm, x, y) => Optional.from(docElm.dom.elementFromPoint(x, y)).map(fromDom$1);
+    const SugarElement = {
+      fromHtml,
+      fromTag,
+      fromText,
+      fromDom: fromDom$1,
+      fromPoint
+    };
+
+    const is$2 = (element, selector) => {
+      const dom = element.dom;
+      if (dom.nodeType !== ELEMENT) {
+        return false;
+      } else {
+        const elem = dom;
+        if (elem.matches !== undefined) {
+          return elem.matches(selector);
+        } else if (elem.msMatchesSelector !== undefined) {
+          return elem.msMatchesSelector(selector);
+        } else if (elem.webkitMatchesSelector !== undefined) {
+          return elem.webkitMatchesSelector(selector);
+        } else if (elem.mozMatchesSelector !== undefined) {
+          return elem.mozMatchesSelector(selector);
+        } else {
+          throw new Error('Browser lacks native selectors');
+        }
+      }
+    };
+    const bypassSelector = dom => dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT || dom.childElementCount === 0;
+    const all$1 = (selector, scope) => {
+      const base = scope === undefined ? document : scope.dom;
+      return bypassSelector(base) ? [] : map(base.querySelectorAll(selector), SugarElement.fromDom);
+    };
+    const one = (selector, scope) => {
+      const base = scope === undefined ? document : scope.dom;
+      return bypassSelector(base) ? Optional.none() : Optional.from(base.querySelector(selector)).map(SugarElement.fromDom);
+    };
+
+    const eq = (e1, e2) => e1.dom === e2.dom;
+    const is$1 = is$2;
+
+    typeof window !== 'undefined' ? window : Function('return this;')();
+
+    const name = element => {
+      const r = element.dom.nodeName;
+      return r.toLowerCase();
+    };
+    const type = element => element.dom.nodeType;
+    const isType = t => element => type(element) === t;
+    const isComment = element => type(element) === COMMENT || name(element) === '#comment';
+    const isElement = isType(ELEMENT);
+    const isText = isType(TEXT);
+    const isDocument = isType(DOCUMENT);
+    const isDocumentFragment = isType(DOCUMENT_FRAGMENT);
+    const isTag = tag => e => isElement(e) && name(e) === tag;
+
+    const owner = element => SugarElement.fromDom(element.dom.ownerDocument);
+    const documentOrOwner = dos => isDocument(dos) ? dos : owner(dos);
+    const parent = element => Optional.from(element.dom.parentNode).map(SugarElement.fromDom);
+    const parents = (element, isRoot) => {
+      const stop = isFunction(isRoot) ? isRoot : never;
+      let dom = element.dom;
+      const ret = [];
+      while (dom.parentNode !== null && dom.parentNode !== undefined) {
+        const rawParent = dom.parentNode;
+        const p = SugarElement.fromDom(rawParent);
+        ret.push(p);
+        if (stop(p) === true) {
+          break;
+        } else {
+          dom = rawParent;
+        }
+      }
+      return ret;
+    };
+    const prevSibling = element => Optional.from(element.dom.previousSibling).map(SugarElement.fromDom);
+    const nextSibling = element => Optional.from(element.dom.nextSibling).map(SugarElement.fromDom);
+    const children$3 = element => map(element.dom.childNodes, SugarElement.fromDom);
+    const child$3 = (element, index) => {
+      const cs = element.dom.childNodes;
+      return Optional.from(cs[index]).map(SugarElement.fromDom);
+    };
+    const firstChild = element => child$3(element, 0);
+
+    const isShadowRoot = dos => isDocumentFragment(dos) && isNonNullable(dos.dom.host);
+    const getRootNode = e => SugarElement.fromDom(e.dom.getRootNode());
+    const getShadowRoot = e => {
+      const r = getRootNode(e);
+      return isShadowRoot(r) ? Optional.some(r) : Optional.none();
+    };
+    const getShadowHost = e => SugarElement.fromDom(e.dom.host);
+
+    const inBody = element => {
+      const dom = isText(element) ? element.dom.parentNode : element.dom;
+      if (dom === undefined || dom === null || dom.ownerDocument === null) {
+        return false;
+      }
+      const doc = dom.ownerDocument;
+      return getShadowRoot(SugarElement.fromDom(dom)).fold(() => doc.body.contains(dom), compose1(inBody, getShadowHost));
+    };
+
+    var ClosestOrAncestor = (is, ancestor, scope, a, isRoot) => {
+      if (is(scope, a)) {
+        return Optional.some(scope);
+      } else if (isFunction(isRoot) && isRoot(scope)) {
+        return Optional.none();
+      } else {
+        return ancestor(scope, a, isRoot);
+      }
+    };
+
+    const ancestor$1 = (scope, predicate, isRoot) => {
+      let element = scope.dom;
+      const stop = isFunction(isRoot) ? isRoot : never;
+      while (element.parentNode) {
+        element = element.parentNode;
+        const el = SugarElement.fromDom(element);
+        if (predicate(el)) {
+          return Optional.some(el);
+        } else if (stop(el)) {
           break;
         }
       }
-      return i;
+      return Optional.none();
     };
-    const findUrlEnd = (characters, startIndex) => {
-      const endIndex = findWordEnd(characters, startIndex + 1);
-      const peakedWord = characters.slice(startIndex + 1, endIndex).join(EMPTY_STRING);
-      return peakedWord.substr(0, 3) === '://' ? endIndex : startIndex;
+    const closest$2 = (scope, predicate, isRoot) => {
+      const is = (s, test) => test(s);
+      return ClosestOrAncestor(is, ancestor$1, scope, predicate, isRoot);
     };
-    const findWordsWithIndices = (chars, sChars, characterMap, options) => {
-      const words = [];
-      const indices = [];
-      let word = [];
-      for (let i = 0; i < characterMap.length; ++i) {
-        word.push(chars[i]);
-        if (isWordBoundary(characterMap, i)) {
-          const ch = sChars[i];
-          if ((options.includeWhitespace || !WHITESPACE.test(ch)) && (options.includePunctuation || !PUNCTUATION.test(ch))) {
-            const startOfWord = i - word.length + 1;
-            const endOfWord = i + 1;
-            const str = sChars.slice(startOfWord, endOfWord).join(EMPTY_STRING);
-            if (isProtocol(str)) {
-              const endOfUrl = findUrlEnd(sChars, i);
-              const url = chars.slice(endOfWord, endOfUrl);
-              Array.prototype.push.apply(word, url);
-              i = endOfUrl;
-            }
-            if (sChars[i + 1] === '.' && /^([a-zA-Z]\.)+$/.test(str + '.')) {
-              word.push(chars[i + 1]);
-              indices.push({
-                start: startOfWord,
-                end: endOfWord + 1
-              });
-            } else {
-              indices.push({
-                start: startOfWord,
-                end: endOfWord
-              });
-            }
-            words.push(word);
+    const child$2 = (scope, predicate) => {
+      const pred = node => predicate(SugarElement.fromDom(node));
+      const result = find(scope.dom.childNodes, pred);
+      return result.map(SugarElement.fromDom);
+    };
+
+    const ancestor = (scope, selector, isRoot) => ancestor$1(scope, e => is$2(e, selector), isRoot);
+    const child$1 = (scope, selector) => child$2(scope, e => is$2(e, selector));
+    const descendant = (scope, selector) => one(selector, scope);
+    const closest$1 = (scope, selector, isRoot) => {
+      const is = (element, selector) => is$2(element, selector);
+      return ClosestOrAncestor(is, ancestor, scope, selector, isRoot);
+    };
+
+    const closest = target => closest$1(target, '[contenteditable]');
+    const isEditable = (element, assumeEditable = false) => {
+      if (inBody(element)) {
+        return element.dom.isContentEditable;
+      } else {
+        return closest(element).fold(constant(assumeEditable), editable => getRaw$1(editable) === 'true');
+      }
+    };
+    const getRaw$1 = element => element.dom.contentEditable;
+
+    const getNodeName = elm => elm.nodeName.toLowerCase();
+    const getBody = editor => SugarElement.fromDom(editor.getBody());
+    const getIsRoot = editor => element => eq(element, getBody(editor));
+    const removePxSuffix = size => size ? size.replace(/px$/, '') : '';
+    const addPxSuffix = size => /^\d+(\.\d+)?$/.test(size) ? size + 'px' : size;
+    const getSelectionStart = editor => SugarElement.fromDom(editor.selection.getStart());
+    const getSelectionEnd = editor => SugarElement.fromDom(editor.selection.getEnd());
+    const isInEditableContext = cell => closest$2(cell, isTag('table')).forall(isEditable);
+
+    const children$2 = (scope, predicate) => filter(children$3(scope), predicate);
+    const descendants$1 = (scope, predicate) => {
+      let result = [];
+      each(children$3(scope), x => {
+        if (predicate(x)) {
+          result = result.concat([x]);
+        }
+        result = result.concat(descendants$1(x, predicate));
+      });
+      return result;
+    };
+
+    const children$1 = (scope, selector) => children$2(scope, e => is$2(e, selector));
+    const descendants = (scope, selector) => all$1(selector, scope);
+
+    const rawSet = (dom, key, value) => {
+      if (isString(value) || isBoolean(value) || isNumber(value)) {
+        dom.setAttribute(key, value + '');
+      } else {
+        console.error('Invalid call to Attribute.set. Key ', key, ':: Value ', value, ':: Element ', dom);
+        throw new Error('Attribute value was not simple');
+      }
+    };
+    const set$2 = (element, key, value) => {
+      rawSet(element.dom, key, value);
+    };
+    const setAll = (element, attrs) => {
+      const dom = element.dom;
+      each$1(attrs, (v, k) => {
+        rawSet(dom, k, v);
+      });
+    };
+    const get$2 = (element, key) => {
+      const v = element.dom.getAttribute(key);
+      return v === null ? undefined : v;
+    };
+    const getOpt = (element, key) => Optional.from(get$2(element, key));
+    const remove$2 = (element, key) => {
+      element.dom.removeAttribute(key);
+    };
+    const clone = element => foldl(element.dom.attributes, (acc, attr) => {
+      acc[attr.name] = attr.value;
+      return acc;
+    }, {});
+
+    const is = (lhs, rhs, comparator = tripleEquals) => lhs.exists(left => comparator(left, rhs));
+    const cat = arr => {
+      const r = [];
+      const push = x => {
+        r.push(x);
+      };
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].each(push);
+      }
+      return r;
+    };
+    const lift2 = (oa, ob, f) => oa.isSome() && ob.isSome() ? Optional.some(f(oa.getOrDie(), ob.getOrDie())) : Optional.none();
+    const flatten = oot => oot.bind(identity);
+    const someIf = (b, a) => b ? Optional.some(a) : Optional.none();
+
+    const removeFromStart = (str, numChars) => {
+      return str.substring(numChars);
+    };
+
+    const checkRange = (str, substr, start) => substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
+    const removeLeading = (str, prefix) => {
+      return startsWith(str, prefix) ? removeFromStart(str, prefix.length) : str;
+    };
+    const startsWith = (str, prefix) => {
+      return checkRange(str, prefix, 0);
+    };
+    const blank = r => s => s.replace(r, '');
+    const trim = blank(/^\s+|\s+$/g);
+    const isNotEmpty = s => s.length > 0;
+    const isEmpty = s => !isNotEmpty(s);
+    const toInt = (value, radix = 10) => {
+      const num = parseInt(value, radix);
+      return isNaN(num) ? Optional.none() : Optional.some(num);
+    };
+    const toFloat = value => {
+      const num = parseFloat(value);
+      return isNaN(num) ? Optional.none() : Optional.some(num);
+    };
+
+    const isSupported = dom => dom.style !== undefined && isFunction(dom.style.getPropertyValue);
+
+    const internalSet = (dom, property, value) => {
+      if (!isString(value)) {
+        console.error('Invalid call to CSS.set. Property ', property, ':: Value ', value, ':: Element ', dom);
+        throw new Error('CSS value must be a string: ' + value);
+      }
+      if (isSupported(dom)) {
+        dom.style.setProperty(property, value);
+      }
+    };
+    const internalRemove = (dom, property) => {
+      if (isSupported(dom)) {
+        dom.style.removeProperty(property);
+      }
+    };
+    const set$1 = (element, property, value) => {
+      const dom = element.dom;
+      internalSet(dom, property, value);
+    };
+    const get$1 = (element, property) => {
+      const dom = element.dom;
+      const styles = window.getComputedStyle(dom);
+      const r = styles.getPropertyValue(property);
+      return r === '' && !inBody(element) ? getUnsafeProperty(dom, property) : r;
+    };
+    const getUnsafeProperty = (dom, property) => isSupported(dom) ? dom.style.getPropertyValue(property) : '';
+    const getRaw = (element, property) => {
+      const dom = element.dom;
+      const raw = getUnsafeProperty(dom, property);
+      return Optional.from(raw).filter(r => r.length > 0);
+    };
+    const remove$1 = (element, property) => {
+      const dom = element.dom;
+      internalRemove(dom, property);
+      if (is(getOpt(element, 'style').map(trim), '')) {
+        remove$2(element, 'style');
+      }
+    };
+
+    const getAttrValue = (cell, name, fallback = 0) => getOpt(cell, name).map(value => parseInt(value, 10)).getOr(fallback);
+
+    const firstLayer = (scope, selector) => {
+      return filterFirstLayer(scope, selector, always);
+    };
+    const filterFirstLayer = (scope, selector, predicate) => {
+      return bind(children$3(scope), x => {
+        if (is$2(x, selector)) {
+          return predicate(x) ? [x] : [];
+        } else {
+          return filterFirstLayer(x, selector, predicate);
+        }
+      });
+    };
+
+    const validSectionList = [
+      'tfoot',
+      'thead',
+      'tbody',
+      'colgroup'
+    ];
+    const isValidSection = parentName => contains(validSectionList, parentName);
+    const grid = (rows, columns) => ({
+      rows,
+      columns
+    });
+    const detail = (element, rowspan, colspan) => ({
+      element,
+      rowspan,
+      colspan
+    });
+    const extended = (element, rowspan, colspan, row, column, isLocked) => ({
+      element,
+      rowspan,
+      colspan,
+      row,
+      column,
+      isLocked
+    });
+    const rowdetail = (element, cells, section) => ({
+      element,
+      cells,
+      section
+    });
+    const bounds = (startRow, startCol, finishRow, finishCol) => ({
+      startRow,
+      startCol,
+      finishRow,
+      finishCol
+    });
+    const columnext = (element, colspan, column) => ({
+      element,
+      colspan,
+      column
+    });
+    const colgroup = (element, columns) => ({
+      element,
+      columns
+    });
+
+    const lookup = (tags, element, isRoot = never) => {
+      if (isRoot(element)) {
+        return Optional.none();
+      }
+      if (contains(tags, name(element))) {
+        return Optional.some(element);
+      }
+      const isRootOrUpperTable = elm => is$2(elm, 'table') || isRoot(elm);
+      return ancestor(element, tags.join(','), isRootOrUpperTable);
+    };
+    const cell = (element, isRoot) => lookup([
+      'td',
+      'th'
+    ], element, isRoot);
+    const cells = ancestor => firstLayer(ancestor, 'th,td');
+    const columns = ancestor => {
+      if (is$2(ancestor, 'colgroup')) {
+        return children$1(ancestor, 'col');
+      } else {
+        return bind(columnGroups(ancestor), columnGroup => children$1(columnGroup, 'col'));
+      }
+    };
+    const table = (element, isRoot) => closest$1(element, 'table', isRoot);
+    const rows = ancestor => firstLayer(ancestor, 'tr');
+    const columnGroups = ancestor => table(ancestor).fold(constant([]), table => children$1(table, 'colgroup'));
+
+    const fromRowsOrColGroups = (elems, getSection) => map(elems, row => {
+      if (name(row) === 'colgroup') {
+        const cells = map(columns(row), column => {
+          const colspan = getAttrValue(column, 'span', 1);
+          return detail(column, 1, colspan);
+        });
+        return rowdetail(row, cells, 'colgroup');
+      } else {
+        const cells$1 = map(cells(row), cell => {
+          const rowspan = getAttrValue(cell, 'rowspan', 1);
+          const colspan = getAttrValue(cell, 'colspan', 1);
+          return detail(cell, rowspan, colspan);
+        });
+        return rowdetail(row, cells$1, getSection(row));
+      }
+    });
+    const getParentSection = group => parent(group).map(parent => {
+      const parentName = name(parent);
+      return isValidSection(parentName) ? parentName : 'tbody';
+    }).getOr('tbody');
+    const fromTable$1 = table => {
+      const rows$1 = rows(table);
+      const columnGroups$1 = columnGroups(table);
+      const elems = [
+        ...columnGroups$1,
+        ...rows$1
+      ];
+      return fromRowsOrColGroups(elems, getParentSection);
+    };
+
+    const LOCKED_COL_ATTR = 'data-snooker-locked-cols';
+    const getLockedColumnsFromTable = table => getOpt(table, LOCKED_COL_ATTR).bind(lockedColStr => Optional.from(lockedColStr.match(/\d+/g))).map(lockedCols => mapToObject(lockedCols, always));
+
+    const key = (row, column) => {
+      return row + ',' + column;
+    };
+    const getAt = (warehouse, row, column) => Optional.from(warehouse.access[key(row, column)]);
+    const findItem = (warehouse, item, comparator) => {
+      const filtered = filterItems(warehouse, detail => {
+        return comparator(item, detail.element);
+      });
+      return filtered.length > 0 ? Optional.some(filtered[0]) : Optional.none();
+    };
+    const filterItems = (warehouse, predicate) => {
+      const all = bind(warehouse.all, r => {
+        return r.cells;
+      });
+      return filter(all, predicate);
+    };
+    const generateColumns = rowData => {
+      const columnsGroup = {};
+      let index = 0;
+      each(rowData.cells, column => {
+        const colspan = column.colspan;
+        range(colspan, columnIndex => {
+          const colIndex = index + columnIndex;
+          columnsGroup[colIndex] = columnext(column.element, colspan, colIndex);
+        });
+        index += colspan;
+      });
+      return columnsGroup;
+    };
+    const generate$1 = list => {
+      const access = {};
+      const cells = [];
+      const tableOpt = head(list).map(rowData => rowData.element).bind(table);
+      const lockedColumns = tableOpt.bind(getLockedColumnsFromTable).getOr({});
+      let maxRows = 0;
+      let maxColumns = 0;
+      let rowCount = 0;
+      const {
+        pass: colgroupRows,
+        fail: rows
+      } = partition(list, rowData => rowData.section === 'colgroup');
+      each(rows, rowData => {
+        const currentRow = [];
+        each(rowData.cells, rowCell => {
+          let start = 0;
+          while (access[key(rowCount, start)] !== undefined) {
+            start++;
           }
-          word = [];
-        }
-      }
+          const isLocked = hasNonNullableKey(lockedColumns, start.toString());
+          const current = extended(rowCell.element, rowCell.rowspan, rowCell.colspan, rowCount, start, isLocked);
+          for (let occupiedColumnPosition = 0; occupiedColumnPosition < rowCell.colspan; occupiedColumnPosition++) {
+            for (let occupiedRowPosition = 0; occupiedRowPosition < rowCell.rowspan; occupiedRowPosition++) {
+              const rowPosition = rowCount + occupiedRowPosition;
+              const columnPosition = start + occupiedColumnPosition;
+              const newpos = key(rowPosition, columnPosition);
+              access[newpos] = current;
+              maxColumns = Math.max(maxColumns, columnPosition + 1);
+            }
+          }
+          currentRow.push(current);
+        });
+        maxRows++;
+        cells.push(rowdetail(rowData.element, currentRow, rowData.section));
+        rowCount++;
+      });
+      const {columns, colgroups} = last(colgroupRows).map(rowData => {
+        const columns = generateColumns(rowData);
+        const colgroup$1 = colgroup(rowData.element, values(columns));
+        return {
+          colgroups: [colgroup$1],
+          columns
+        };
+      }).getOrThunk(() => ({
+        colgroups: [],
+        columns: {}
+      }));
+      const grid$1 = grid(maxRows, maxColumns);
       return {
-        words,
-        indices
+        grid: grid$1,
+        access,
+        all: cells,
+        columns,
+        colgroups
       };
     };
-    const getDefaultOptions = () => ({
-      includeWhitespace: false,
-      includePunctuation: false
-    });
-    const getWordsWithIndices = (chars, extract, options) => {
-      options = {
-        ...getDefaultOptions(),
-        ...options
-      };
-      const extractedChars = map(chars, extract);
-      const characterMap = classify(extractedChars);
-      return findWordsWithIndices(chars, extractedChars, characterMap, options);
+    const fromTable = table => {
+      const list = fromTable$1(table);
+      return generate$1(list);
     };
-    const getWords$1 = (chars, extract, options) => getWordsWithIndices(chars, extract, options).words;
+    const justCells = warehouse => bind(warehouse.all, w => w.cells);
+    const justColumns = warehouse => values(warehouse.columns);
+    const hasColumns = warehouse => keys(warehouse.columns).length > 0;
+    const getColumnAt = (warehouse, columnIndex) => Optional.from(warehouse.columns[columnIndex]);
+    const Warehouse = {
+      fromTable,
+      generate: generate$1,
+      getAt,
+      findItem,
+      filterItems,
+      justCells,
+      justColumns,
+      hasColumns,
+      getColumnAt
+    };
 
-    const getWords = getWords$1;
+    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
-    const removeZwsp$1 = s => s.replace(/\uFEFF/g, '');
-
-    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.TreeWalker');
-
-    const getText = (node, schema) => {
-      const blockElements = schema.getBlockElements();
-      const voidElements = schema.getVoidElements();
-      const isNewline = node => blockElements[node.nodeName] || voidElements[node.nodeName];
-      const textBlocks = [];
-      let txt = '';
-      const treeWalker = new global$1(node, node);
-      let tempNode;
-      while (tempNode = treeWalker.next()) {
-        if (tempNode.nodeType === 3) {
-          txt += removeZwsp$1(tempNode.data);
-        } else if (isNewline(tempNode) && txt.length) {
-          textBlocks.push(txt);
-          txt = '';
+    const getTDTHOverallStyle = (dom, elm, name) => {
+      const cells = dom.select('td,th', elm);
+      let firstChildStyle;
+      for (let i = 0; i < cells.length; i++) {
+        const currentStyle = dom.getStyle(cells[i], name);
+        if (isUndefined(firstChildStyle)) {
+          firstChildStyle = currentStyle;
+        }
+        if (firstChildStyle !== currentStyle) {
+          return '';
         }
       }
-      if (txt.length) {
-        textBlocks.push(txt);
+      return firstChildStyle;
+    };
+    const setAlign = (editor, elm, name) => {
+      global$2.each('left center right'.split(' '), align => {
+        if (align !== name) {
+          editor.formatter.remove('align' + align, {}, elm);
+        }
+      });
+      if (name) {
+        editor.formatter.apply('align' + name, {}, elm);
       }
-      return textBlocks;
+    };
+    const setVAlign = (editor, elm, name) => {
+      global$2.each('top middle bottom'.split(' '), align => {
+        if (align !== name) {
+          editor.formatter.remove('valign' + align, {}, elm);
+        }
+      });
+      if (name) {
+        editor.formatter.apply('valign' + name, {}, elm);
+      }
     };
 
-    const removeZwsp = text => text.replace(/\u200B/g, '');
-    const strLen = str => str.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '_').length;
-    const countWords = (node, schema) => {
-      const text = removeZwsp(getText(node, schema).join('\n'));
-      return getWords(text.split(''), identity).length;
-    };
-    const countCharacters = (node, schema) => {
-      const text = getText(node, schema).join('');
-      return strLen(text);
-    };
-    const countCharactersWithoutSpaces = (node, schema) => {
-      const text = getText(node, schema).join('').replace(/\s/g, '');
-      return strLen(text);
-    };
-
-    const createBodyCounter = (editor, count) => () => count(editor.getBody(), editor.schema);
-    const createSelectionCounter = (editor, count) => () => count(editor.selection.getRng().cloneContents(), editor.schema);
-    const createBodyWordCounter = editor => createBodyCounter(editor, countWords);
-    const get = editor => ({
-      body: {
-        getWordCount: createBodyWordCounter(editor),
-        getCharacterCount: createBodyCounter(editor, countCharacters),
-        getCharacterCountWithoutSpaces: createBodyCounter(editor, countCharactersWithoutSpaces)
-      },
-      selection: {
-        getWordCount: createSelectionCounter(editor, countWords),
-        getCharacterCount: createSelectionCounter(editor, countCharacters),
-        getCharacterCountWithoutSpaces: createSelectionCounter(editor, countCharactersWithoutSpaces)
-      },
-      getCount: createBodyWordCounter(editor)
-    });
-
-    const open = (editor, api) => {
-      editor.windowManager.open({
-        title: 'Word Count',
-        body: {
-          type: 'panel',
-          items: [{
-              type: 'table',
-              header: [
-                'Count',
-                'Document',
-                'Selection'
-              ],
-              cells: [
-                [
-                  'Words',
-                  String(api.body.getWordCount()),
-                  String(api.selection.getWordCount())
-                ],
-                [
-                  'Characters (no spaces)',
-                  String(api.body.getCharacterCountWithoutSpaces()),
-                  String(api.selection.getCharacterCountWithoutSpaces())
-                ],
-                [
-                  'Characters',
-                  String(api.body.getCharacterCount()),
-                  String(api.selection.getCharacterCount())
-                ]
-              ]
-            }]
-        },
-        buttons: [{
-            type: 'cancel',
-            name: 'close',
-            text: 'Close',
-            primary: true
-          }]
+    const fireTableModified = (editor, table, data) => {
+      editor.dispatch('TableModified', {
+        ...data,
+        table
       });
     };
 
-    const register$1 = (editor, api) => {
-      editor.addCommand('mceWordCount', () => open(editor, api));
+    const toNumber = (px, fallback) => toFloat(px).getOr(fallback);
+    const getProp = (element, name, fallback) => toNumber(get$1(element, name), fallback);
+    const calcContentBoxSize = (element, size, upper, lower) => {
+      const paddingUpper = getProp(element, `padding-${ upper }`, 0);
+      const paddingLower = getProp(element, `padding-${ lower }`, 0);
+      const borderUpper = getProp(element, `border-${ upper }-width`, 0);
+      const borderLower = getProp(element, `border-${ lower }-width`, 0);
+      return size - paddingUpper - paddingLower - borderUpper - borderLower;
     };
+    const getCalculatedWidth = (element, boxSizing) => {
+      const dom = element.dom;
+      const width = dom.getBoundingClientRect().width || dom.offsetWidth;
+      return boxSizing === 'border-box' ? width : calcContentBoxSize(element, width, 'left', 'right');
+    };
+    const getInnerWidth = element => getCalculatedWidth(element, 'content-box');
 
-    const first = (fn, rate) => {
-      let timer = null;
-      const cancel = () => {
-        if (!isNull(timer)) {
-          clearTimeout(timer);
-          timer = null;
-        }
-      };
-      const throttle = (...args) => {
-        if (isNull(timer)) {
-          timer = setTimeout(() => {
-            timer = null;
-            fn.apply(null, args);
-          }, rate);
-        }
-      };
+    const getInner = getInnerWidth;
+
+    var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
+
+    const defaultTableToolbar = 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
+    const defaultCellBorderWidths = range(5, i => {
+      const size = `${ i + 1 }px`;
       return {
-        cancel,
-        throttle
+        title: size,
+        value: size
       };
+    });
+    const defaultCellBorderStyles = map([
+      'Solid',
+      'Dotted',
+      'Dashed',
+      'Double',
+      'Groove',
+      'Ridge',
+      'Inset',
+      'Outset',
+      'None',
+      'Hidden'
+    ], type => {
+      return {
+        title: type,
+        value: type.toLowerCase()
+      };
+    });
+    const defaultWidth = '100%';
+    const getPixelForcedWidth = editor => {
+      var _a;
+      const dom = editor.dom;
+      const parentBlock = (_a = dom.getParent(editor.selection.getStart(), dom.isBlock)) !== null && _a !== void 0 ? _a : editor.getBody();
+      return getInner(SugarElement.fromDom(parentBlock)) + 'px';
     };
-
-    var global = tinymce.util.Tools.resolve('tinymce.util.Delay');
-
-    const fireWordCountUpdate = (editor, api) => {
-      editor.dispatch('wordCountUpdate', {
-        wordCount: {
-          words: api.body.getWordCount(),
-          characters: api.body.getCharacterCount(),
-          charactersWithoutSpaces: api.body.getCharacterCountWithoutSpaces()
-        }
-      });
+    const determineDefaultStyles = (editor, defaultStyles) => {
+      if (isResponsiveForced(editor) || !shouldStyleWithCss(editor)) {
+        return defaultStyles;
+      } else if (isPixelsForced(editor)) {
+        return {
+          ...defaultStyles,
+          width: getPixelForcedWidth(editor)
+        };
+      } else {
+        return {
+          ...defaultStyles,
+          width: defaultWidth
+        };
+      }
     };
-
-    const updateCount = (editor, api) => {
-      fireWordCountUpdate(editor, api);
+    const determineDefaultAttributes = (editor, defaultAttributes) => {
+      if (isResponsiveForced(editor) || shouldStyleWithCss(editor)) {
+        return defaultAttributes;
+      } else if (isPixelsForced(editor)) {
+        return {
+          ...defaultAttributes,
+          width: getPixelForcedWidth(editor)
+        };
+      } else {
+        return {
+          ...defaultAttributes,
+          width: defaultWidth
+        };
+      }
     };
-    const setup = (editor, api, delay) => {
-      const debouncedUpdate = first(() => updateCount(editor, api), delay);
-      editor.on('init', () => {
-        updateCount(editor, api);
-        global.setEditorTimeout(editor, () => {
-          editor.on('SetContent BeforeAddUndo Undo Redo ViewUpdate keyup', debouncedUpdate.throttle);
-        }, 0);
-        editor.on('remove', debouncedUpdate.cancel);
-      });
-    };
-
+    const option = name => editor => editor.options.get(name);
     const register = editor => {
-      const onAction = () => editor.execCommand('mceWordCount');
-      editor.ui.registry.addButton('wordcount', {
-        tooltip: 'Word count',
-        icon: 'character-count',
-        onAction,
-        context: 'any'
+      const registerOption = editor.options.register;
+      registerOption('table_border_widths', {
+        processor: 'object[]',
+        default: defaultCellBorderWidths
       });
-      editor.ui.registry.addMenuItem('wordcount', {
-        text: 'Word count',
-        icon: 'character-count',
-        onAction,
-        context: 'any'
+      registerOption('table_border_styles', {
+        processor: 'object[]',
+        default: defaultCellBorderStyles
+      });
+      registerOption('table_cell_advtab', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_row_advtab', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_advtab', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_appearance_options', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_grid', {
+        processor: 'boolean',
+        default: !global$1.deviceType.isTouch()
+      });
+      registerOption('table_cell_class_list', {
+        processor: 'object[]',
+        default: []
+      });
+      registerOption('table_row_class_list', {
+        processor: 'object[]',
+        default: []
+      });
+      registerOption('table_class_list', {
+        processor: 'object[]',
+        default: []
+      });
+      registerOption('table_toolbar', {
+        processor: 'string',
+        default: defaultTableToolbar
+      });
+      registerOption('table_background_color_map', {
+        processor: 'object[]',
+        default: []
+      });
+      registerOption('table_border_color_map', {
+        processor: 'object[]',
+        default: []
+      });
+    };
+    const getTableSizingMode = option('table_sizing_mode');
+    const getTableBorderWidths = option('table_border_widths');
+    const getTableBorderStyles = option('table_border_styles');
+    const hasAdvancedCellTab = option('table_cell_advtab');
+    const hasAdvancedRowTab = option('table_row_advtab');
+    const hasAdvancedTableTab = option('table_advtab');
+    const hasAppearanceOptions = option('table_appearance_options');
+    const hasTableGrid = option('table_grid');
+    const shouldStyleWithCss = option('table_style_by_css');
+    const getCellClassList = option('table_cell_class_list');
+    const getRowClassList = option('table_row_class_list');
+    const getTableClassList = option('table_class_list');
+    const getToolbar = option('table_toolbar');
+    const getTableBackgroundColorMap = option('table_background_color_map');
+    const getTableBorderColorMap = option('table_border_color_map');
+    const isPixelsForced = editor => getTableSizingMode(editor) === 'fixed';
+    const isResponsiveForced = editor => getTableSizingMode(editor) === 'responsive';
+    const getDefaultStyles = editor => {
+      const options = editor.options;
+      const defaultStyles = options.get('table_default_styles');
+      return options.isSet('table_default_styles') ? defaultStyles : determineDefaultStyles(editor, defaultStyles);
+    };
+    const getDefaultAttributes = editor => {
+      const options = editor.options;
+      const defaultAttributes = options.get('table_default_attributes');
+      return options.isSet('table_default_attributes') ? defaultAttributes : determineDefaultAttributes(editor, defaultAttributes);
+    };
+
+    const isWithin = (bounds, detail) => {
+      return detail.column >= bounds.startCol && detail.column + detail.colspan - 1 <= bounds.finishCol && detail.row >= bounds.startRow && detail.row + detail.rowspan - 1 <= bounds.finishRow;
+    };
+    const isRectangular = (warehouse, bounds) => {
+      let isRect = true;
+      const detailIsWithin = curry(isWithin, bounds);
+      for (let i = bounds.startRow; i <= bounds.finishRow; i++) {
+        for (let j = bounds.startCol; j <= bounds.finishCol; j++) {
+          isRect = isRect && Warehouse.getAt(warehouse, i, j).exists(detailIsWithin);
+        }
+      }
+      return isRect ? Optional.some(bounds) : Optional.none();
+    };
+
+    const getBounds = (detailA, detailB) => {
+      return bounds(Math.min(detailA.row, detailB.row), Math.min(detailA.column, detailB.column), Math.max(detailA.row + detailA.rowspan - 1, detailB.row + detailB.rowspan - 1), Math.max(detailA.column + detailA.colspan - 1, detailB.column + detailB.colspan - 1));
+    };
+    const getAnyBox = (warehouse, startCell, finishCell) => {
+      const startCoords = Warehouse.findItem(warehouse, startCell, eq);
+      const finishCoords = Warehouse.findItem(warehouse, finishCell, eq);
+      return startCoords.bind(sc => {
+        return finishCoords.map(fc => {
+          return getBounds(sc, fc);
+        });
+      });
+    };
+    const getBox$1 = (warehouse, startCell, finishCell) => {
+      return getAnyBox(warehouse, startCell, finishCell).bind(bounds => {
+        return isRectangular(warehouse, bounds);
       });
     };
 
-    var Plugin = (delay = 300) => {
-      global$2.add('wordcount', editor => {
-        const api = get(editor);
-        register$1(editor, api);
-        register(editor);
-        setup(editor, api, delay);
-        return api;
+    const getBox = (table, first, last) => {
+      const warehouse = getWarehouse(table);
+      return getBox$1(warehouse, first, last);
+    };
+    const getWarehouse = Warehouse.fromTable;
+
+    const before = (marker, element) => {
+      const parent$1 = parent(marker);
+      parent$1.each(v => {
+        v.dom.insertBefore(element.dom, marker.dom);
+      });
+    };
+    const after$1 = (marker, element) => {
+      const sibling = nextSibling(marker);
+      sibling.fold(() => {
+        const parent$1 = parent(marker);
+        parent$1.each(v => {
+          append$1(v, element);
+        });
+      }, v => {
+        before(v, element);
+      });
+    };
+    const prepend = (parent, element) => {
+      const firstChild$1 = firstChild(parent);
+      firstChild$1.fold(() => {
+        append$1(parent, element);
+      }, v => {
+        parent.dom.insertBefore(element.dom, v.dom);
+      });
+    };
+    const append$1 = (parent, element) => {
+      parent.dom.appendChild(element.dom);
+    };
+    const wrap = (element, wrapper) => {
+      before(element, wrapper);
+      append$1(wrapper, element);
+    };
+
+    const after = (marker, elements) => {
+      each(elements, (x, i) => {
+        const e = i === 0 ? marker : elements[i - 1];
+        after$1(e, x);
+      });
+    };
+    const append = (parent, elements) => {
+      each(elements, x => {
+        append$1(parent, x);
       });
     };
 
-    Plugin();
+    const remove = element => {
+      const dom = element.dom;
+      if (dom.parentNode !== null) {
+        dom.parentNode.removeChild(dom);
+      }
+    };
+    const unwrap = wrapper => {
+      const children = children$3(wrapper);
+      if (children.length > 0) {
+        after(wrapper, children);
+      }
+      remove(wrapper);
+    };
+
+    const NodeValue = (is, name) => {
+      const get = element => {
+        if (!is(element)) {
+          throw new Error('Can only get ' + name + ' value of a ' + name + ' node');
+        }
+        return getOption(element).getOr('');
+      };
+      const getOption = element => is(element) ? Optional.from(element.dom.nodeValue) : Optional.none();
+      const set = (element, value) => {
+        if (!is(element)) {
+          throw new Error('Can only set raw ' + name + ' value of a ' + name + ' node');
+        }
+        element.dom.nodeValue = value;
+      };
+      return {
+        get,
+        getOption,
+        set
+      };
+    };
+
+    const api = NodeValue(isText, 'text');
+    const get = element => api.get(element);
+    const set = (element, value) => api.set(element, value);
+
+    var TagBoundaries = [
+      'body',
+      'p',
+      'div',
+      'article',
+      'aside',
+      'figcaption',
+      'figure',
+      'footer',
+      'header',
+      'nav',
+      'section',
+      'ol',
+      'ul',
+      'li',
+      'table',
+      'thead',
+      'tbody',
+      'tfoot',
+      'caption',
+      'tr',
+      'td',
+      'th',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'blockquote',
+      'pre',
+      'address'
+    ];
+
+    var DomUniverse = () => {
+      const clone$1 = element => {
+        return SugarElement.fromDom(element.dom.cloneNode(false));
+      };
+      const document = element => documentOrOwner(element).dom;
+      const isBoundary = element => {
+        if (!isElement(element)) {
+          return false;
+        }
+        if (name(element) === 'body') {
+          return true;
+        }
+        return contains(TagBoundaries, name(element));
+      };
+      const isEmptyTag = element => {
+        if (!isElement(element)) {
+          return false;
+        }
+        return contains([
+          'br',
+          'img',
+          'hr',
+          'input'
+        ], name(element));
+      };
+      const isNonEditable = element => isElement(element) && get$2(element, 'contenteditable') === 'false';
+      const comparePosition = (element, other) => {
+        return element.dom.compareDocumentPosition(other.dom);
+      };
+      const copyAttributesTo = (source, destination) => {
+        const as = clone(source);
+        setAll(destination, as);
+      };
+      const isSpecial = element => {
+        const tag = name(element);
+        return contains([
+          'script',
+          'noscript',
+          'iframe',
+          'noframes',
+          'noembed',
+          'title',
+          'style',
+          'textarea',
+          'xmp'
+        ], tag);
+      };
+      const getLanguage = element => isElement(element) ? getOpt(element, 'lang') : Optional.none();
+      return {
+        up: constant({
+          selector: ancestor,
+          closest: closest$1,
+          predicate: ancestor$1,
+          all: parents
+        }),
+        down: constant({
+          selector: descendants,
+          predicate: descendants$1
+        }),
+        styles: constant({
+          get: get$1,
+          getRaw: getRaw,
+          set: set$1,
+          remove: remove$1
+        }),
+        attrs: constant({
+          get: get$2,
+          set: set$2,
+          remove: remove$2,
+          copyTo: copyAttributesTo
+        }),
+        insert: constant({
+          before: before,
+          after: after$1,
+          afterAll: after,
+          append: append$1,
+          appendAll: append,
+          prepend: prepend,
+          wrap: wrap
+        }),
+        remove: constant({
+          unwrap: unwrap,
+          remove: remove
+        }),
+        create: constant({
+          nu: SugarElement.fromTag,
+          clone: clone$1,
+          text: SugarElement.fromText
+        }),
+        query: constant({
+          comparePosition,
+          prevSibling: prevSibling,
+          nextSibling: nextSibling
+        }),
+        property: constant({
+          children: children$3,
+          name: name,
+          parent: parent,
+          document,
+          isText: isText,
+          isComment: isComment,
+          isElement: isElement,
+          isSpecial,
+          getLanguage,
+          getText: get,
+          setText: set,
+          isBoundary,
+          isEmptyTag,
+          isNonEditable
+        }),
+        eq: eq,
+        is: is$1
+      };
+    };
+
+    const all = (universe, look, elements, f) => {
+      const head = elements[0];
+      const tail = elements.slice(1);
+      return f(universe, look, head, tail);
+    };
+    const oneAll = (universe, look, elements) => {
+      return elements.length > 0 ? all(universe, look, elements, unsafeOne) : Optional.none();
+    };
+    const unsafeOne = (universe, look, head, tail) => {
+      const start = look(universe, head);
+      return foldr(tail, (b, a) => {
+        const current = look(universe, a);
+        return commonElement(universe, b, current);
+      }, start);
+    };
+    const commonElement = (universe, start, end) => {
+      return start.bind(s => {
+        return end.filter(curry(universe.eq, s));
+      });
+    };
+
+    const sharedOne$1 = oneAll;
+
+    const universe = DomUniverse();
+    const sharedOne = (look, elements) => {
+      return sharedOne$1(universe, (_universe, element) => {
+        return look(element);
+      }, elements);
+    };
+
+    const lookupTable = container => {
+      return ancestor(container, 'table');
+    };
+    const retrieve$1 = (container, selector) => {
+      const sels = descendants(container, selector);
+      return sels.length > 0 ? Optional.some(sels) : Optional.none();
+    };
+    const getEdges = (container, firstSelectedSelector, lastSelectedSelector) => {
+      return descendant(container, firstSelectedSelector).bind(first => {
+        return descendant(container, lastSelectedSelector).bind(last => {
+          return sharedOne(lookupTable, [
+            first,
+            last
+          ]).map(table => {
+            return {
+              first,
+              last,
+              table
+            };
+          });
+        });
+      });
+    };
+
+    const retrieve = (container, selector) => {
+      return retrieve$1(container, selector);
+    };
+    const retrieveBox = (container, firstSelectedSelector, lastSelectedSelector) => {
+      return getEdges(container, firstSelectedSelector, lastSelectedSelector).bind(edges => {
+        const isRoot = ancestor => {
+          return eq(container, ancestor);
+        };
+        const sectionSelector = 'thead,tfoot,tbody,table';
+        const firstAncestor = ancestor(edges.first, sectionSelector, isRoot);
+        const lastAncestor = ancestor(edges.last, sectionSelector, isRoot);
+        return firstAncestor.bind(fA => {
+          return lastAncestor.bind(lA => {
+            return eq(fA, lA) ? getBox(edges.table, edges.first, edges.last) : Optional.none();
+          });
+        });
+      });
+    };
+
+    const fromDom = nodes => map(nodes, SugarElement.fromDom);
+
+    const strSelected = 'data-mce-selected';
+    const strSelectedSelector = 'td[' + strSelected + '],th[' + strSelected + ']';
+    const strFirstSelected = 'data-mce-first-selected';
+    const strFirstSelectedSelector = 'td[' + strFirstSelected + '],th[' + strFirstSelected + ']';
+    const strLastSelected = 'data-mce-last-selected';
+    const strLastSelectedSelector = 'td[' + strLastSelected + '],th[' + strLastSelected + ']';
+    const ephemera = {
+      selected: strSelected,
+      selectedSelector: strSelectedSelector,
+      firstSelected: strFirstSelected,
+      firstSelectedSelector: strFirstSelectedSelector,
+      lastSelected: strLastSelected,
+      lastSelectedSelector: strLastSelectedSelector
+    };
+
+    const getSelectionCellFallback = element => table(element).bind(table => retrieve(table, ephemera.firstSelectedSelector)).fold(constant(element), cells => cells[0]);
+    const getSelectionFromSelector = selector => (initCell, isRoot) => {
+      const cellName = name(initCell);
+      const cell = cellName === 'col' || cellName === 'colgroup' ? getSelectionCellFallback(initCell) : initCell;
+      return closest$1(cell, selector, isRoot);
+    };
+    const getSelectionCellOrCaption = getSelectionFromSelector('th,td,caption');
+    const getSelectionCell = getSelectionFromSelector('th,td');
+    const getCellsFromSelection = editor => fromDom(editor.model.table.getSelectedCells());
+    const getRowsFromSelection = (selected, selector) => {
+      const cellOpt = getSelectionCell(selected);
+      const rowsOpt = cellOpt.bind(cell => table(cell)).map(table => rows(table));
+      return lift2(cellOpt, rowsOpt, (cell, rows) => filter(rows, row => exists(fromDom(row.dom.cells), rowCell => get$2(rowCell, selector) === '1' || eq(rowCell, cell)))).getOr([]);
+    };
+
+    const verticalAlignValues = [
+      {
+        text: 'None',
+        value: ''
+      },
+      {
+        text: 'Top',
+        value: 'top'
+      },
+      {
+        text: 'Middle',
+        value: 'middle'
+      },
+      {
+        text: 'Bottom',
+        value: 'bottom'
+      }
+    ];
+
+    const hexColour = value => ({ value: normalizeHex(value) });
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const longformRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+    const isHexString = hex => shorthandRegex.test(hex) || longformRegex.test(hex);
+    const normalizeHex = hex => removeLeading(hex, '#').toUpperCase();
+    const fromString$1 = hex => isHexString(hex) ? Optional.some({ value: normalizeHex(hex) }) : Optional.none();
+    const toHex = component => {
+      const hex = component.toString(16);
+      return (hex.length === 1 ? '0' + hex : hex).toUpperCase();
+    };
+    const fromRgba = rgbaColour => {
+      const value = toHex(rgbaColour.red) + toHex(rgbaColour.green) + toHex(rgbaColour.blue);
+      return hexColour(value);
+    };
+
+    const rgbRegex = /^\s*rgb\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*\)\s*$/i;
+    const rgbaRegex = /^\s*rgba\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*((?:\d?\.\d+|\d+)%?)\s*\)\s*$/i;
+    const rgbaColour = (red, green, blue, alpha) => ({
+      red,
+      green,
+      blue,
+      alpha
+    });
+    const fromStringValues = (red, green, blue, alpha) => {
+      const r = parseInt(red, 10);
+      const g = parseInt(green, 10);
+      const b = parseInt(blue, 10);
+      const a = parseFloat(alpha);
+      return rgbaColour(r, g, b, a);
+    };
+    const fromString = rgbaString => {
+      const rgbMatch = rgbRegex.exec(rgbaString);
+      if (rgbMatch !== null) {
+        return Optional.some(fromStringValues(rgbMatch[1], rgbMatch[2], rgbMatch[3], '1'));
+      }
+      const rgbaMatch = rgbaRegex.exec(rgbaString);
+      if (rgbaMatch !== null) {
+        return Optional.some(fromStringValues(rgbaMatch[1], rgbaMatch[2], rgbaMatch[3], rgbaMatch[4]));
+      }
+      return Optional.none();
+    };
+
+    const anyToHex = color => fromString$1(color).orThunk(() => fromString(color).map(fromRgba)).getOrThunk(() => {
+      const canvas = document.createElement('canvas');
+      canvas.height = 1;
+      canvas.width = 1;
+      const canvasContext = canvas.getContext('2d');
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+      canvasContext.fillStyle = '#FFFFFF';
+      canvasContext.fillStyle = color;
+      canvasContext.fillRect(0, 0, 1, 1);
+      const rgba = canvasContext.getImageData(0, 0, 1, 1).data;
+      const r = rgba[0];
+      const g = rgba[1];
+      const b = rgba[2];
+      const a = rgba[3];
+      return fromRgba(rgbaColour(r, g, b, a));
+    });
+    const rgbaToHexString = color => fromString(color).map(fromRgba).map(h => '#' + h.value).getOr(color);
+
+    const Cell = initial => {
+      let value = initial;
+      const get = () => {
+        return value;
+      };
+      const set = v => {
+        value = v;
+      };
+      return {
+        get,
+        set
+      };
+    };
+
+    const singleton = doRevoke => {
+      const subject = Cell(Optional.none());
+      const revoke = () => subject.get().each(doRevoke);
+      const clear = () => {
+        revoke();
+        subject.set(Optional.none());
+      };
+      const isSet = () => subject.get().isSome();
+      const get = () => subject.get();
+      const set = s => {
+        revoke();
+        subject.set(Optional.some(s));
+      };
+      return {
+        clear,
+        isSet,
+        get,
+        set
+      };
+    };
+    const unbindable = () => singleton(s => s.unbind());
+
+    const onSetupToggle = (editor, formatName, formatValue) => {
+      return api => {
+        const boundCallback = unbindable();
+        const isNone = isEmpty(formatValue);
+        const init = () => {
+          const selectedCells = getCellsFromSelection(editor);
+          const checkNode = cell => editor.formatter.match(formatName, { value: formatValue }, cell.dom, isNone);
+          if (isNone) {
+            api.setActive(!exists(selectedCells, checkNode));
+            boundCallback.set(editor.formatter.formatChanged(formatName, match => api.setActive(!match), true));
+          } else {
+            api.setActive(forall(selectedCells, checkNode));
+            boundCallback.set(editor.formatter.formatChanged(formatName, api.setActive, false, { value: formatValue }));
+          }
+        };
+        editor.initialized ? init() : editor.on('init', init);
+        return boundCallback.clear;
+      };
+    };
+    const isListGroup = item => hasNonNullableKey(item, 'menu');
+    const buildListItems = items => map(items, item => {
+      const text = item.text || item.title || '';
+      if (isListGroup(item)) {
+        return {
+          text,
+          items: buildListItems(item.menu)
+        };
+      } else {
+        return {
+          text,
+          value: item.value
+        };
+      }
+    });
+    const buildClassList = classList => {
+      if (!classList.length) {
+        return Optional.none();
+      }
+      return Optional.some(buildListItems([
+        {
+          text: 'Select...',
+          value: 'mce-no-match'
+        },
+        ...classList
+      ]));
+    };
+    const buildMenuItems = (editor, items, format, onAction) => map(items, item => {
+      const text = item.text || item.title;
+      if (isListGroup(item)) {
+        return {
+          type: 'nestedmenuitem',
+          text,
+          getSubmenuItems: () => buildMenuItems(editor, item.menu, format, onAction)
+        };
+      } else {
+        return {
+          text,
+          type: 'togglemenuitem',
+          onAction: () => onAction(item.value),
+          onSetup: onSetupToggle(editor, format, item.value)
+        };
+      }
+    });
+    const applyTableCellStyle = (editor, style) => value => {
+      editor.execCommand('mceTableApplyCellStyle', false, { [style]: value });
+    };
+    const filterNoneItem = list => bind(list, item => {
+      if (isListGroup(item)) {
+        return [{
+            ...item,
+            menu: filterNoneItem(item.menu)
+          }];
+      } else {
+        return isNotEmpty(item.value) ? [item] : [];
+      }
+    });
+    const generateMenuItemsCallback = (editor, items, format, onAction) => callback => callback(buildMenuItems(editor, items, format, onAction));
+    const buildColorMenu = (editor, colorList, style) => {
+      const colorMap = map(colorList, entry => ({
+        text: entry.title,
+        value: '#' + anyToHex(entry.value).value,
+        type: 'choiceitem'
+      }));
+      return [{
+          type: 'fancymenuitem',
+          fancytype: 'colorswatch',
+          initData: {
+            colors: colorMap.length > 0 ? colorMap : undefined,
+            allowCustomColors: false
+          },
+          onAction: data => {
+            const value = data.value === 'remove' ? '' : data.value;
+            editor.execCommand('mceTableApplyCellStyle', false, { [style]: value });
+          }
+        }];
+    };
+    const changeRowHeader = editor => () => {
+      const currentType = editor.queryCommandValue('mceTableRowType');
+      const newType = currentType === 'header' ? 'body' : 'header';
+      editor.execCommand('mceTableRowType', false, { type: newType });
+    };
+    const changeColumnHeader = editor => () => {
+      const currentType = editor.queryCommandValue('mceTableColType');
+      const newType = currentType === 'th' ? 'td' : 'th';
+      editor.execCommand('mceTableColType', false, { type: newType });
+    };
+
+    const getClassList$1 = editor => buildClassList(getCellClassList(editor)).map(items => ({
+      name: 'class',
+      type: 'listbox',
+      label: 'Class',
+      items
+    }));
+    const children = [
+      {
+        name: 'width',
+        type: 'input',
+        label: 'Width'
+      },
+      {
+        name: 'celltype',
+        type: 'listbox',
+        label: 'Cell type',
+        items: [
+          {
+            text: 'Cell',
+            value: 'td'
+          },
+          {
+            text: 'Header cell',
+            value: 'th'
+          }
+        ]
+      },
+      {
+        name: 'scope',
+        type: 'listbox',
+        label: 'Scope',
+        items: [
+          {
+            text: 'None',
+            value: ''
+          },
+          {
+            text: 'Row',
+            value: 'row'
+          },
+          {
+            text: 'Column',
+            value: 'col'
+          },
+          {
+            text: 'Row group',
+            value: 'rowgroup'
+          },
+          {
+            text: 'Column group',
+            value: 'colgroup'
+          }
+        ]
+      },
+      {
+        name: 'halign',
+        type: 'listbox',
+        label: 'Horizontal align',
+        items: [
+          {
+            text: 'None',
+            value: ''
+          },
+          {
+            text: 'Left',
+            value: 'left'
+          },
+          {
+            text: 'Center',
+            value: 'center'
+          },
+          {
+            text: 'Right',
+            value: 'right'
+          }
+        ]
+      },
+      {
+        name: 'valign',
+        type: 'listbox',
+        label: 'Vertical align',
+        items: verticalAlignValues
+      }
+    ];
+    const getItems$2 = editor => children.concat(getClassList$1(editor).toArray());
+
+    const getAdvancedTab = (editor, dialogName) => {
+      const emptyBorderStyle = [{
+          text: 'Select...',
+          value: ''
+        }];
+      const advTabItems = [
+        {
+          name: 'borderstyle',
+          type: 'listbox',
+          label: 'Border style',
+          items: emptyBorderStyle.concat(buildListItems(getTableBorderStyles(editor)))
+        },
+        {
+          name: 'bordercolor',
+          type: 'colorinput',
+          label: 'Border color'
+        },
+        {
+          name: 'backgroundcolor',
+          type: 'colorinput',
+          label: 'Background color'
+        }
+      ];
+      const borderWidth = {
+        name: 'borderwidth',
+        type: 'input',
+        label: 'Border width'
+      };
+      const items = dialogName === 'cell' ? [borderWidth].concat(advTabItems) : advTabItems;
+      return {
+        title: 'Advanced',
+        name: 'advanced',
+        items
+      };
+    };
+
+    const normal = (editor, element) => {
+      const dom = editor.dom;
+      const setAttrib = (attr, value) => {
+        dom.setAttrib(element, attr, value);
+      };
+      const setStyle = (prop, value) => {
+        dom.setStyle(element, prop, value);
+      };
+      const setFormat = (formatName, value) => {
+        if (value === '') {
+          editor.formatter.remove(formatName, { value: null }, element, true);
+        } else {
+          editor.formatter.apply(formatName, { value }, element);
+        }
+      };
+      return {
+        setAttrib,
+        setStyle,
+        setFormat
+      };
+    };
+    const DomModifier = { normal };
+
+    const isHeaderCell = isTag('th');
+    const getRowHeaderType = (isHeaderRow, isHeaderCells) => {
+      if (isHeaderRow && isHeaderCells) {
+        return 'sectionCells';
+      } else if (isHeaderRow) {
+        return 'section';
+      } else {
+        return 'cells';
+      }
+    };
+    const getRowType$1 = row => {
+      const isHeaderRow = row.section === 'thead';
+      const isHeaderCells = is(findCommonCellType(row.cells), 'th');
+      if (row.section === 'tfoot') {
+        return { type: 'footer' };
+      } else if (isHeaderRow || isHeaderCells) {
+        return {
+          type: 'header',
+          subType: getRowHeaderType(isHeaderRow, isHeaderCells)
+        };
+      } else {
+        return { type: 'body' };
+      }
+    };
+    const findCommonCellType = cells => {
+      const headerCells = filter(cells, cell => isHeaderCell(cell.element));
+      if (headerCells.length === 0) {
+        return Optional.some('td');
+      } else if (headerCells.length === cells.length) {
+        return Optional.some('th');
+      } else {
+        return Optional.none();
+      }
+    };
+    const findCommonRowType = rows => {
+      const rowTypes = map(rows, row => getRowType$1(row).type);
+      const hasHeader = contains(rowTypes, 'header');
+      const hasFooter = contains(rowTypes, 'footer');
+      if (!hasHeader && !hasFooter) {
+        return Optional.some('body');
+      } else {
+        const hasBody = contains(rowTypes, 'body');
+        if (hasHeader && !hasBody && !hasFooter) {
+          return Optional.some('header');
+        } else if (!hasHeader && !hasBody && hasFooter) {
+          return Optional.some('footer');
+        } else {
+          return Optional.none();
+        }
+      }
+    };
+
+    const cached = f => {
+      let called = false;
+      let r;
+      return (...args) => {
+        if (!called) {
+          called = true;
+          r = f.apply(null, args);
+        }
+        return r;
+      };
+    };
+
+    const findInWarehouse = (warehouse, element) => findMap(warehouse.all, r => find(r.cells, e => eq(element, e.element)));
+    const extractCells = (warehouse, target, predicate) => {
+      const details = map(target.selection, cell$1 => {
+        return cell(cell$1).bind(lc => findInWarehouse(warehouse, lc)).filter(predicate);
+      });
+      const cells = cat(details);
+      return someIf(cells.length > 0, cells);
+    };
+    const onMergable = (_warehouse, target) => target.mergable;
+    const onUnmergable = (_warehouse, target) => target.unmergable;
+    const onCells = (warehouse, target) => extractCells(warehouse, target, always);
+    const isUnlockedTableCell = (warehouse, cell) => findInWarehouse(warehouse, cell).exists(detail => !detail.isLocked);
+    const allUnlocked = (warehouse, cells) => forall(cells, cell => isUnlockedTableCell(warehouse, cell));
+    const onUnlockedMergable = (warehouse, target) => onMergable(warehouse, target).filter(mergeable => allUnlocked(warehouse, mergeable.cells));
+    const onUnlockedUnmergable = (warehouse, target) => onUnmergable(warehouse, target).filter(cells => allUnlocked(warehouse, cells));
+
+    const generate = cases => {
+      if (!isArray(cases)) {
+        throw new Error('cases must be an array');
+      }
+      if (cases.length === 0) {
+        throw new Error('there must be at least one case');
+      }
+      const constructors = [];
+      const adt = {};
+      each(cases, (acase, count) => {
+        const keys$1 = keys(acase);
+        if (keys$1.length !== 1) {
+          throw new Error('one and only one name per case');
+        }
+        const key = keys$1[0];
+        const value = acase[key];
+        if (adt[key] !== undefined) {
+          throw new Error('duplicate key detected:' + key);
+        } else if (key === 'cata') {
+          throw new Error('cannot have a case named cata (sorry)');
+        } else if (!isArray(value)) {
+          throw new Error('case arguments must be an array');
+        }
+        constructors.push(key);
+        adt[key] = (...args) => {
+          const argLength = args.length;
+          if (argLength !== value.length) {
+            throw new Error('Wrong number of arguments to case ' + key + '. Expected ' + value.length + ' (' + value + '), got ' + argLength);
+          }
+          const match = branches => {
+            const branchKeys = keys(branches);
+            if (constructors.length !== branchKeys.length) {
+              throw new Error('Wrong number of arguments to match. Expected: ' + constructors.join(',') + '\nActual: ' + branchKeys.join(','));
+            }
+            const allReqd = forall(constructors, reqKey => {
+              return contains(branchKeys, reqKey);
+            });
+            if (!allReqd) {
+              throw new Error('Not all branches were specified when using match. Specified: ' + branchKeys.join(', ') + '\nRequired: ' + constructors.join(', '));
+            }
+            return branches[key].apply(null, args);
+          };
+          return {
+            fold: (...foldArgs) => {
+              if (foldArgs.length !== cases.length) {
+                throw new Error('Wrong number of arguments to fold. Expected ' + cases.length + ', got ' + foldArgs.length);
+              }
+              const target = foldArgs[count];
+              return target.apply(null, args);
+            },
+            match,
+            log: label => {
+              console.log(label, {
+                constructors,
+                constructor: key,
+                params: args
+              });
+            }
+          };
+        };
+      });
+      return adt;
+    };
+    const Adt = { generate };
+
+    const adt = Adt.generate([
+      { none: [] },
+      { only: ['index'] },
+      {
+        left: [
+          'index',
+          'next'
+        ]
+      },
+      {
+        middle: [
+          'prev',
+          'index',
+          'next'
+        ]
+      },
+      {
+        right: [
+          'prev',
+          'index'
+        ]
+      }
+    ]);
+    ({ ...adt });
+
+    const opGetRowsType = (table, target) => {
+      const house = Warehouse.fromTable(table);
+      const details = onCells(house, target);
+      return details.bind(selectedCells => {
+        const lastSelectedCell = selectedCells[selectedCells.length - 1];
+        const minRowRange = selectedCells[0].row;
+        const maxRowRange = lastSelectedCell.row + lastSelectedCell.rowspan;
+        const selectedRows = house.all.slice(minRowRange, maxRowRange);
+        return findCommonRowType(selectedRows);
+      }).getOr('');
+    };
+    const getRowsType = opGetRowsType;
+
+    const rgbToHex = value => startsWith(value, 'rgb') ? rgbaToHexString(value) : value;
+    const extractAdvancedStyles = elm => {
+      const element = SugarElement.fromDom(elm);
+      return {
+        borderwidth: getRaw(element, 'border-width').getOr(''),
+        borderstyle: getRaw(element, 'border-style').getOr(''),
+        bordercolor: getRaw(element, 'border-color').map(rgbToHex).getOr(''),
+        backgroundcolor: getRaw(element, 'background-color').map(rgbToHex).getOr('')
+      };
+    };
+    const getSharedValues = data => {
+      const baseData = data[0];
+      const comparisonData = data.slice(1);
+      each(comparisonData, items => {
+        each(keys(baseData), key => {
+          each$1(items, (itemValue, itemKey) => {
+            const comparisonValue = baseData[key];
+            if (comparisonValue !== '' && key === itemKey) {
+              if (comparisonValue !== itemValue) {
+                baseData[key] = key === 'class' ? 'mce-no-match' : '';
+              }
+            }
+          });
+        });
+      });
+      return baseData;
+    };
+    const getAlignment = (formats, formatName, editor, elm) => find(formats, name => !isUndefined(editor.formatter.matchNode(elm, formatName + name))).getOr('');
+    const getHAlignment = curry(getAlignment, [
+      'left',
+      'center',
+      'right'
+    ], 'align');
+    const getVAlignment = curry(getAlignment, [
+      'top',
+      'middle',
+      'bottom'
+    ], 'valign');
+    const extractDataFromSettings = (editor, hasAdvTableTab) => {
+      const style = getDefaultStyles(editor);
+      const attrs = getDefaultAttributes(editor);
+      const extractAdvancedStyleData = () => ({
+        borderstyle: get$4(style, 'border-style').getOr(''),
+        bordercolor: rgbToHex(get$4(style, 'border-color').getOr('')),
+        backgroundcolor: rgbToHex(get$4(style, 'background-color').getOr(''))
+      });
+      const defaultData = {
+        height: '',
+        width: '100%',
+        cellspacing: '',
+        cellpadding: '',
+        caption: false,
+        class: '',
+        align: '',
+        border: ''
+      };
+      const getBorder = () => {
+        const borderWidth = style['border-width'];
+        if (shouldStyleWithCss(editor) && borderWidth) {
+          return { border: borderWidth };
+        }
+        return get$4(attrs, 'border').fold(() => ({}), border => ({ border }));
+      };
+      const advStyle = hasAdvTableTab ? extractAdvancedStyleData() : {};
+      const getCellPaddingCellSpacing = () => {
+        const spacing = get$4(style, 'border-spacing').or(get$4(attrs, 'cellspacing')).fold(() => ({}), cellspacing => ({ cellspacing }));
+        const padding = get$4(style, 'border-padding').or(get$4(attrs, 'cellpadding')).fold(() => ({}), cellpadding => ({ cellpadding }));
+        return {
+          ...spacing,
+          ...padding
+        };
+      };
+      const data = {
+        ...defaultData,
+        ...style,
+        ...attrs,
+        ...advStyle,
+        ...getBorder(),
+        ...getCellPaddingCellSpacing()
+      };
+      return data;
+    };
+    const getRowType = elm => table(SugarElement.fromDom(elm)).map(table => {
+      const target = { selection: fromDom(elm.cells) };
+      return getRowsType(table, target);
+    }).getOr('');
+    const extractDataFromTableElement = (editor, elm, hasAdvTableTab) => {
+      const getBorder = (dom, elm) => {
+        const optBorderWidth = getRaw(SugarElement.fromDom(elm), 'border-width');
+        if (shouldStyleWithCss(editor) && optBorderWidth.isSome()) {
+          return optBorderWidth.getOr('');
+        }
+        return dom.getAttrib(elm, 'border') || getTDTHOverallStyle(editor.dom, elm, 'border-width') || getTDTHOverallStyle(editor.dom, elm, 'border') || '';
+      };
+      const dom = editor.dom;
+      const cellspacing = shouldStyleWithCss(editor) ? dom.getStyle(elm, 'border-spacing') || dom.getAttrib(elm, 'cellspacing') : dom.getAttrib(elm, 'cellspacing') || dom.getStyle(elm, 'border-spacing');
+      const cellpadding = shouldStyleWithCss(editor) ? getTDTHOverallStyle(dom, elm, 'padding') || dom.getAttrib(elm, 'cellpadding') : dom.getAttrib(elm, 'cellpadding') || getTDTHOverallStyle(dom, elm, 'padding');
+      return {
+        width: dom.getStyle(elm, 'width') || dom.getAttrib(elm, 'width'),
+        height: dom.getStyle(elm, 'height') || dom.getAttrib(elm, 'height'),
+        cellspacing: cellspacing !== null && cellspacing !== void 0 ? cellspacing : '',
+        cellpadding: cellpadding !== null && cellpadding !== void 0 ? cellpadding : '',
+        border: getBorder(dom, elm),
+        caption: !!dom.select('caption', elm)[0],
+        class: dom.getAttrib(elm, 'class', ''),
+        align: getHAlignment(editor, elm),
+        ...hasAdvTableTab ? extractAdvancedStyles(elm) : {}
+      };
+    };
+    const extractDataFromRowElement = (editor, elm, hasAdvancedRowTab) => {
+      const dom = editor.dom;
+      return {
+        height: dom.getStyle(elm, 'height') || dom.getAttrib(elm, 'height'),
+        class: dom.getAttrib(elm, 'class', ''),
+        type: getRowType(elm),
+        align: getHAlignment(editor, elm),
+        ...hasAdvancedRowTab ? extractAdvancedStyles(elm) : {}
+      };
+    };
+    const extractDataFromCellElement = (editor, cell, hasAdvancedCellTab, column) => {
+      const dom = editor.dom;
+      const colElm = column.getOr(cell);
+      const getStyle = (element, style) => dom.getStyle(element, style) || dom.getAttrib(element, style);
+      return {
+        width: getStyle(colElm, 'width'),
+        scope: dom.getAttrib(cell, 'scope'),
+        celltype: getNodeName(cell),
+        class: dom.getAttrib(cell, 'class', ''),
+        halign: getHAlignment(editor, cell),
+        valign: getVAlignment(editor, cell),
+        ...hasAdvancedCellTab ? extractAdvancedStyles(cell) : {}
+      };
+    };
+
+    const getSelectedCells = (table, cells) => {
+      const warehouse = Warehouse.fromTable(table);
+      const allCells = Warehouse.justCells(warehouse);
+      const filtered = filter(allCells, cellA => exists(cells, cellB => eq(cellA.element, cellB)));
+      return map(filtered, cell => ({
+        element: cell.element.dom,
+        column: Warehouse.getColumnAt(warehouse, cell.column).map(col => col.element.dom)
+      }));
+    };
+    const updateSimpleProps$1 = (modifier, colModifier, data, shouldUpdate) => {
+      if (shouldUpdate('scope')) {
+        modifier.setAttrib('scope', data.scope);
+      }
+      if (shouldUpdate('class') && data.class !== 'mce-no-match') {
+        modifier.setAttrib('class', data.class);
+      }
+      if (shouldUpdate('width')) {
+        colModifier.setStyle('width', addPxSuffix(data.width));
+      }
+    };
+    const updateAdvancedProps$1 = (modifier, data, shouldUpdate) => {
+      if (shouldUpdate('backgroundcolor')) {
+        modifier.setFormat('tablecellbackgroundcolor', data.backgroundcolor);
+      }
+      if (shouldUpdate('bordercolor')) {
+        modifier.setFormat('tablecellbordercolor', data.bordercolor);
+      }
+      if (shouldUpdate('borderstyle')) {
+        modifier.setFormat('tablecellborderstyle', data.borderstyle);
+      }
+      if (shouldUpdate('borderwidth')) {
+        modifier.setFormat('tablecellborderwidth', addPxSuffix(data.borderwidth));
+      }
+    };
+    const applyStyleData$1 = (editor, cells, data, wasChanged) => {
+      const isSingleCell = cells.length === 1;
+      each(cells, item => {
+        const cellElm = item.element;
+        const shouldOverrideCurrentValue = isSingleCell ? always : wasChanged;
+        const modifier = DomModifier.normal(editor, cellElm);
+        const colModifier = item.column.map(col => DomModifier.normal(editor, col)).getOr(modifier);
+        updateSimpleProps$1(modifier, colModifier, data, shouldOverrideCurrentValue);
+        if (hasAdvancedCellTab(editor)) {
+          updateAdvancedProps$1(modifier, data, shouldOverrideCurrentValue);
+        }
+        if (wasChanged('halign')) {
+          setAlign(editor, cellElm, data.halign);
+        }
+        if (wasChanged('valign')) {
+          setVAlign(editor, cellElm, data.valign);
+        }
+      });
+    };
+    const applyStructureData$1 = (editor, data) => {
+      editor.execCommand('mceTableCellType', false, {
+        type: data.celltype,
+        no_events: true
+      });
+    };
+    const applyCellData = (editor, cells, oldData, data) => {
+      const modifiedData = filter$1(data, (value, key) => oldData[key] !== value);
+      if (size(modifiedData) > 0 && cells.length >= 1) {
+        table(cells[0]).each(table => {
+          const selectedCells = getSelectedCells(table, cells);
+          const styleModified = size(filter$1(modifiedData, (_value, key) => key !== 'scope' && key !== 'celltype')) > 0;
+          const structureModified = has(modifiedData, 'celltype');
+          if (styleModified || has(modifiedData, 'scope')) {
+            applyStyleData$1(editor, selectedCells, data, curry(has, modifiedData));
+          }
+          if (structureModified) {
+            applyStructureData$1(editor, data);
+          }
+          fireTableModified(editor, table.dom, {
+            structure: structureModified,
+            style: styleModified
+          });
+        });
+      }
+    };
+    const onSubmitCellForm = (editor, cells, oldData, api) => {
+      const data = api.getData();
+      api.close();
+      editor.undoManager.transact(() => {
+        applyCellData(editor, cells, oldData, data);
+        editor.focus();
+      });
+    };
+    const getData$1 = (editor, cells) => {
+      const cellsData = table(cells[0]).map(table => map(getSelectedCells(table, cells), item => extractDataFromCellElement(editor, item.element, hasAdvancedCellTab(editor), item.column)));
+      return getSharedValues(cellsData.getOrDie());
+    };
+    const open$2 = editor => {
+      const cells = getCellsFromSelection(editor);
+      if (cells.length === 0) {
+        return;
+      }
+      const data = getData$1(editor, cells);
+      const dialogTabPanel = {
+        type: 'tabpanel',
+        tabs: [
+          {
+            title: 'General',
+            name: 'general',
+            items: getItems$2(editor)
+          },
+          getAdvancedTab(editor, 'cell')
+        ]
+      };
+      const dialogPanel = {
+        type: 'panel',
+        items: [{
+            type: 'grid',
+            columns: 2,
+            items: getItems$2(editor)
+          }]
+      };
+      editor.windowManager.open({
+        title: 'Cell Properties',
+        size: 'normal',
+        body: hasAdvancedCellTab(editor) ? dialogTabPanel : dialogPanel,
+        buttons: [
+          {
+            type: 'cancel',
+            name: 'cancel',
+            text: 'Cancel'
+          },
+          {
+            type: 'submit',
+            name: 'save',
+            text: 'Save',
+            primary: true
+          }
+        ],
+        initialData: data,
+        onSubmit: curry(onSubmitCellForm, editor, cells, data)
+      });
+    };
+
+    const getClassList = editor => buildClassList(getRowClassList(editor)).map(items => ({
+      name: 'class',
+      type: 'listbox',
+      label: 'Class',
+      items
+    }));
+    const formChildren = [
+      {
+        type: 'listbox',
+        name: 'type',
+        label: 'Row type',
+        items: [
+          {
+            text: 'Header',
+            value: 'header'
+          },
+          {
+            text: 'Body',
+            value: 'body'
+          },
+          {
+            text: 'Footer',
+            value: 'footer'
+          }
+        ]
+      },
+      {
+        type: 'listbox',
+        name: 'align',
+        label: 'Alignment',
+        items: [
+          {
+            text: 'None',
+            value: ''
+          },
+          {
+            text: 'Left',
+            value: 'left'
+          },
+          {
+            text: 'Center',
+            value: 'center'
+          },
+          {
+            text: 'Right',
+            value: 'right'
+          }
+        ]
+      },
+      {
+        label: 'Height',
+        name: 'height',
+        type: 'input'
+      }
+    ];
+    const getItems$1 = editor => formChildren.concat(getClassList(editor).toArray());
+
+    const updateSimpleProps = (modifier, data, shouldUpdate) => {
+      if (shouldUpdate('class') && data.class !== 'mce-no-match') {
+        modifier.setAttrib('class', data.class);
+      }
+      if (shouldUpdate('height')) {
+        modifier.setStyle('height', addPxSuffix(data.height));
+      }
+    };
+    const updateAdvancedProps = (modifier, data, shouldUpdate) => {
+      if (shouldUpdate('backgroundcolor')) {
+        modifier.setStyle('background-color', data.backgroundcolor);
+      }
+      if (shouldUpdate('bordercolor')) {
+        modifier.setStyle('border-color', data.bordercolor);
+      }
+      if (shouldUpdate('borderstyle')) {
+        modifier.setStyle('border-style', data.borderstyle);
+      }
+    };
+    const applyStyleData = (editor, rows, data, wasChanged) => {
+      const isSingleRow = rows.length === 1;
+      const shouldOverrideCurrentValue = isSingleRow ? always : wasChanged;
+      each(rows, rowElm => {
+        const rowCells = children$1(SugarElement.fromDom(rowElm), 'td,th');
+        const modifier = DomModifier.normal(editor, rowElm);
+        updateSimpleProps(modifier, data, shouldOverrideCurrentValue);
+        if (hasAdvancedRowTab(editor)) {
+          updateAdvancedProps(modifier, data, shouldOverrideCurrentValue);
+        }
+        if (wasChanged('height')) {
+          each(rowCells, cell => {
+            editor.dom.setStyle(cell.dom, 'height', null);
+          });
+        }
+        if (wasChanged('align')) {
+          setAlign(editor, rowElm, data.align);
+        }
+      });
+    };
+    const applyStructureData = (editor, data) => {
+      editor.execCommand('mceTableRowType', false, {
+        type: data.type,
+        no_events: true
+      });
+    };
+    const applyRowData = (editor, rows, oldData, data) => {
+      const modifiedData = filter$1(data, (value, key) => oldData[key] !== value);
+      if (size(modifiedData) > 0) {
+        const typeModified = has(modifiedData, 'type');
+        const styleModified = typeModified ? size(modifiedData) > 1 : true;
+        if (styleModified) {
+          applyStyleData(editor, rows, data, curry(has, modifiedData));
+        }
+        if (typeModified) {
+          applyStructureData(editor, data);
+        }
+        table(SugarElement.fromDom(rows[0])).each(table => fireTableModified(editor, table.dom, {
+          structure: typeModified,
+          style: styleModified
+        }));
+      }
+    };
+    const onSubmitRowForm = (editor, rows, oldData, api) => {
+      const data = api.getData();
+      api.close();
+      editor.undoManager.transact(() => {
+        applyRowData(editor, rows, oldData, data);
+        editor.focus();
+      });
+    };
+    const open$1 = editor => {
+      const rows = getRowsFromSelection(getSelectionStart(editor), ephemera.selected);
+      if (rows.length === 0) {
+        return;
+      }
+      const rowsData = map(rows, rowElm => extractDataFromRowElement(editor, rowElm.dom, hasAdvancedRowTab(editor)));
+      const data = getSharedValues(rowsData);
+      const dialogTabPanel = {
+        type: 'tabpanel',
+        tabs: [
+          {
+            title: 'General',
+            name: 'general',
+            items: getItems$1(editor)
+          },
+          getAdvancedTab(editor, 'row')
+        ]
+      };
+      const dialogPanel = {
+        type: 'panel',
+        items: [{
+            type: 'grid',
+            columns: 2,
+            items: getItems$1(editor)
+          }]
+      };
+      editor.windowManager.open({
+        title: 'Row Properties',
+        size: 'normal',
+        body: hasAdvancedRowTab(editor) ? dialogTabPanel : dialogPanel,
+        buttons: [
+          {
+            type: 'cancel',
+            name: 'cancel',
+            text: 'Cancel'
+          },
+          {
+            type: 'submit',
+            name: 'save',
+            text: 'Save',
+            primary: true
+          }
+        ],
+        initialData: data,
+        onSubmit: curry(onSubmitRowForm, editor, map(rows, r => r.dom), data)
+      });
+    };
+
+    const getItems = (editor, classes, insertNewTable) => {
+      const rowColCountItems = !insertNewTable ? [] : [
+        {
+          type: 'input',
+          name: 'cols',
+          label: 'Cols',
+          inputMode: 'numeric'
+        },
+        {
+          type: 'input',
+          name: 'rows',
+          label: 'Rows',
+          inputMode: 'numeric'
+        }
+      ];
+      const alwaysItems = [
+        {
+          type: 'input',
+          name: 'width',
+          label: 'Width'
+        },
+        {
+          type: 'input',
+          name: 'height',
+          label: 'Height'
+        }
+      ];
+      const appearanceItems = hasAppearanceOptions(editor) ? [
+        {
+          type: 'input',
+          name: 'cellspacing',
+          label: 'Cell spacing',
+          inputMode: 'numeric'
+        },
+        {
+          type: 'input',
+          name: 'cellpadding',
+          label: 'Cell padding',
+          inputMode: 'numeric'
+        },
+        {
+          type: 'input',
+          name: 'border',
+          label: 'Border width'
+        },
+        {
+          type: 'label',
+          label: 'Caption',
+          items: [{
+              type: 'checkbox',
+              name: 'caption',
+              label: 'Show caption'
+            }]
+        }
+      ] : [];
+      const alignmentItem = [{
+          type: 'listbox',
+          name: 'align',
+          label: 'Alignment',
+          items: [
+            {
+              text: 'None',
+              value: ''
+            },
+            {
+              text: 'Left',
+              value: 'left'
+            },
+            {
+              text: 'Center',
+              value: 'center'
+            },
+            {
+              text: 'Right',
+              value: 'right'
+            }
+          ]
+        }];
+      const classListItem = classes.length > 0 ? [{
+          name: 'class',
+          type: 'listbox',
+          label: 'Class',
+          items: classes
+        }] : [];
+      return rowColCountItems.concat(alwaysItems).concat(appearanceItems).concat(alignmentItem).concat(classListItem);
+    };
+
+    const styleTDTH = (dom, elm, name, value) => {
+      if (elm.tagName === 'TD' || elm.tagName === 'TH') {
+        if (isString(name) && isNonNullable(value)) {
+          dom.setStyle(elm, name, value);
+        } else {
+          dom.setStyles(elm, name);
+        }
+      } else {
+        if (elm.children) {
+          for (let i = 0; i < elm.children.length; i++) {
+            styleTDTH(dom, elm.children[i], name, value);
+          }
+        }
+      }
+    };
+    const applyDataToElement = (editor, tableElm, data, shouldApplyOnCell) => {
+      const dom = editor.dom;
+      const attrs = {};
+      const styles = {};
+      const shouldStyleWithCss$1 = shouldStyleWithCss(editor);
+      const hasAdvancedTableTab$1 = hasAdvancedTableTab(editor);
+      const borderIsZero = parseFloat(data.border) === 0;
+      if (!isUndefined(data.class) && data.class !== 'mce-no-match') {
+        attrs.class = data.class;
+      }
+      styles.height = addPxSuffix(data.height);
+      if (shouldStyleWithCss$1) {
+        styles.width = addPxSuffix(data.width);
+      } else if (dom.getAttrib(tableElm, 'width')) {
+        attrs.width = removePxSuffix(data.width);
+      }
+      if (shouldStyleWithCss$1) {
+        if (borderIsZero) {
+          attrs.border = 0;
+          styles['border-width'] = '';
+        } else {
+          styles['border-width'] = addPxSuffix(data.border);
+          attrs.border = 1;
+        }
+        styles['border-spacing'] = addPxSuffix(data.cellspacing);
+      } else {
+        attrs.border = borderIsZero ? 0 : data.border;
+        attrs.cellpadding = data.cellpadding;
+        attrs.cellspacing = data.cellspacing;
+      }
+      if (shouldStyleWithCss$1 && tableElm.children) {
+        const cellStyles = {};
+        if (borderIsZero) {
+          cellStyles['border-width'] = '';
+        } else if (shouldApplyOnCell.border) {
+          cellStyles['border-width'] = addPxSuffix(data.border);
+        }
+        if (shouldApplyOnCell.cellpadding) {
+          cellStyles.padding = addPxSuffix(data.cellpadding);
+        }
+        if (hasAdvancedTableTab$1 && shouldApplyOnCell.bordercolor) {
+          cellStyles['border-color'] = data.bordercolor;
+        }
+        if (!isEmpty$1(cellStyles)) {
+          for (let i = 0; i < tableElm.children.length; i++) {
+            styleTDTH(dom, tableElm.children[i], cellStyles);
+          }
+        }
+      }
+      if (hasAdvancedTableTab$1) {
+        const advData = data;
+        styles['background-color'] = advData.backgroundcolor;
+        styles['border-color'] = advData.bordercolor;
+        styles['border-style'] = advData.borderstyle;
+      }
+      dom.setStyles(tableElm, {
+        ...getDefaultStyles(editor),
+        ...styles
+      });
+      dom.setAttribs(tableElm, {
+        ...getDefaultAttributes(editor),
+        ...attrs
+      });
+    };
+    const onSubmitTableForm = (editor, tableElm, oldData, api) => {
+      const dom = editor.dom;
+      const data = api.getData();
+      const modifiedData = filter$1(data, (value, key) => oldData[key] !== value);
+      api.close();
+      editor.undoManager.transact(() => {
+        if (!tableElm) {
+          const cols = toInt(data.cols).getOr(1);
+          const rows = toInt(data.rows).getOr(1);
+          editor.execCommand('mceInsertTable', false, {
+            rows,
+            columns: cols
+          });
+          tableElm = getSelectionCell(getSelectionStart(editor), getIsRoot(editor)).bind(cell => table(cell, getIsRoot(editor))).map(table => table.dom).getOrDie();
+        }
+        if (size(modifiedData) > 0) {
+          const applicableCellProperties = {
+            border: has(modifiedData, 'border'),
+            bordercolor: has(modifiedData, 'bordercolor'),
+            cellpadding: has(modifiedData, 'cellpadding')
+          };
+          applyDataToElement(editor, tableElm, data, applicableCellProperties);
+          const captionElm = dom.select('caption', tableElm)[0];
+          if (captionElm && !data.caption || !captionElm && data.caption) {
+            editor.execCommand('mceTableToggleCaption');
+          }
+          setAlign(editor, tableElm, data.align);
+        }
+        editor.focus();
+        editor.addVisual();
+        if (size(modifiedData) > 0) {
+          const captionModified = has(modifiedData, 'caption');
+          const styleModified = captionModified ? size(modifiedData) > 1 : true;
+          fireTableModified(editor, tableElm, {
+            structure: captionModified,
+            style: styleModified
+          });
+        }
+      });
+    };
+    const open = (editor, insertNewTable) => {
+      const dom = editor.dom;
+      let tableElm;
+      let data = extractDataFromSettings(editor, hasAdvancedTableTab(editor));
+      if (insertNewTable) {
+        data.cols = '1';
+        data.rows = '1';
+        if (hasAdvancedTableTab(editor)) {
+          data.borderstyle = '';
+          data.bordercolor = '';
+          data.backgroundcolor = '';
+        }
+      } else {
+        tableElm = dom.getParent(editor.selection.getStart(), 'table', editor.getBody());
+        if (tableElm) {
+          data = extractDataFromTableElement(editor, tableElm, hasAdvancedTableTab(editor));
+        } else {
+          if (hasAdvancedTableTab(editor)) {
+            data.borderstyle = '';
+            data.bordercolor = '';
+            data.backgroundcolor = '';
+          }
+        }
+      }
+      const classes = buildClassList(getTableClassList(editor));
+      if (classes.isSome()) {
+        if (data.class) {
+          data.class = data.class.replace(/\s*mce\-item\-table\s*/g, '');
+        }
+      }
+      const generalPanel = {
+        type: 'grid',
+        columns: 2,
+        items: getItems(editor, classes.getOr([]), insertNewTable)
+      };
+      const nonAdvancedForm = () => ({
+        type: 'panel',
+        items: [generalPanel]
+      });
+      const advancedForm = () => ({
+        type: 'tabpanel',
+        tabs: [
+          {
+            title: 'General',
+            name: 'general',
+            items: [generalPanel]
+          },
+          getAdvancedTab(editor, 'table')
+        ]
+      });
+      const dialogBody = hasAdvancedTableTab(editor) ? advancedForm() : nonAdvancedForm();
+      editor.windowManager.open({
+        title: 'Table Properties',
+        size: 'normal',
+        body: dialogBody,
+        onSubmit: curry(onSubmitTableForm, editor, tableElm, data),
+        buttons: [
+          {
+            type: 'cancel',
+            name: 'cancel',
+            text: 'Cancel'
+          },
+          {
+            type: 'submit',
+            name: 'save',
+            text: 'Save',
+            primary: true
+          }
+        ],
+        initialData: data
+      });
+    };
+
+    const registerCommands = editor => {
+      const runAction = f => {
+        if (isInEditableContext(getSelectionStart(editor))) {
+          f();
+        }
+      };
+      each$1({
+        mceTableProps: curry(open, editor, false),
+        mceTableRowProps: curry(open$1, editor),
+        mceTableCellProps: curry(open$2, editor),
+        mceInsertTableDialog: curry(open, editor, true)
+      }, (func, name) => editor.addCommand(name, () => runAction(func)));
+    };
+
+    const child = (scope, selector) => child$1(scope, selector).isSome();
+
+    const selection = identity;
+    const unmergable = selectedCells => {
+      const hasSpan = (elem, type) => getOpt(elem, type).exists(span => parseInt(span, 10) > 1);
+      const hasRowOrColSpan = elem => hasSpan(elem, 'rowspan') || hasSpan(elem, 'colspan');
+      return selectedCells.length > 0 && forall(selectedCells, hasRowOrColSpan) ? Optional.some(selectedCells) : Optional.none();
+    };
+    const mergable = (table, selectedCells, ephemera) => {
+      if (selectedCells.length <= 1) {
+        return Optional.none();
+      } else {
+        return retrieveBox(table, ephemera.firstSelectedSelector, ephemera.lastSelectedSelector).map(bounds => ({
+          bounds,
+          cells: selectedCells
+        }));
+      }
+    };
+
+    const noMenu = cell => ({
+      element: cell,
+      mergable: Optional.none(),
+      unmergable: Optional.none(),
+      selection: [cell]
+    });
+    const forMenu = (selectedCells, table, cell) => ({
+      element: cell,
+      mergable: mergable(table, selectedCells, ephemera),
+      unmergable: unmergable(selectedCells),
+      selection: selection(selectedCells)
+    });
+
+    const getSelectionTargets = editor => {
+      const targets = Cell(Optional.none());
+      const changeHandlers = Cell([]);
+      let selectionDetails = Optional.none();
+      const isCaption = isTag('caption');
+      const isDisabledForSelection = key => selectionDetails.forall(details => !details[key]);
+      const getStart = () => getSelectionCellOrCaption(getSelectionStart(editor), getIsRoot(editor));
+      const getEnd = () => getSelectionCellOrCaption(getSelectionEnd(editor), getIsRoot(editor));
+      const findTargets = () => getStart().bind(startCellOrCaption => flatten(lift2(table(startCellOrCaption), getEnd().bind(table), (startTable, endTable) => {
+        if (eq(startTable, endTable)) {
+          if (isCaption(startCellOrCaption)) {
+            return Optional.some(noMenu(startCellOrCaption));
+          } else {
+            return Optional.some(forMenu(getCellsFromSelection(editor), startTable, startCellOrCaption));
+          }
+        }
+        return Optional.none();
+      })));
+      const getExtractedDetails = targets => {
+        const tableOpt = table(targets.element);
+        return tableOpt.map(table => {
+          const warehouse = Warehouse.fromTable(table);
+          const selectedCells = onCells(warehouse, targets).getOr([]);
+          const locked = foldl(selectedCells, (acc, cell) => {
+            if (cell.isLocked) {
+              acc.onAny = true;
+              if (cell.column === 0) {
+                acc.onFirst = true;
+              } else if (cell.column + cell.colspan >= warehouse.grid.columns) {
+                acc.onLast = true;
+              }
+            }
+            return acc;
+          }, {
+            onAny: false,
+            onFirst: false,
+            onLast: false
+          });
+          return {
+            mergeable: onUnlockedMergable(warehouse, targets).isSome(),
+            unmergeable: onUnlockedUnmergable(warehouse, targets).isSome(),
+            locked
+          };
+        });
+      };
+      const resetTargets = () => {
+        targets.set(cached(findTargets)());
+        selectionDetails = targets.get().bind(getExtractedDetails);
+        each(changeHandlers.get(), call);
+      };
+      const setupHandler = handler => {
+        handler();
+        changeHandlers.set(changeHandlers.get().concat([handler]));
+        return () => {
+          changeHandlers.set(filter(changeHandlers.get(), h => h !== handler));
+        };
+      };
+      const onSetup = (api, isDisabled) => setupHandler(() => targets.get().fold(() => {
+        api.setEnabled(false);
+      }, targets => {
+        api.setEnabled(!isDisabled(targets) && editor.selection.isEditable());
+      }));
+      const onSetupWithToggle = (api, isDisabled, isActive) => setupHandler(() => targets.get().fold(() => {
+        api.setEnabled(false);
+        api.setActive(false);
+      }, targets => {
+        api.setEnabled(!isDisabled(targets) && editor.selection.isEditable());
+        api.setActive(isActive(targets));
+      }));
+      const isDisabledFromLocked = lockedDisable => selectionDetails.exists(details => details.locked[lockedDisable]);
+      const onSetupTable = api => onSetup(api, _ => false);
+      const onSetupCellOrRow = api => onSetup(api, targets => isCaption(targets.element));
+      const onSetupColumn = lockedDisable => api => onSetup(api, targets => isCaption(targets.element) || isDisabledFromLocked(lockedDisable));
+      const onSetupPasteable = getClipboardData => api => onSetup(api, targets => isCaption(targets.element) || getClipboardData().isNone());
+      const onSetupPasteableColumn = (getClipboardData, lockedDisable) => api => onSetup(api, targets => isCaption(targets.element) || getClipboardData().isNone() || isDisabledFromLocked(lockedDisable));
+      const onSetupMergeable = api => onSetup(api, _targets => isDisabledForSelection('mergeable'));
+      const onSetupUnmergeable = api => onSetup(api, _targets => isDisabledForSelection('unmergeable'));
+      const onSetupTableWithCaption = api => {
+        return onSetupWithToggle(api, never, targets => {
+          const tableOpt = table(targets.element, getIsRoot(editor));
+          return tableOpt.exists(table => child(table, 'caption'));
+        });
+      };
+      const onSetupTableHeaders = (command, headerType) => api => {
+        return onSetupWithToggle(api, targets => isCaption(targets.element), () => editor.queryCommandValue(command) === headerType);
+      };
+      const onSetupTableRowHeaders = onSetupTableHeaders('mceTableRowType', 'header');
+      const onSetupTableColumnHeaders = onSetupTableHeaders('mceTableColType', 'th');
+      editor.on('NodeChange ExecCommand TableSelectorChange', resetTargets);
+      return {
+        onSetupTable,
+        onSetupCellOrRow,
+        onSetupColumn,
+        onSetupPasteable,
+        onSetupPasteableColumn,
+        onSetupMergeable,
+        onSetupUnmergeable,
+        resetTargets,
+        onSetupTableWithCaption,
+        onSetupTableRowHeaders,
+        onSetupTableColumnHeaders,
+        targets: targets.get
+      };
+    };
+
+    var global = tinymce.util.Tools.resolve('tinymce.FakeClipboard');
+
+    const tableTypeBase = 'x-tinymce/dom-table-';
+    const tableTypeRow = tableTypeBase + 'rows';
+    const tableTypeColumn = tableTypeBase + 'columns';
+    const getData = type => {
+      var _a;
+      const items = (_a = global.read()) !== null && _a !== void 0 ? _a : [];
+      return findMap(items, item => Optional.from(item.getType(type)));
+    };
+    const getRows = () => getData(tableTypeRow);
+    const getColumns = () => getData(tableTypeColumn);
+
+    const onSetupEditable$1 = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
+    const addButtons = (editor, selectionTargets) => {
+      editor.ui.registry.addMenuButton('table', {
+        tooltip: 'Table',
+        icon: 'table',
+        onSetup: onSetupEditable$1(editor),
+        fetch: callback => callback('inserttable | cell row column | advtablesort | tableprops deletetable')
+      });
+      const cmd = command => () => editor.execCommand(command);
+      const addButtonIfRegistered = (name, spec) => {
+        if (editor.queryCommandSupported(spec.command)) {
+          editor.ui.registry.addButton(name, {
+            ...spec,
+            onAction: isFunction(spec.onAction) ? spec.onAction : cmd(spec.command)
+          });
+        }
+      };
+      const addToggleButtonIfRegistered = (name, spec) => {
+        if (editor.queryCommandSupported(spec.command)) {
+          editor.ui.registry.addToggleButton(name, {
+            ...spec,
+            onAction: isFunction(spec.onAction) ? spec.onAction : cmd(spec.command)
+          });
+        }
+      };
+      addButtonIfRegistered('tableprops', {
+        tooltip: 'Table properties',
+        command: 'mceTableProps',
+        icon: 'table',
+        onSetup: selectionTargets.onSetupTable
+      });
+      addButtonIfRegistered('tabledelete', {
+        tooltip: 'Delete table',
+        command: 'mceTableDelete',
+        icon: 'table-delete-table',
+        onSetup: selectionTargets.onSetupTable
+      });
+      addButtonIfRegistered('tablecellprops', {
+        tooltip: 'Cell properties',
+        command: 'mceTableCellProps',
+        icon: 'table-cell-properties',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tablemergecells', {
+        tooltip: 'Merge cells',
+        command: 'mceTableMergeCells',
+        icon: 'table-merge-cells',
+        onSetup: selectionTargets.onSetupMergeable
+      });
+      addButtonIfRegistered('tablesplitcells', {
+        tooltip: 'Split cell',
+        command: 'mceTableSplitCells',
+        icon: 'table-split-cells',
+        onSetup: selectionTargets.onSetupUnmergeable
+      });
+      addButtonIfRegistered('tableinsertrowbefore', {
+        tooltip: 'Insert row before',
+        command: 'mceTableInsertRowBefore',
+        icon: 'table-insert-row-above',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tableinsertrowafter', {
+        tooltip: 'Insert row after',
+        command: 'mceTableInsertRowAfter',
+        icon: 'table-insert-row-after',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tabledeleterow', {
+        tooltip: 'Delete row',
+        command: 'mceTableDeleteRow',
+        icon: 'table-delete-row',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tablerowprops', {
+        tooltip: 'Row properties',
+        command: 'mceTableRowProps',
+        icon: 'table-row-properties',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tableinsertcolbefore', {
+        tooltip: 'Insert column before',
+        command: 'mceTableInsertColBefore',
+        icon: 'table-insert-column-before',
+        onSetup: selectionTargets.onSetupColumn('onFirst')
+      });
+      addButtonIfRegistered('tableinsertcolafter', {
+        tooltip: 'Insert column after',
+        command: 'mceTableInsertColAfter',
+        icon: 'table-insert-column-after',
+        onSetup: selectionTargets.onSetupColumn('onLast')
+      });
+      addButtonIfRegistered('tabledeletecol', {
+        tooltip: 'Delete column',
+        command: 'mceTableDeleteCol',
+        icon: 'table-delete-column',
+        onSetup: selectionTargets.onSetupColumn('onAny')
+      });
+      addButtonIfRegistered('tablecutrow', {
+        tooltip: 'Cut row',
+        command: 'mceTableCutRow',
+        icon: 'cut-row',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tablecopyrow', {
+        tooltip: 'Copy row',
+        command: 'mceTableCopyRow',
+        icon: 'duplicate-row',
+        onSetup: selectionTargets.onSetupCellOrRow
+      });
+      addButtonIfRegistered('tablepasterowbefore', {
+        tooltip: 'Paste row before',
+        command: 'mceTablePasteRowBefore',
+        icon: 'paste-row-before',
+        onSetup: selectionTargets.onSetupPasteable(getRows)
+      });
+      addButtonIfRegistered('tablepasterowafter', {
+        tooltip: 'Paste row after',
+        command: 'mceTablePasteRowAfter',
+        icon: 'paste-row-after',
+        onSetup: selectionTargets.onSetupPasteable(getRows)
+      });
+      addButtonIfRegistered('tablecutcol', {
+        tooltip: 'Cut column',
+        command: 'mceTableCutCol',
+        icon: 'cut-column',
+        onSetup: selectionTargets.onSetupColumn('onAny')
+      });
+      addButtonIfRegistered('tablecopycol', {
+        tooltip: 'Copy column',
+        command: 'mceTableCopyCol',
+        icon: 'duplicate-column',
+        onSetup: selectionTargets.onSetupColumn('onAny')
+      });
+      addButtonIfRegistered('tablepastecolbefore', {
+        tooltip: 'Paste column before',
+        command: 'mceTablePasteColBefore',
+        icon: 'paste-column-before',
+        onSetup: selectionTargets.onSetupPasteableColumn(getColumns, 'onFirst')
+      });
+      addButtonIfRegistered('tablepastecolafter', {
+        tooltip: 'Paste column after',
+        command: 'mceTablePasteColAfter',
+        icon: 'paste-column-after',
+        onSetup: selectionTargets.onSetupPasteableColumn(getColumns, 'onLast')
+      });
+      addButtonIfRegistered('tableinsertdialog', {
+        tooltip: 'Insert table',
+        command: 'mceInsertTableDialog',
+        icon: 'table',
+        onSetup: onSetupEditable$1(editor)
+      });
+      const tableClassList = filterNoneItem(getTableClassList(editor));
+      if (tableClassList.length !== 0 && editor.queryCommandSupported('mceTableToggleClass')) {
+        editor.ui.registry.addMenuButton('tableclass', {
+          icon: 'table-classes',
+          tooltip: 'Table styles',
+          fetch: generateMenuItemsCallback(editor, tableClassList, 'tableclass', value => editor.execCommand('mceTableToggleClass', false, value)),
+          onSetup: selectionTargets.onSetupTable
+        });
+      }
+      const tableCellClassList = filterNoneItem(getCellClassList(editor));
+      if (tableCellClassList.length !== 0 && editor.queryCommandSupported('mceTableCellToggleClass')) {
+        editor.ui.registry.addMenuButton('tablecellclass', {
+          icon: 'table-cell-classes',
+          tooltip: 'Cell styles',
+          fetch: generateMenuItemsCallback(editor, tableCellClassList, 'tablecellclass', value => editor.execCommand('mceTableCellToggleClass', false, value)),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+      }
+      if (editor.queryCommandSupported('mceTableApplyCellStyle')) {
+        editor.ui.registry.addMenuButton('tablecellvalign', {
+          icon: 'vertical-align',
+          tooltip: 'Vertical align',
+          fetch: generateMenuItemsCallback(editor, verticalAlignValues, 'tablecellverticalalign', applyTableCellStyle(editor, 'vertical-align')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addMenuButton('tablecellborderwidth', {
+          icon: 'border-width',
+          tooltip: 'Border width',
+          fetch: generateMenuItemsCallback(editor, getTableBorderWidths(editor), 'tablecellborderwidth', applyTableCellStyle(editor, 'border-width')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addMenuButton('tablecellborderstyle', {
+          icon: 'border-style',
+          tooltip: 'Border style',
+          fetch: generateMenuItemsCallback(editor, getTableBorderStyles(editor), 'tablecellborderstyle', applyTableCellStyle(editor, 'border-style')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addMenuButton('tablecellbackgroundcolor', {
+          icon: 'cell-background-color',
+          tooltip: 'Background color',
+          fetch: callback => callback(buildColorMenu(editor, getTableBackgroundColorMap(editor), 'background-color')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addMenuButton('tablecellbordercolor', {
+          icon: 'cell-border-color',
+          tooltip: 'Border color',
+          fetch: callback => callback(buildColorMenu(editor, getTableBorderColorMap(editor), 'border-color')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+      }
+      addToggleButtonIfRegistered('tablecaption', {
+        tooltip: 'Table caption',
+        icon: 'table-caption',
+        command: 'mceTableToggleCaption',
+        onSetup: selectionTargets.onSetupTableWithCaption
+      });
+      addToggleButtonIfRegistered('tablerowheader', {
+        tooltip: 'Row header',
+        icon: 'table-top-header',
+        command: 'mceTableRowType',
+        onAction: changeRowHeader(editor),
+        onSetup: selectionTargets.onSetupTableRowHeaders
+      });
+      addToggleButtonIfRegistered('tablecolheader', {
+        tooltip: 'Column header',
+        icon: 'table-left-header',
+        command: 'mceTableColType',
+        onAction: changeColumnHeader(editor),
+        onSetup: selectionTargets.onSetupTableColumnHeaders
+      });
+    };
+    const addToolbars = editor => {
+      const isEditableTable = table => editor.dom.is(table, 'table') && editor.getBody().contains(table) && editor.dom.isEditable(table.parentNode);
+      const toolbar = getToolbar(editor);
+      if (toolbar.length > 0) {
+        editor.ui.registry.addContextToolbar('table', {
+          predicate: isEditableTable,
+          items: toolbar,
+          scope: 'node',
+          position: 'node'
+        });
+      }
+    };
+
+    const onSetupEditable = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
+    const addMenuItems = (editor, selectionTargets) => {
+      const cmd = command => () => editor.execCommand(command);
+      const addMenuIfRegistered = (name, spec) => {
+        if (editor.queryCommandSupported(spec.command)) {
+          editor.ui.registry.addMenuItem(name, {
+            ...spec,
+            onAction: isFunction(spec.onAction) ? spec.onAction : cmd(spec.command)
+          });
+          return true;
+        } else {
+          return false;
+        }
+      };
+      const addToggleMenuIfRegistered = (name, spec) => {
+        if (editor.queryCommandSupported(spec.command)) {
+          editor.ui.registry.addToggleMenuItem(name, {
+            ...spec,
+            onAction: isFunction(spec.onAction) ? spec.onAction : cmd(spec.command)
+          });
+        }
+      };
+      const insertTableAction = data => {
+        editor.execCommand('mceInsertTable', false, {
+          rows: data.numRows,
+          columns: data.numColumns
+        });
+      };
+      const hasRowMenuItems = [
+        addMenuIfRegistered('tableinsertrowbefore', {
+          text: 'Insert row before',
+          icon: 'table-insert-row-above',
+          command: 'mceTableInsertRowBefore',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tableinsertrowafter', {
+          text: 'Insert row after',
+          icon: 'table-insert-row-after',
+          command: 'mceTableInsertRowAfter',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tabledeleterow', {
+          text: 'Delete row',
+          icon: 'table-delete-row',
+          command: 'mceTableDeleteRow',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tablerowprops', {
+          text: 'Row properties',
+          icon: 'table-row-properties',
+          command: 'mceTableRowProps',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tablecutrow', {
+          text: 'Cut row',
+          icon: 'cut-row',
+          command: 'mceTableCutRow',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tablecopyrow', {
+          text: 'Copy row',
+          icon: 'duplicate-row',
+          command: 'mceTableCopyRow',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tablepasterowbefore', {
+          text: 'Paste row before',
+          icon: 'paste-row-before',
+          command: 'mceTablePasteRowBefore',
+          onSetup: selectionTargets.onSetupPasteable(getRows)
+        }),
+        addMenuIfRegistered('tablepasterowafter', {
+          text: 'Paste row after',
+          icon: 'paste-row-after',
+          command: 'mceTablePasteRowAfter',
+          onSetup: selectionTargets.onSetupPasteable(getRows)
+        })
+      ];
+      const hasColumnMenuItems = [
+        addMenuIfRegistered('tableinsertcolumnbefore', {
+          text: 'Insert column before',
+          icon: 'table-insert-column-before',
+          command: 'mceTableInsertColBefore',
+          onSetup: selectionTargets.onSetupColumn('onFirst')
+        }),
+        addMenuIfRegistered('tableinsertcolumnafter', {
+          text: 'Insert column after',
+          icon: 'table-insert-column-after',
+          command: 'mceTableInsertColAfter',
+          onSetup: selectionTargets.onSetupColumn('onLast')
+        }),
+        addMenuIfRegistered('tabledeletecolumn', {
+          text: 'Delete column',
+          icon: 'table-delete-column',
+          command: 'mceTableDeleteCol',
+          onSetup: selectionTargets.onSetupColumn('onAny')
+        }),
+        addMenuIfRegistered('tablecutcolumn', {
+          text: 'Cut column',
+          icon: 'cut-column',
+          command: 'mceTableCutCol',
+          onSetup: selectionTargets.onSetupColumn('onAny')
+        }),
+        addMenuIfRegistered('tablecopycolumn', {
+          text: 'Copy column',
+          icon: 'duplicate-column',
+          command: 'mceTableCopyCol',
+          onSetup: selectionTargets.onSetupColumn('onAny')
+        }),
+        addMenuIfRegistered('tablepastecolumnbefore', {
+          text: 'Paste column before',
+          icon: 'paste-column-before',
+          command: 'mceTablePasteColBefore',
+          onSetup: selectionTargets.onSetupPasteableColumn(getColumns, 'onFirst')
+        }),
+        addMenuIfRegistered('tablepastecolumnafter', {
+          text: 'Paste column after',
+          icon: 'paste-column-after',
+          command: 'mceTablePasteColAfter',
+          onSetup: selectionTargets.onSetupPasteableColumn(getColumns, 'onLast')
+        })
+      ];
+      const hasCellMenuItems = [
+        addMenuIfRegistered('tablecellprops', {
+          text: 'Cell properties',
+          icon: 'table-cell-properties',
+          command: 'mceTableCellProps',
+          onSetup: selectionTargets.onSetupCellOrRow
+        }),
+        addMenuIfRegistered('tablemergecells', {
+          text: 'Merge cells',
+          icon: 'table-merge-cells',
+          command: 'mceTableMergeCells',
+          onSetup: selectionTargets.onSetupMergeable
+        }),
+        addMenuIfRegistered('tablesplitcells', {
+          text: 'Split cell',
+          icon: 'table-split-cells',
+          command: 'mceTableSplitCells',
+          onSetup: selectionTargets.onSetupUnmergeable
+        })
+      ];
+      if (!hasTableGrid(editor)) {
+        editor.ui.registry.addMenuItem('inserttable', {
+          text: 'Table',
+          icon: 'table',
+          onAction: cmd('mceInsertTableDialog'),
+          onSetup: onSetupEditable(editor)
+        });
+      } else {
+        editor.ui.registry.addNestedMenuItem('inserttable', {
+          text: 'Table',
+          icon: 'table',
+          getSubmenuItems: () => [{
+              type: 'fancymenuitem',
+              fancytype: 'inserttable',
+              onAction: insertTableAction
+            }],
+          onSetup: onSetupEditable(editor)
+        });
+      }
+      editor.ui.registry.addMenuItem('inserttabledialog', {
+        text: 'Insert table',
+        icon: 'table',
+        onAction: cmd('mceInsertTableDialog'),
+        onSetup: onSetupEditable(editor)
+      });
+      addMenuIfRegistered('tableprops', {
+        text: 'Table properties',
+        onSetup: selectionTargets.onSetupTable,
+        command: 'mceTableProps'
+      });
+      addMenuIfRegistered('deletetable', {
+        text: 'Delete table',
+        icon: 'table-delete-table',
+        onSetup: selectionTargets.onSetupTable,
+        command: 'mceTableDelete'
+      });
+      if (contains(hasRowMenuItems, true)) {
+        editor.ui.registry.addNestedMenuItem('row', {
+          type: 'nestedmenuitem',
+          text: 'Row',
+          getSubmenuItems: constant('tableinsertrowbefore tableinsertrowafter tabledeleterow tablerowprops | tablecutrow tablecopyrow tablepasterowbefore tablepasterowafter')
+        });
+      }
+      if (contains(hasColumnMenuItems, true)) {
+        editor.ui.registry.addNestedMenuItem('column', {
+          type: 'nestedmenuitem',
+          text: 'Column',
+          getSubmenuItems: constant('tableinsertcolumnbefore tableinsertcolumnafter tabledeletecolumn | tablecutcolumn tablecopycolumn tablepastecolumnbefore tablepastecolumnafter')
+        });
+      }
+      if (contains(hasCellMenuItems, true)) {
+        editor.ui.registry.addNestedMenuItem('cell', {
+          type: 'nestedmenuitem',
+          text: 'Cell',
+          getSubmenuItems: constant('tablecellprops tablemergecells tablesplitcells')
+        });
+      }
+      editor.ui.registry.addContextMenu('table', {
+        update: () => {
+          selectionTargets.resetTargets();
+          return selectionTargets.targets().fold(constant(''), targets => {
+            if (name(targets.element) === 'caption') {
+              return 'tableprops deletetable';
+            } else {
+              return 'cell row column | advtablesort | tableprops deletetable';
+            }
+          });
+        }
+      });
+      const tableClassList = filterNoneItem(getTableClassList(editor));
+      if (tableClassList.length !== 0 && editor.queryCommandSupported('mceTableToggleClass')) {
+        editor.ui.registry.addNestedMenuItem('tableclass', {
+          icon: 'table-classes',
+          text: 'Table styles',
+          getSubmenuItems: () => buildMenuItems(editor, tableClassList, 'tableclass', value => editor.execCommand('mceTableToggleClass', false, value)),
+          onSetup: selectionTargets.onSetupTable
+        });
+      }
+      const tableCellClassList = filterNoneItem(getCellClassList(editor));
+      if (tableCellClassList.length !== 0 && editor.queryCommandSupported('mceTableCellToggleClass')) {
+        editor.ui.registry.addNestedMenuItem('tablecellclass', {
+          icon: 'table-cell-classes',
+          text: 'Cell styles',
+          getSubmenuItems: () => buildMenuItems(editor, tableCellClassList, 'tablecellclass', value => editor.execCommand('mceTableCellToggleClass', false, value)),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+      }
+      if (editor.queryCommandSupported('mceTableApplyCellStyle')) {
+        editor.ui.registry.addNestedMenuItem('tablecellvalign', {
+          icon: 'vertical-align',
+          text: 'Vertical align',
+          getSubmenuItems: () => buildMenuItems(editor, verticalAlignValues, 'tablecellverticalalign', applyTableCellStyle(editor, 'vertical-align')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addNestedMenuItem('tablecellborderwidth', {
+          icon: 'border-width',
+          text: 'Border width',
+          getSubmenuItems: () => buildMenuItems(editor, getTableBorderWidths(editor), 'tablecellborderwidth', applyTableCellStyle(editor, 'border-width')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addNestedMenuItem('tablecellborderstyle', {
+          icon: 'border-style',
+          text: 'Border style',
+          getSubmenuItems: () => buildMenuItems(editor, getTableBorderStyles(editor), 'tablecellborderstyle', applyTableCellStyle(editor, 'border-style')),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addNestedMenuItem('tablecellbackgroundcolor', {
+          icon: 'cell-background-color',
+          text: 'Background color',
+          getSubmenuItems: () => buildColorMenu(editor, getTableBackgroundColorMap(editor), 'background-color'),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+        editor.ui.registry.addNestedMenuItem('tablecellbordercolor', {
+          icon: 'cell-border-color',
+          text: 'Border color',
+          getSubmenuItems: () => buildColorMenu(editor, getTableBorderColorMap(editor), 'border-color'),
+          onSetup: selectionTargets.onSetupCellOrRow
+        });
+      }
+      addToggleMenuIfRegistered('tablecaption', {
+        icon: 'table-caption',
+        text: 'Table caption',
+        command: 'mceTableToggleCaption',
+        onSetup: selectionTargets.onSetupTableWithCaption
+      });
+      addToggleMenuIfRegistered('tablerowheader', {
+        text: 'Row header',
+        icon: 'table-top-header',
+        command: 'mceTableRowType',
+        onAction: changeRowHeader(editor),
+        onSetup: selectionTargets.onSetupTableRowHeaders
+      });
+      addToggleMenuIfRegistered('tablecolheader', {
+        text: 'Column header',
+        icon: 'table-left-header',
+        command: 'mceTableColType',
+        onAction: changeColumnHeader(editor),
+        onSetup: selectionTargets.onSetupTableRowHeaders
+      });
+    };
+
+    const Plugin = editor => {
+      const selectionTargets = getSelectionTargets(editor);
+      register(editor);
+      registerCommands(editor);
+      addMenuItems(editor, selectionTargets);
+      addButtons(editor, selectionTargets);
+      addToolbars(editor);
+    };
+    var Plugin$1 = () => {
+      global$3.add('table', Plugin);
+    };
+
+    Plugin$1();
 
 })();
