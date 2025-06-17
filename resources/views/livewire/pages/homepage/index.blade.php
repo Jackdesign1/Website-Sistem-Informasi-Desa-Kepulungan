@@ -48,7 +48,8 @@
             </template>
             <template x-if="!hideItem">
                 <x-mary-button class="btn btn-outline" label="Sembunyikan Sebagian Layanan" x-on:click="hideItem = true" />
-            </template>  </div>
+            </template> 
+        </div>
     </x-container>
 
     <div class="bg-gradient-to-tr from-gray-300 to-gray-200">
@@ -138,7 +139,7 @@
     <div class="bg-gradient-to-tr from-red-600 to-red-400">
         <x-container class="py-20">
             <x-header class="mb-8 text-center text-white">Badan Usaha Milik Desa</x-header>
-            <x-carousel class="h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-lg">
+            <x-carousel class="h-[450px] lg:h-[550px] rounded-2xl overflow-hidden shadow-lg" overlay>
                 {{-- @for ($i = 1; $i <= 4; $i++) --}}
                     <div id="bumdes" class="relative w-full carousel-item">
                         <img
@@ -174,12 +175,12 @@
                 <div class="rounded-xl overflow-hidden shadow-lg flex-[.8] aspect-[16/8]">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
-                <div class="flex-1 overflow-hidden shadow-lg rounded-xl aspect-[4/3]">
+                <div class="flex-1 overflow-hidden shadow-lg rounded-xl aspect-[5/3]">
                     <img src="{{ asset('assets/images/Galeri_1.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
             <div class="flex flex-col min-h-0 gap-3">
-                <div class="rounded-xl overflow-hidden shadow-lg flex-[1.8] aspect-[4/3]">
+                <div class="rounded-xl overflow-hidden shadow-lg flex-[1.8] aspect-[5/3]">
                     <img src="{{ asset('assets/images/Galeri_2.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
                 <div class="flex-1 overflow-hidden shadow-lg rounded-xl aspect-[16/8]">

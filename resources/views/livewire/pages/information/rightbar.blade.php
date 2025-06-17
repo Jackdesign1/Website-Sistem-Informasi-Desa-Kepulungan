@@ -12,7 +12,8 @@
                                 <div class="text-xs font-semibold capitalize opacity-60">{{ $item->updated_at->diffForHumans() }}</div>
                             </div>
                             <div class="text-xs list-col-wrap line-clamp-4 max-h-20">
-                                {!! Str::limit($item->content, 255) !!}
+                                {{-- {!! Str::limit($item->content, 255) !!} --}}
+                                {!! truncateHTML($item->content, 255) !!}
                             </div>
                         </li>
                     @endforeach
@@ -37,7 +38,8 @@
                                 <div class="text-xs font-semibold capitalize opacity-60">{{ $report->updated_at->diffForHumans() }}</div>
                             </div>
                             <div class="text-xs list-col-wrap line-clamp-4 max-h-20">
-                                {!! Str::limit($report->content, 255) !!}
+                                {{-- {!! Str::limit($report->content, 255) !!} --}}
+                                {!! truncateHTML($report->content, 255) !!}
                             </div>
                             <x-mary-dropdown label="Report" class="btn-sm">
                                 @foreach ($report->fileMedia as $fileMedia)

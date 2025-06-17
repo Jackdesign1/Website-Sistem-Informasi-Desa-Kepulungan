@@ -95,6 +95,7 @@
 
         {{-- mary ui plugin --}}
         <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+        {{-- evo calendar library --}}
         <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
         <script src="{{ asset('assets/js/vanilla-calendar.min.js') }}"></script>
 

@@ -27,6 +27,7 @@ use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Edit as JobvacancyEdit;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Create as ReportCreate;
 use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
+use App\Livewire\Pages\Dashboard\VillageCalendar\Index as VillageCalendarIndex;
 use App\Livewire\Pages\Galery\Index as GaleryIndex;
 use App\Models\JobVacancy;
 
@@ -101,6 +102,11 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
         //     ->name('create');
         // Route::get('/edit/{key}', \App\Livewire\Pages\Dashboard\Information\HeroImage\Edit::class)
         //     ->name('edit');
+    });
+
+    Route::prefix('/kalender-desa')->name('village-calendar.')->group(function() {
+        Route::get('/', VillageCalendarIndex::class)
+            ->name('index');
     });
 });
 

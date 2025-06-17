@@ -19,6 +19,9 @@
             {{-- slick js --}}
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick.css') }}"/>
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick-theme.css') }}"/>
+            {{-- evo calendar library --}}
+            <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar-royal-navy.min.css') }}">
         @endassets
 
         <style>
@@ -61,6 +64,7 @@
                     <x-mary-menu-item title="Home" icon="o-home" link="###" />
                     <x-mary-menu-item title="Hero Image" icon="tabler.photos" :link="route('dashboard.hero-image.index')" />
                     <x-mary-menu-item title="Aparatur" icon="tabler.users" :link="route('dashboard.apparatus')" />
+                    <x-mary-menu-item title="Kalender Desa" icon="tabler.calendar" :link="route('dashboard.village-calendar.index')" />
                     {{-- <x-mary-menu-item  :link="route('dashboard.budget')" /> --}}
                     <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
                         <x-mary-menu-item title="Pendapatan Desa" :link="route('dashboard.budget.village.index')" />
@@ -100,6 +104,8 @@
             <script type="text/javascript" src="{{ asset('assets/js/slick.min.js') }}"></script>
             {{--  Currency  --}}
             <script type="text/javascript" src="{{ asset('assets/js/currency.js') }}"></script>
+            {{-- evo calendar library --}}
+            <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
         @endassets
 
         @stack('scripts')
