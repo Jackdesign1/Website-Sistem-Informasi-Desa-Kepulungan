@@ -48,7 +48,7 @@
             </template>
             <template x-if="!hideItem">
                 <x-mary-button class="btn btn-outline" label="Sembunyikan Sebagian Layanan" x-on:click="hideItem = true" />
-            </template> 
+            </template>
         </div>
     </x-container>
 
@@ -71,70 +71,9 @@
         </x-container>
     </div>
 
-    {{-- <x-container>
-        @php
-            $events = [
-                [
-                    'label' => 'Day off',
-                    'description' => 'Playing <u>tennis.</u>',
-                    'css' => '!bg-amber-200',
-                    'date' => now()->startOfMonth()->addDays(3),
-                ],
-                [
-                    'label' => 'Event at same day',
-                    'description' => 'Hey there!',
-                    'css' => '!bg-amber-200',
-                    'date' => now()->startOfMonth()->addDays(3),
-                ],
-                [
-                    'label' => 'Laracon',
-                    'description' => 'Let`s go!',
-                    'css' => '!bg-blue-200',
-                    'range' => [
-                        now()->startOfMonth()->addDays(13),
-                        now()->startOfMonth()->addDays(15)
-                    ]
-                ],
-            ];
-        @endphp
-
-
-        <div class="flex items-center gap-8">
-            <div>
-                <x-header class="mb-8">Kalender Desa</x-header>
-                <div class="flex-shrink border shadow-lg rounded-xl">
-                    <x-mary-calendar :events="$events" class="w-full" months="2"/>
-                </div>
-            </div>
-            <div class="flex-1 text-center">
-                @foreach ($events as $event)
-                    <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-                        <li>
-                            <div class="timeline-middle">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                class="w-5 h-5">
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            </div>
-                            <div class="mb-10 {{ $loop->iteration % 2 == 1? "timeline-start" : "timeline-end" }} {{ $loop->iteration % 2 == 1? "md:text-end" : "md:text-start" }}">
-                                <time class="font-mono italic">{{ isset($event['date'])? $event['date']->format('d M Y') : $event['range'][0]->format('d M Y')." - ".$event['range'][1]->format('d M Y') }}</time>
-                                <div class="text-lg font-black">{{ $event['label'] }}</div>
-                                    {{ $event['description'] }}
-                                </div>
-                            <hr />
-                        </li>
-                    </ul>
-                @endforeach
-                <a href="" class="link link-primary link-hover">Lihat selengkapnya</a>
-            </div>
-        </div>
-    </x-container> --}}
+    <x-container>
+        <livewire:pages.homepage.village-calendar />
+    </x-container>
 
     <div class="bg-gradient-to-tr from-red-600 to-red-400">
         <x-container class="py-20">
@@ -149,7 +88,7 @@
                             {{-- <x-carousel-nav index="1" name="bumdes"></x-carousel-nav> --}}
                             <div class="absolute space-y-3 text-center text-white translate-y-1/2 bottom-1/2 md:bottom-20 md:translate-y-0 md:left-14 lg:left-24 md:text-left lg:w-1/2">
                                 <x-header class="text-2xl md:text-3xl">
-                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan 
+                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan
                                 </x-header>
                                 <div class="text-base md:text-xl">
                                     Wisata Pemandian Air Panas Langsung <br>

@@ -38,10 +38,10 @@
 
         <x-mary-nav sticky class="lg:hidden">
             <x-slot:brand>
-                <div class="ml-5 pt-2">{{ $title?? 'Dashboard Desa Kepulungan' }}</div>
+                <div class="pt-2 ml-5">{{ $title?? 'Dashboard Desa Kepulungan' }}</div>
             </x-slot:brand>
             <x-slot:actions>
-                <label for="main-drawer" class="lg:hidden mr-3">
+                <label for="main-drawer" class="mr-3 lg:hidden">
                     <x-mary-icon name="o-bars-3" class="cursor-pointer" />
                 </label>
             </x-slot:actions>
@@ -88,7 +88,7 @@
 
         {{--  TOAST area --}}
         <x-mary-toast />
-        
+
         @assets
             {{-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script> --}}
             <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
@@ -106,6 +106,8 @@
             <script type="text/javascript" src="{{ asset('assets/js/currency.js') }}"></script>
             {{-- evo calendar library --}}
             <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
+            {{-- Date.js library --}}
+            <script type="text/javascript" src="{{ asset('assets/js/date.js') }}"></script>
         @endassets
 
         @stack('scripts')

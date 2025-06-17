@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
         <title class="capitalize">{{ $title." Desa Kepulungan" }}</title>
         <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-desa-kapulungan.png') }}">
 
@@ -14,6 +14,7 @@
 
         {{-- mary ui plugin --}}
         <link href="{{ asset('assets/css/vanilla-calendar.min.css') }}" rel="stylesheet">
+        <script src="{{ asset('assets/js/vanilla-calendar.min.js') }}"></script>
         <script src="{{ asset('assets/js/chart.umd.min.js') }}"></script>
         {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> --}}
 
@@ -97,7 +98,6 @@
         <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
         {{-- evo calendar library --}}
         <script src="{{ asset('assets/js/evo-calendar.min.js') }}"></script>
-        <script src="{{ asset('assets/js/vanilla-calendar.min.js') }}"></script>
 
         {{-- slick js library --}}
         <script type="text/javascript" src="{{ asset('assets/js/slick.min.js') }}"></script>

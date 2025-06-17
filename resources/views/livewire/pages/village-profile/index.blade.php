@@ -70,7 +70,7 @@
         <img src="{{ asset('assets/images/bagan-organisasi.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-4xl mx-auto">
     </x-container>
 
-    <x-container>
+    <x-container id="village-calendar">
         <x-header class="mb-8">
             Kalender Desa
         </x-header>
