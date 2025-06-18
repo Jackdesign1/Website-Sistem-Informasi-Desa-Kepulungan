@@ -29,9 +29,9 @@
 
     <ul class="flex flex-col gap-3 rounded-lg">
         @foreach ($reports as $report)
-            <li class="relative flex gap-3 p-6 overflow-hidden border rounded-lg shadow-lg">
+            <li class="relative flex flex-col gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
                 <div class="flex items-center gap-3">
-                    <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset($report->media->first()->url) }}"/>
+                    <img class="object-cover w-full max-h-28 sm:w-auto sm:h-24 min-w-24 aspect-square rounded-box"src="{{ asset($report->media->first()->url) }}"/>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="mb-1.5 capitalize text-lg">
@@ -61,12 +61,17 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-3">
-                    <div>
+                    <div class="flex-1 hidden sm:block">
                         <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
                         <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.report.edit', ['key' => Crypt::encrypt($report->id)])"></x-mary-button>
                         <x-mary-button icon="o-trash" tooltip="hapus" class="btn-circle !tooltip-bottom btn-ghost btn-sm" @click="$wire.deleteModalState = true; $wire.selectedKey = '{{ Crypt::encrypt($report->id) }}'"></x-mary-button>
                     </div>
-                    <div class="text-end">
+                    <div class="flex items-center justify-between sm:justify-end">
+                        <div class="flex-1 sm:hidden">
+                            <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
+                            <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.report.edit', ['key' => Crypt::encrypt($report->id)])"></x-mary-button>
+                            <x-mary-button icon="o-trash" tooltip="hapus" class="btn-circle !tooltip-bottom btn-ghost btn-sm" @click="$wire.deleteModalState = true; $wire.selectedKey = '{{ Crypt::encrypt($report->id) }}'"></x-mary-button>
+                        </div>
                         <x-mary-button :label="$report->status == 'publish'? 'published' : 'draft'" class="{{ $report->status == 'publish'? 'btn-success' : '' }} capitalize"
                             @click="$wire.statusModalState = true; newsStatus = '{{ $report->status }}'; $wire.selectedKey = '{{ Crypt::encrypt($report->id); }}'" />
                     </div>
