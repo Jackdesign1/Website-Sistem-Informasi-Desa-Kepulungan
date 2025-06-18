@@ -7,7 +7,7 @@
     </div>
     <x-mary-collapse :name="'group'.$index" separator>
         <x-slot:heading>
-        <div class="flex items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center justify-between gap-2">
             <span>Pendapatan</span>
             <span>Total: Rp {{ number_format($budget->details->sum('value'), 2) }}</span>
         </div>

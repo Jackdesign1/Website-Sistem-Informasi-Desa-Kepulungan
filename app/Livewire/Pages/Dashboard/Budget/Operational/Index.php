@@ -32,11 +32,13 @@ class Index extends Component
         OperationalBudget::destroy(decrypt($key));
         $this->info('Anggaran pendapatan berhasil dihapus');
     }
-    
+
     public function render()
     {
+        $operationals = $this->operationals();
         return view('livewire.pages.dashboard.budget.operational.index', [
-            'operationals' => $this->operationals()
+            'operationals' => $operationals,
+            'chunkedOperationals' => $operationals->chunk(2)
         ]);
     }
 }

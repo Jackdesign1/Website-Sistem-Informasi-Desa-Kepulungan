@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Village;
 
-use App\Models\VillageBudget;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use App\Models\VillageBudget;
 
 class Index extends Component
 {
@@ -24,7 +24,6 @@ class Index extends Component
 
     public function villageBudgets() {
         $villageBudgets = VillageBudget::latest('year')->with('details')->get();
-        $chunkedBudgets = $villageBudgets->chunk(2);
         return $villageBudgets;
     }
 
@@ -35,8 +34,10 @@ class Index extends Component
 
     public function render()
     {
+        $villageBudgets = $this->villageBudgets();
         return view('livewire.pages.dashboard.budget.village.index', [
-            'villageBudgets' => $this->villageBudgets()
+            'villageBudgets' => $villageBudgets,
+            'chunkedVillageBudgets' => $villageBudgets->chunk(2)
         ]);
     }
 }

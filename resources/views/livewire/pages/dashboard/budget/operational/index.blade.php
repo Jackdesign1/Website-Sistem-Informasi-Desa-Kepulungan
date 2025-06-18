@@ -5,22 +5,22 @@
       </x-slot:actions>
    </x-mary-header>
 
-   <div class="grid grid-cols-2 gap-5">
-      <div class="flex flex-col gap-5">
-         @foreach ($operationals as $index => $operational)
-            @if ($index % 2 == 0)
-               <x-budget.operational-budget-card :$operational :$index />
-            @endif
-         @endforeach
-      </div>
+    {{-- desktop layout --}}
+    <div class="hidden grid-cols-1 gap-5 md:grid md:grid-cols-2">
+        @foreach ($chunkedOperationals as $operationalsChunk)
+            @foreach ($operationalsChunk as $index => $operational)
+                <div class="flex flex-col gap-5">
+                    <x-budget.operational-budget-card :$operational :$index />
+                </div>
+            @endforeach
+        @endforeach
+    </div>
 
-      <div class="flex flex-col gap-5">
-         @foreach ($operationals as $index => $operational)
-            @if ($index % 2 == 1)
-               <x-budget.operational-budget-card :$operational :$index />
-            @endif
-         @endforeach
-      </div>
+    {{-- mobile layout --}}
+    <div class="grid grid-cols-1 gap-5 md:hidden md:grid-cols-2">
+        @foreach ($operationals as $index => $operational)
+            <x-budget.operational-budget-card :$operational :$index />
+        @endforeach
+    </div>
 
-   </div>
 </x-dashboard-container>

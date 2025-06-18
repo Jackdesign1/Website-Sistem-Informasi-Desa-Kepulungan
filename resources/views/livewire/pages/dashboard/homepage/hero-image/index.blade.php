@@ -24,8 +24,8 @@
                     <div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-black/40"></div>
                     <img
                         src="{{ asset($heroImage->image) }}"
-                        class="object-cover w-full h-96" />
-                    <div class="absolute top-0 bottom-0 z-20 left-5 right-5">
+                        class="object-cover w-full " />
+                    <div class="absolute top-0 bottom-0 z-20 flex justify-center left-5 right-5 md:justify-start">
                         <div class="absolute z-20 text-lg text-center text-white bottom-14 max-w-96 lg:left-16 md:text-left">
                             <p class="font-semibold md:text-3xl">{{ $heroImage->title }}</p>
                             <p>{{ $heroImage->subtitle }}</p>
@@ -85,6 +85,7 @@
                         slidesToScroll: 1,
                         fade: true,
                         infinite: false,
+                        adaptiveHeight: true,
                         dynamicHeight: true,
                         asNavFor: '#hero-image-nav',
                     });

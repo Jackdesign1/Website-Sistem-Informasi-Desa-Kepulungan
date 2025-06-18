@@ -36,7 +36,7 @@
     <body class="font-sans antialiased" x-data>
         {{-- @livewire('layouts.dashboard-navigation') --}}
 
-        <x-mary-nav sticky class="z-30 lg:hidden">
+        <x-mary-nav sticky class=" lg:hidden">
             <x-slot:brand>
                 <div class="pt-2 ml-5">{{ $title?? 'Dashboard Desa Kepulungan' }}</div>
             </x-slot:brand>
@@ -52,7 +52,7 @@
 
             {{-- This is a sidebar that works also as a drawer on small screens --}}
             {{-- Notice the `main-drawer` reference here --}}
-            <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-200">
+            <x-slot:sidebar drawer="main-drawer" collapsible class="z-40 bg-base-200">
                 {{-- User --}}
                 @if(Auth::check())
                     <livewire:layouts.logout>
