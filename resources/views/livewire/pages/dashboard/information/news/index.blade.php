@@ -29,8 +29,7 @@
 
     <ul class="flex flex-col gap-3 rounded-lg">
         @foreach ($news as $item)
-            <li class="relative flex gap-3 p-6 overflow-hidden border rounded-lg shadow-lg max-h-52">
-                <div class="absolute bottom-0 left-0 right-0 z-20 h-8 bg-gradient-to-t from-white to-transparent"></div>
+            <li class="relative flex gap-3 p-6 overflow-hidden border rounded-lg shadow-lg">
                 <div class="flex items-center gap-3">
                     <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset($item->media->first()->url) }}"/>
                 </div>
@@ -41,9 +40,11 @@
                         </div>
                         <div class="text-xs opacity-60">{{ $item->created_at->diffForHumans() }}</div>
                     </div>
-                    <div class="text-sm line-clamp-4">
+                    <div class="text-sm line-clamp-3">
                         <a href="{{ route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)]) }}">
-                            {!! $item->content !!}
+                            <div class="no-tailwindcss-base">
+                                {!! truncateHTML($item->content, 200) !!}
+                            </div>
                         </a>
                     </div>
                 </div>

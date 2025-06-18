@@ -9,7 +9,7 @@
                 </x-mary-file>
                 @if ($oldCompanyLogo && !$newCompanyLogo)
                     <div class="absolute bottom-0 left-0 right-0 z-10 mb-2 transition top-8 group-hover:scale-105">
-                        <img src="{{ asset($oldCompanyLogo) }}" class="w-24 h-24 rounded-lg" />
+                        <img src="{{ asset($oldCompanyLogo) }}" class="object-cover w-24 h-24 rounded-lg" />
                     </div>
                 @endif
             </div>

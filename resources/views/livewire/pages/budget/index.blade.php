@@ -7,7 +7,7 @@
                 <x-header class="mb-3">
                     Transparansi Anggaran <br>Desa Kepulungan
                 </x-header>
-                Komitmen Kami untuk Keterbukaan dan Akuntabilitas dalam Pengelolaan Anggaran    
+                Komitmen Kami untuk Keterbukaan dan Akuntabilitas dalam Pengelolaan Anggaran
             </div>
         </div>
         <div class="flex-[.8] ps-8 hidden md:block">
@@ -26,10 +26,10 @@
         <livewire:pages.budget.operational :year="$selectedYear" withChart="true" wire:key='{{ $selectedYear }}'/>
     </x-container>
 
-    <x-container id="pendapatan">
+    {{-- <x-container id="pendapatan">
         <x-header class="mb-8 text-center">Pendapatan Desa</x-header>
         <livewire:pages.budget.income :year="$selectedYear" withChart="true" wire:key='{{ $selectedYear }}'/>
-    </x-container>
+    </x-container> --}}
 </div>
 
 

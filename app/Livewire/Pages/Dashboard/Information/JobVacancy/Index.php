@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Pages\Dashboard\Information\JobVacancy;
 
-use App\Models\JobVacancy;
 use Carbon\Carbon;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use App\Models\JobVacancy;
 
 class Index extends Component
 {
@@ -19,12 +19,17 @@ class Index extends Component
     public $expiresAt;
 
     public $listeners = [
-        'setCreateJobVacancyModal' => 'setCreateJobVacancyModal',
+        'setCreateJobVacancyModal',
+        'setEditJobVacancyModal',
         'refreshJobVacancies' => '$refresh',
     ];
 
     public function setCreateJobVacancyModal($status) {
         $this->createJobVacancyModalState = $status;
+    }
+
+    public function setEditJobVacancyModal($status) {
+        $this->editJobVacancyModalState = $status;
     }
 
     public function changeStatus($selectedKey)

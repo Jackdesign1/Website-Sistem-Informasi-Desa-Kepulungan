@@ -21,7 +21,7 @@
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slick-theme.css') }}"/>
             {{-- evo calendar library --}}
             <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">
-            <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar-royal-navy.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.royal-navy.css') }}">
         @endassets
 
         <style>
@@ -36,7 +36,7 @@
     <body class="font-sans antialiased" x-data>
         {{-- @livewire('layouts.dashboard-navigation') --}}
 
-        <x-mary-nav sticky class="lg:hidden">
+        <x-mary-nav sticky class="z-30 lg:hidden">
             <x-slot:brand>
                 <div class="pt-2 ml-5">{{ $title?? 'Dashboard Desa Kepulungan' }}</div>
             </x-slot:brand>

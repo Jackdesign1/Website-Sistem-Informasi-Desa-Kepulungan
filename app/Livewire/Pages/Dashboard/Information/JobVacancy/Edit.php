@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Pages\Dashboard\Information\Jobvacancy;
 
+use Mary\Traits\Toast;
+use Livewire\Component;
 use App\Models\JobVacancy;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
 use Livewire\WithFileUploads;
-use Mary\Traits\Toast;
 use Mary\Traits\WithMediaSync;
+use Livewire\Attributes\Validate;
 
 class Edit extends Component
 {
@@ -16,7 +16,6 @@ class Edit extends Component
     #[Validate("required|max:255")]
     public $companyName;
     public $oldCompanyLogo;
-    #[Validate("image|max:2048")]
     public $newCompanyLogo;
     #[Validate("required|max:255")]
     public $contactEmail;
@@ -27,6 +26,14 @@ class Edit extends Component
     public $expiresAt;
 
     public $key;
+
+    public function rules() {
+        $rules = [];
+        if ($this->newCompanyLogo) {
+            $rules['newCompanyLogo'] = 'image|max:2048';
+        }
+        return $rules;
+    }
 
     public function resetPage() {
         $this->reset();
@@ -49,19 +56,25 @@ class Edit extends Component
         $this->validate();
 
         try {
+            $newLogoPath = null;
             if ($this->newCompanyLogo) {
                 $newLogoPath = '/storage/'.$this->newCompanyLogo->store('company_logos', 'public');
             }
 
-            JobVacancy::find(decrypt($this->key))->update([
+            $data = [
                 'company_name' => $this->companyName,
-                'company_logo' => $newLogoPath,
                 'contact_email' => $this->contactEmail,
                 'title' => $this->title,
                 'position' => $this->position,
                 'expires_at' => $this->expiresAt,
                 'status' => 'open',
-            ]);
+            ];
+
+            if ($newLogoPath) {
+                $data['company_logo'] = $newLogoPath;
+            }
+
+            JobVacancy::find(decrypt($this->key))->update($data);
 
             $this->success('Lowongan pekerjaan berhasil diedit.');
             $this->dispatch('setEditJobVacancyModal', false);

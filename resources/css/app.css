@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    /* define revert css here */
+    .no-tailwindcss-base, .no-tailwindcss-base * , .no-tailwindcss-base > * {
+        all: unset; /* resets all styles to user-agent default */
+        all: revert; /* safer fallback for older browsers */
+        /* font-size: revert;
+        font-weight: revert;
+        margin: revert;
+        display: revert;
+        vertical-align: revert;
+        max-width: revert;
+        height: revert;
+        border-width: revert;
+        border-style: revert;
+        border-color: revert;
+        outline: revert;
+        list-style: revert;
+        padding: revert; */
+    }
+
+}
+
 
 
 /**

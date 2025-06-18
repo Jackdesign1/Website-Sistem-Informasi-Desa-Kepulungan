@@ -23,7 +23,15 @@
                                     </a>
                                 </x-slot:figure>
                                 <x-slot:menu>
-                                    <x-mary-button icon="o-share" class="btn-circle" />
+                                    <x-mary-button
+                                        icon="o-share"
+                                        class="btn-circle"
+                                        x-data
+                                        x-on:click="
+                                            navigator.clipboard.writeText('{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}');
+                                            $wire.info('URL Berhasil disalin');
+                                        "
+                                    />
                                 </x-slot:menu>
                                 <x-slot:actions separator>
                                     <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => 'news', 'slug' => $item->slug])"/>

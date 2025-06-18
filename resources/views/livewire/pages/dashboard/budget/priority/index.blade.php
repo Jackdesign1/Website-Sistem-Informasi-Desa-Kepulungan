@@ -37,7 +37,7 @@
 				@endif
 			@endforeach
 		</div>
-		
+
 		<div class="flex flex-col gap-5">
 			@foreach ($budgetPriorities as $index => $budgetPriority)
 				@if ($index % 2 == 1)

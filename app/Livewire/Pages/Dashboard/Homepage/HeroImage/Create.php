@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Pages\Dashboard\Homepage\HeroImage;
 
-use App\Models\HomepageHeroImage;
-use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Validate;
+use Mary\Traits\Toast;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Mary\Traits\Toast;
 use Mary\Traits\WithMediaSync;
+use App\Models\HomepageHeroImage;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
@@ -17,12 +17,21 @@ class Create extends Component
     public $background;
     #[Validate('required|max:255')]
     public $title;
-    #[Validate('required|max:255')]
+    #[Validate('max:255')]
     public $subtitle;
     #[Validate('required')]
     public $order;
     public $buttonText;
     public $buttonUrl;
+
+    public function rules() {
+        $rules = [];
+        if ($this->buttonText || $this->buttonUrl) {
+            $rules['buttonText'] = 'required';
+            $rules['buttonUrl'] = 'required|url';
+        }
+        return $rules;
+    }
 
     public function create() {
         $this->validate();

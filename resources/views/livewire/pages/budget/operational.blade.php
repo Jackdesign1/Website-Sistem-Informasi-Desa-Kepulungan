@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="flex-1">
         <x-header class="mb-8 text-center">Pelaksanaan Desa Berdasarkan Klasifikasi Kegiatan</x-header>
         @if ($operationalBudget)
@@ -61,7 +61,7 @@
                                             <span class="text-sm md:text-base">{{ $operationalType->operational_type_name }}</span>
                                             <div class="flex items-center justify-between gap-3">
                                                 <span>Rp {{ number_format($operationalType->details->sum('value'), 2) }}</span>
-                                                <x-mary-badge value="{{ number_format(($operationalType->details->sum('value') / $operationalBudget->total) * 100, 1) }}%" class="badge-soft" />
+                                                <x-mary-badge value="{{ $operationalType->details->sum('value') > 0? number_format(($operationalType->details->sum('value') / $operationalBudget->total) * 100, 2) : 0 }}%" class="badge-soft" />
                                             </div>
                                         </div>
                                     </x-slot:heading>

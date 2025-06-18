@@ -40,26 +40,27 @@
                         </div>
                         <div class="text-xs opacity-60">{{ $report->created_at->diffForHumans() }}</div>
                     </div>
-                    <div class="text-sm line-clamp-4 max-h-40 relative">
-                        <div class="absolute bottom-0 left-0 right-0 z-20 min-h-8 bg-gradient-to-t from-white to-transparent"></div>
+                    <div class="relative text-sm line-clamp-3">
                         <a href="{{ route('dashboard.information.report.edit', ['key' => Crypt::encrypt($report->id)]) }}">
-                            {!! $report->content !!}
+                            <div class="no-tailwindcss-base">
+                                {!! truncateHTML($report->content, 200) !!}
+                            </div>
                         </a>
                     </div>
-                    <div class="overflow-x-auto max-w-full">
+                    <div class="max-w-full overflow-x-auto">
                         <div class="flex gap-5 pt-2">
                             @foreach ($report->fileMedia as $reportFile)
-                            <div class="text-center w-32">
+                            <div class="w-32 text-center">
                                 <a href="{{ asset($reportFile->url) }}" target="blank" title="{{ $reportFile->name }}">
-                                    <x-mary-icon name='tabler.file-description' class="mb-2 w-12 h-12"></x-mary-icon>
+                                    <x-mary-icon name='tabler.file-description' class="w-12 h-12 mb-2"></x-mary-icon>
                                 </a>
-                                <a href="{{ asset($reportFile->url) }}" target="blank" class="link text-sm line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
+                                <a href="{{ asset($reportFile->url) }}" target="blank" class="text-sm link line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
                             </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="flex gap-3 flex-col">
+                <div class="flex flex-col gap-3">
                     <div>
                         <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
                         <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.report.edit', ['key' => Crypt::encrypt($report->id)])"></x-mary-button>

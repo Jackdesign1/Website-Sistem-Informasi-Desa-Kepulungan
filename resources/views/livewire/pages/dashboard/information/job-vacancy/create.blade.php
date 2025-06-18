@@ -4,7 +4,7 @@
     <form wire:submit='create'>
         <div class="flex flex-col gap-8 md:flex-row">
             <x-mary-file wire:model="companyLogo" label="Logo Perusahaan" accept="image/png, image/jpeg" class="mr-3" required>
-                <img src="{{ asset('assets/icons/blank-user-profile.png') }}" class="w-24 h-24 rounded-lg" />
+                <img src="{{ asset('assets/icons/blank-user-profile.png') }}" class="object-cover w-24 h-24 rounded-lg" />
             </x-mary-file>
             <div class="flex-1 mb-7">
                 <div class="flex flex-col gap-4 mb-3 md:flex-row">

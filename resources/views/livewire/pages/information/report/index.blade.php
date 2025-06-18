@@ -16,7 +16,11 @@
                                     @endif
                                 </x-slot:figure>
                                 <x-slot:menu>
-                                    <x-mary-button icon="o-share" class="btn-circle btn-sm" />
+                                    <x-mary-button icon="o-share" class="btn-circle btn-sm"
+                                        x-on:click="
+                                            navigator.clipboard.writeText('{{ route('information.news-content', ['type' => $report->type, 'slug' => $report->slug]) }}');
+                                            $wire.info('URL Berhasil disalin');
+                                        "/>
                                 </x-slot:menu>
                                 <x-slot:actions separator>
                                     <div class="flex justify-between flex-1">

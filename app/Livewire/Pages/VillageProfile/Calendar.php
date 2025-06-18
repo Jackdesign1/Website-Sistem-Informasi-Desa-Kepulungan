@@ -2,21 +2,23 @@
 
 namespace App\Livewire\Pages\VillageProfile;
 
-use App\Models\VillageCalendar;
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Models\VillageCalendar;
 
 class Calendar extends Component
 {
     public function getCalendarProperty() {
-        $villageCalendars = VillageCalendar::where(function($query) {
-            $today = Carbon::today()->toDateString();
-            $query->where('start_date', '>=', $today)
-                ->orWhere(function($q) use ($today) {
-                    $q->where('start_date', '<=', $today)
-                    ->where('end_date', '>=', $today);
-                });
-        })->get();
+        $villageCalendars = VillageCalendar::
+        // where(function($query) {
+        //     $today = Carbon::today()->toDateString();
+        //     $query->where('start_date', '>=', $today)
+        //         ->orWhere(function($q) use ($today) {
+        //             $q->where('start_date', '<=', $today)
+        //             ->where('end_date', '>=', $today);
+        //         });
+        // })->
+        get();
         $events = $villageCalendars->map(function($event) {
             $data = [
                 'id' => encrypt($event->id),

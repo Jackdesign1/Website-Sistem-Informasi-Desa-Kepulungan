@@ -1,7 +1,7 @@
 @props(['job'])
 <div {{ $attributes->merge(['class' => 'relative flex flex-1 gap-3 p-4 bg-white border rounded-lg shadow-lg']) }} x-data="{showMore: false}">
    <div>
-         <img class="size-10 rounded-box" src="{{ asset($job->company_logo) }}"/>
+         <img class="object-cover size-10 rounded-box" src="{{ asset($job->company_logo) }}"/>
    </div>
    <div class="flex-1">
       <div class="mb-3">

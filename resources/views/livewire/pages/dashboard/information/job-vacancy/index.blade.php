@@ -14,7 +14,7 @@
             <x-mary-button label="Hapus" wire:click="delete(selectedKey)" spinner="delete" class=" btn-warning" />
         </x-slot:actions>
     </x-mary-modal>
-    
+
     <x-mary-modal wire:model='statusModalState' title="Ubah Status Lowongan Pekerjaan" class="backdrop-blur">
         <template x-if="currentJobsStatus == 'closed'">
             <div>
@@ -39,7 +39,7 @@
     <ul class="gap-3 rounded-lg list">
         @foreach ($job_vacancies as $jobs)
             <li class="relative border shadow-lg list-row" x-data="{showMore: false}">
-                <div><img class="size-10 rounded-box" src="{{ asset($jobs->company_logo) }}"/></div>
+                <div><img class="object-cover size-10 rounded-box" src="{{ asset($jobs->company_logo) }}"/></div>
                 <div>
                     <div>{{ $jobs->company_name }}</div>
                     <div class="text-sm font-semibold capitalize opacity-60">Posisi: <span class="font-semibold">{{ $jobs->position }}</span></div>

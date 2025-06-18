@@ -24,7 +24,7 @@
 
         {{-- evo calendar library --}}
         <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar-royal-navy.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/evo-calendar.royal-navy.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

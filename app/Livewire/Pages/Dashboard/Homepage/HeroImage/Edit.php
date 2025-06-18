@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Pages\Dashboard\Homepage\HeroImage;
 
-use App\Models\HomepageHeroImage;
-use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
+use App\Models\HomepageHeroImage;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\DB;
 
 class Edit extends Component
 {
@@ -21,7 +21,7 @@ class Edit extends Component
 
     #[Validate('required|max:255')]
     public $title;
-    #[Validate('required|max:255')]
+    #[Validate('max:255')]
     public $subtitle;
 
     public $order;
@@ -35,6 +35,10 @@ class Edit extends Component
         $rules = [];
         if ($this->newBackground) {
             $rules['newBackground'] = 'image|max:2048';
+        }
+        if ($this->buttonText || $this->buttonUrl) {
+            $rules['buttonText'] = 'required';
+            $rules['buttonUrl'] = 'required|url';
         }
         return $rules;
     }
