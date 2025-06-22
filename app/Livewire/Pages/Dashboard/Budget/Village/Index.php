@@ -35,9 +35,17 @@ class Index extends Component
     public function render()
     {
         $villageBudgets = $this->villageBudgets();
+        $chunkedVillageBudgets = collect([
+            $villageBudgets->filter(function ($item, $key) {
+                return $key % 2 === 0; // odd index (0-based)
+            })->values(),
+            $villageBudgets->filter(function ($item, $key) {
+                return $key % 2 === 1; // even index (0-based)
+            })->values(),
+        ]);
         return view('livewire.pages.dashboard.budget.village.index', [
             'villageBudgets' => $villageBudgets,
-            'chunkedVillageBudgets' => $villageBudgets->chunk(2)
+            'chunkedVillageBudgets' => $chunkedVillageBudgets
         ]);
     }
 }

@@ -8,11 +8,11 @@
     {{-- desktop layout --}}
     <div class="hidden grid-cols-1 gap-5 md:grid md:grid-cols-2">
         @foreach ($chunkedOperationals as $operationalsChunk)
-            @foreach ($operationalsChunk as $index => $operational)
-                <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-5">
+                @foreach ($operationalsChunk as $index => $operational)
                     <x-budget.operational-budget-card :$operational :$index />
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         @endforeach
     </div>
 

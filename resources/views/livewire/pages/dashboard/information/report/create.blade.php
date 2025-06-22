@@ -27,9 +27,9 @@
             </div>
 
             <x-mary-image-library
-                wire:model="imageFiles"                 {{-- Temprary files --}}
-                wire:library="library"             {{-- Library metadata property --}}
-                :preview="$library"                {{-- Preview control --}}
+                wire:model="imageFiles"      {{-- Temprary files --}}
+                wire:library="library"       {{-- Library metadata property --}}
+                :preview="$library"          {{-- Preview control --}}
                 label="Upload Gambar Slide"
                 hint="Max 2Mb"
                 crop-text="false"

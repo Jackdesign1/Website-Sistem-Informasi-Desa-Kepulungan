@@ -45,7 +45,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pages.dashboard.information.report.index', [
-            'reports' => News::onlyReport()->with('fileMedia')->latest()->get()
+            'reports' => News::onlyReport()->with('fileMedia', 'imageMedia')->latest()->get()
         ]);
     }
 }

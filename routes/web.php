@@ -1,35 +1,39 @@
 <?php
 
 use Livewire\Volt\Volt;
+use App\Models\JobVacancy;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Homepage\Index;
 use App\Livewire\Pages\Budget\Index as BudgetIndex;
 use App\Livewire\Pages\Bumdes\Index as BumdesIndex;
-use App\Livewire\Pages\Contact\Index as ContactIndex;
+use App\Livewire\Pages\Galery\Index as GaleryIndex;
 use App\Livewire\Pages\Information\NewsContent;
+use App\Livewire\Pages\Contact\Index as ContactIndex;
+use App\Livewire\Pages\Dashboard\Budget\Village\Edit;
 use App\Livewire\Pages\Information\Index as InformationIndex;
+use App\Livewire\Pages\Dashboard\VillageProgram\CreateDetail;
 use App\Livewire\Pages\Dashboard\Apparatus\Index as ApparatusIndex;
-use App\Livewire\Pages\Dashboard\Budget\Operational\Create as OperationalCreate;
-use App\Livewire\Pages\Dashboard\Budget\Operational\Edit as OperationalEdit;
+use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Create;
 use App\Livewire\Pages\Dashboard\Information\News\Edit as NewsEdit;
 use App\Livewire\Pages\VillageProfile\Index as VillageProfileIndex;
-use App\Livewire\Pages\Dashboard\Budget\Operational\Index as OperationalIndex;
-use App\Livewire\Pages\Dashboard\Budget\Priority\Edit as PriorityEdit;
 use App\Livewire\Pages\Dashboard\Information\News\Index as NewsIndex;
+use App\Livewire\Pages\Dashboard\Budget\Priority\Edit as PriorityEdit;
 use App\Livewire\Pages\Dashboard\Budget\Village\Index as VillageIndex;
 use App\Livewire\Pages\Dashboard\Information\News\Create as NewsCreate;
 use App\Livewire\Pages\Dashboard\Information\Report\Edit as ReportEdit;
 use App\Livewire\Pages\Dashboard\Budget\Priority\Index as PriorityIndex;
-use App\Livewire\Pages\Dashboard\Budget\Village\Edit;
-use App\Livewire\Pages\Dashboard\Homepage\HeroImage\Index as HeroImageIndex;
-use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Create;
-use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Edit as JobvacancyEdit;
 use App\Livewire\Pages\Dashboard\Information\Report\Index as ReportIndex;
 use App\Livewire\Pages\Dashboard\Information\Report\Create as ReportCreate;
-use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
+use App\Livewire\Pages\Dashboard\VillageProgram\Edit as VillageProgramEdit;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Edit as OperationalEdit;
+use App\Livewire\Pages\Dashboard\Homepage\HeroImage\Index as HeroImageIndex;
+use App\Livewire\Pages\Dashboard\VillageProgram\Index as VillageProgramIndex;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Index as OperationalIndex;
+use App\Livewire\Pages\Dashboard\Information\Jobvacancy\Edit as JobvacancyEdit;
 use App\Livewire\Pages\Dashboard\VillageCalendar\Index as VillageCalendarIndex;
-use App\Livewire\Pages\Galery\Index as GaleryIndex;
-use App\Models\JobVacancy;
+use App\Livewire\Pages\Dashboard\VillageProgram\Create as VillageProgramCreate;
+use App\Livewire\Pages\Dashboard\Budget\Operational\Create as OperationalCreate;
+use App\Livewire\Pages\Dashboard\Information\JobVacancy\Index as JobVacancyIndex;
 
 // Route::view('/', 'welcome');
 
@@ -98,15 +102,18 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::prefix('/hero-image')->name('hero-image.')->group(function() {
         Route::get('/', HeroImageIndex::class)
             ->name('index');
-        // Route::get('/create', Create::class)
-        //     ->name('create');
-        // Route::get('/edit/{key}', \App\Livewire\Pages\Dashboard\Information\HeroImage\Edit::class)
-        //     ->name('edit');
     });
 
     Route::prefix('/kalender-desa')->name('village-calendar.')->group(function() {
         Route::get('/', VillageCalendarIndex::class)
             ->name('index');
+    });
+
+    Route::prefix('/program-desa')->name('village-program.')->group(function() {
+        Route::get('/', VillageProgramIndex::class)->name('index');
+        Route::get('/create', VillageProgramCreate::class)->name('create');
+        // Route::get('/detail', CreateDetail::class)->name('detail');
+        Route::get('{key}/edit', VillageProgramEdit::class)->name('edit');
     });
 });
 

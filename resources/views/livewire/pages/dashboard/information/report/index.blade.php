@@ -31,7 +31,7 @@
         @foreach ($reports as $report)
             <li class="relative flex flex-col gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
                 <div class="flex items-center gap-3">
-                    <img class="object-cover w-full max-h-28 sm:w-auto sm:h-24 min-w-24 aspect-square rounded-box"src="{{ asset($report->media->first()->url) }}"/>
+                    <img class="object-cover w-full max-h-28 sm:w-auto sm:h-24 min-w-24 aspect-square rounded-box"src="{{ asset($report->imageMedia->first()->url) }}"/>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="mb-1.5 capitalize text-lg">

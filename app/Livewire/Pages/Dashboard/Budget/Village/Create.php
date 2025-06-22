@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Village;
 
+use Mary\Traits\Toast;
+use Livewire\Component;
 use App\Models\VillageBudget;
 use Livewire\Attributes\Validate;
-use Livewire\Component;
-use Mary\Traits\Toast;
 
 class Create extends Component
 {
@@ -24,23 +24,23 @@ class Create extends Component
         [
             'type' => 'PAB',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'DD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'BHPD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'ADD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'BKK',
             'value' => null,
-        ], 
+        ],
     ];
 
     public function addDetailBudget() {
@@ -63,7 +63,7 @@ class Create extends Component
         try {
             $villageBudget = VillageBudget::create([
                 'year' => $this->year,
-                'silpa' => $this->silpa, 
+                'silpa' => $this->silpa,
             ]);
 
             $villageBudget->details()->createMany($this->detailBudgets);

@@ -14,11 +14,11 @@
     {{-- desktop layout --}}
     <div class="hidden grid-cols-1 gap-5 md:grid md:grid-cols-2">
         @foreach ($chunkedVillageBudgets as $villageBudgetsChunk)
-            @foreach ($villageBudgetsChunk as $index => $budget)
-                <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-5">
+                @foreach ($villageBudgetsChunk as $index => $budget)
                     <x-budget.village-budget-card :budget="$budget" :index="$index"/>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         @endforeach
     </div>
 

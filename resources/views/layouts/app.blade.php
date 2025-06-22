@@ -36,7 +36,7 @@
     <body class="font-sans antialiased" x-data>
         {{-- @livewire('layouts.dashboard-navigation') --}}
 
-        <x-mary-nav sticky class=" lg:hidden">
+        <x-mary-nav sticky class="lg:hidden">
             <x-slot:brand>
                 <div class="pt-2 ml-5">{{ $title?? 'Dashboard Desa Kepulungan' }}</div>
             </x-slot:brand>
@@ -52,7 +52,7 @@
 
             {{-- This is a sidebar that works also as a drawer on small screens --}}
             {{-- Notice the `main-drawer` reference here --}}
-            <x-slot:sidebar drawer="main-drawer" collapsible class="z-40 bg-base-200">
+            <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-200">
                 {{-- User --}}
                 @if(Auth::check())
                     <livewire:layouts.logout>
@@ -61,10 +61,13 @@
 
                 {{-- Activates the menu item when a route matches the `link` property --}}
                 <x-mary-menu activate-by-route>
-                    <x-mary-menu-item title="Home" icon="o-home" link="###" />
+                    <x-mary-menu-item title="Homepage" icon="o-home" :link="route('homepage')" exact/>
                     <x-mary-menu-item title="Hero Image" icon="tabler.photos" :link="route('dashboard.hero-image.index')" />
                     <x-mary-menu-item title="Aparatur" icon="tabler.users" :link="route('dashboard.apparatus')" />
-                    <x-mary-menu-item title="Kalender Desa" icon="tabler.calendar" :link="route('dashboard.village-calendar.index')" />
+                    <x-mary-menu-sub title="Konfigurasi Profil Desa" icon="hugeicons.profile-02">
+                        <x-mary-menu-item title="Kalender Desa" icon="tabler.calendar" :link="route('dashboard.village-calendar.index')" />
+                        <x-mary-menu-item title="Program Desa" icon="tabler.list-details" :link="route('dashboard.village-program.index')" />
+                    </x-mary-menu-sub>
                     {{-- <x-mary-menu-item  :link="route('dashboard.budget')" /> --}}
                     <x-mary-menu-sub title="Anggaran" icon="hugeicons.money-exchange-03">
                         <x-mary-menu-item title="Pendapatan Desa" :link="route('dashboard.budget.village.index')" />

@@ -56,5 +56,6 @@ class DatabaseSeeder extends Seeder
         // });
 
         // JobVacancy::factory(20)->create();
+
     }
 }

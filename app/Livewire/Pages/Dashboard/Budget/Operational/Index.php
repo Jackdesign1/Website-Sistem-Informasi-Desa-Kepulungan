@@ -3,9 +3,9 @@
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
 use App\Models\Income;
-use App\Models\OperationalBudget;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use App\Models\OperationalBudget;
 
 class Index extends Component
 {
@@ -36,9 +36,17 @@ class Index extends Component
     public function render()
     {
         $operationals = $this->operationals();
+        $chunkedOperationals = collect([
+            $operationals->filter(function ($item, $key) {
+                return $key % 2 === 0; // odd index (0-based)
+            })->values(),
+            $operationals->filter(function ($item, $key) {
+                return $key % 2 === 1; // even index (0-based)
+            })->values(),
+        ]);
         return view('livewire.pages.dashboard.budget.operational.index', [
             'operationals' => $operationals,
-            'chunkedOperationals' => $operationals->chunk(2)
+            'chunkedOperationals' => $chunkedOperationals
         ]);
     }
 }
