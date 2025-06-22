@@ -28,7 +28,7 @@ class VillageProgram extends Component
 
     // #[Computed()]
     public function getVillageProgram() {
-        return ModelsVillageProgram::firstWhere('year', $this->selectedYear)->load('details');
+        return ModelsVillageProgram::with('details')->firstWhere('year', $this->selectedYear);
     }
 
     public function render()

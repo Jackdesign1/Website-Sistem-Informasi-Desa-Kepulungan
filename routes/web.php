@@ -93,10 +93,10 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
         Route::prefix('/lowongan-kerja')->name('jobs-vacancy.')->group(function() {
             Route::get('/', JobVacancyIndex::class)
                 ->name('index');
-            Route::get('/create', Create::class)
-                ->name('create');
-            Route::get('/edit', JobvacancyEdit::class)
-                ->name('edit');
+            // Route::get('/create', Create::class)
+            //     ->name('create');
+            // Route::get('/edit', JobvacancyEdit::class)
+            //     ->name('edit');
         });
     });
     Route::prefix('/hero-image')->name('hero-image.')->group(function() {
