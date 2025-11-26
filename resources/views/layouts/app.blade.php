@@ -35,6 +35,7 @@
             }
         </style>
 
+        @livewireStyles
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -78,10 +79,9 @@
             </x-slot:content>
         </x-mary-main>
 
+        @livewireScripts
         {{--  TOAST area --}}
         <x-mary-toast />
-        
         {{-- <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script> --}}
-
     </body>
 </html>

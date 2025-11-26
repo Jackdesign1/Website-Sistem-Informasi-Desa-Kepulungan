@@ -5,11 +5,11 @@ import forms from '@tailwindcss/forms';
 export default {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './vendor/livewire/**/*.blade.php',
+        './vendor/robsontenorio/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/*.blade.php',
         './resources/views/**/*.blade.php',
-        './resources/views/**/**/*.blade.php',
-        './resources/views/**/**/**/*.blade.php',
     ],
 
     darkMode: ['selector'],

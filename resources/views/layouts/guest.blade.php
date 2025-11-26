@@ -27,6 +27,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="font-sans antialiased" x-data="{ open: false }" x-on:scroll.window='open = false'>
         {{-- The navbar with `sticky` --}}
@@ -89,6 +90,8 @@
                 </x-container>
             </div>
         @endif
+
+        @livewireScripts
 
         {{--  TOAST area --}}
         <x-mary-toast />
