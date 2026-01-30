@@ -11,13 +11,13 @@
         @endif
         <div class="w-full border shadow-lg stats rounded-xl {{ $withChart? 'stats-vertical' : 'stats-vertical lg:stats-horizontal' }}">
             <div class="stat">
-                @if ($withChart)
+                {{-- @if ($withChart)
                     <div class="stat-figure text-dark">
                         <x-mary-button class="bg-[#FF6384] btn-sm" link="#pembelanjaan" no-wire-navigate icon="o-arrow-right"></x-mary-button>
                     </div>
-                @endif
+                @endif --}}
                 <div class="stat-title">APBDes {{ $year }} Silpa</div>
-                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($silpa, 0) }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($silpa, 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
             <div class="stat">
@@ -27,7 +27,7 @@
                     </div>
                 @endif
                 <div class="stat-title">APBDes {{ $year }} Pelaksanaan</div>
-                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($operationalBudget, 0) }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($operationalBudget, 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
             <div class="stat">
@@ -37,7 +37,7 @@
                     </div>
                 @endif
                 <div class="stat-title">APBDes {{ $year }} Pendapatan</div>
-                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($villageBudget, 0) }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($villageBudget, 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
         </div>
