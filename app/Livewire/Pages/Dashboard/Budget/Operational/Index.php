@@ -3,9 +3,9 @@
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
 use App\Models\Income;
-use App\Models\OperationalBudget;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use App\Models\OperationalBudget;
 
 class Index extends Component
 {
@@ -32,11 +32,21 @@ class Index extends Component
         OperationalBudget::destroy(decrypt($key));
         $this->info('Anggaran pendapatan berhasil dihapus');
     }
-    
+
     public function render()
     {
+        $operationals = $this->operationals();
+        $chunkedOperationals = collect([
+            $operationals->filter(function ($item, $key) {
+                return $key % 2 === 0; // odd index (0-based)
+            })->values(),
+            $operationals->filter(function ($item, $key) {
+                return $key % 2 === 1; // even index (0-based)
+            })->values(),
+        ]);
         return view('livewire.pages.dashboard.budget.operational.index', [
-            'operationals' => $this->operationals()
+            'operationals' => $operationals,
+            'chunkedOperationals' => $chunkedOperationals
         ]);
     }
 }

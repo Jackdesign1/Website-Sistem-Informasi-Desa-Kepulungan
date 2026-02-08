@@ -11,7 +11,7 @@
                     <p>Dibuat: {{ _($data->created_at->diffForHumans()) }}</p>
                 </div> --}}
             </div>
-            <div class="pt-10">
+            <div class="pt-10 no-tailwindcss-base">
                 {!! $data->content !!}
             </div>
 

@@ -28,7 +28,15 @@
                                     </a>
                                 </x-slot:figure>
                                 <x-slot:menu>
-                                    <x-mary-button icon="o-share" class="btn-circle" />
+                                    <x-mary-button
+                                        icon="o-share"
+                                        class="btn-circle"
+                                        x-data
+                                        x-on:click="
+                                            navigator.clipboard.writeText('{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}');
+                                            $wire.info('URL Berhasil disalin');
+                                        "
+                                    />
                                 </x-slot:menu>
                                 <x-slot:actions separator>
                                     <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => 'news', 'slug' => $item->slug])"/>
@@ -39,8 +47,11 @@
                 </div>
             @endforeach
         @else
-            <div class="flex-1 text-center">
-                <h3 class="text-xl">Tidak ada berita</h3>
+            <div class="flex items-center justify-center w-full h-96">
+                <div class="text-center">
+                    <x-mary-icon name="tabler.alert-triangle" class="mb-3 text-gray-400 size-10"/>
+                    <p class="text-gray-500">Tidak ada berita yang tersedia saat ini.</p>
+                </div>
             </div>
         @endif
     </div>

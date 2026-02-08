@@ -3,6 +3,8 @@
       <livewire:pages.dashboard.budget.village.create />
    </x-mary-modal>
 
+   {{-- @dd($chunkedVillageBudgets, $villageBudgets) --}}
+
    <x-mary-header title="Pendapatan Desa" separator progress-indicator>
       <x-slot:actions>
          <x-mary-button label="Pendapatan Desa" icon="tabler.plus" class="btn-primary" @click="$wire.createModal = true" />

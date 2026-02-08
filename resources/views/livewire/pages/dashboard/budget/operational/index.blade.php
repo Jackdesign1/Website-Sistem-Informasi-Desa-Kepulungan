@@ -124,5 +124,4 @@
          @endforeach
       </div>
 
-   </div>
 </x-dashboard-container>

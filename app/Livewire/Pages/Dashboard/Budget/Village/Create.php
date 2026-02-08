@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Village;
 
+use Mary\Traits\Toast;
+use Livewire\Component;
 use App\Models\VillageBudget;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
-use Livewire\Component;
-use Mary\Traits\Toast;
 
 class Create extends Component
 {
@@ -25,23 +25,23 @@ class Create extends Component
         [
             'type' => 'PAB',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'DD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'BHPD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'ADD',
             'value' => null,
-        ], 
+        ],
         [
             'type' => 'BKK',
             'value' => null,
-        ], 
+        ],
     ];
 
     public function addDetailBudget() {
@@ -61,14 +61,13 @@ class Create extends Component
 
     public function create() {
         $this->validate();
+        $userId = Auth::user()->id;
         try {
             $villageBudget = VillageBudget::create([
                 'year' => $this->year,
                 'silpa' => $this->silpa, 
-                'user_id' => Auth::user()->id
+                'user_id' => $userId
             ]);
-
-            $userId = Auth::user()->id;
 
             $finalDetailBudgets = collect($this->detailBudgets)->map(function ($detail) use ($userId) {
                 return array_merge($detail, ['user_id' => $userId]);

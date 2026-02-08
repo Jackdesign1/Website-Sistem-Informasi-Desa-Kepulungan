@@ -26,8 +26,8 @@
                         <x-mary-button class="bg-[#36A2EB] btn-sm" link="#pelaksanaan" no-wire-navigate icon="o-arrow-right"></x-mary-button>
                     </div>
                 @endif
-                <div class="stat-title">APBDes {{ $year }} Pelaksanaan</div>
-                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($operationalBudget, 0) }}</div>
+                <div class="stat-title">APBDes {{ $year }} {{ $budgetChart['data']['labels'][0] }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($budgetChart['data']['datasets'][0]['data'][0], 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
             <div class="stat">
@@ -37,7 +37,7 @@
                     </div>
                 @endif
                 <div class="stat-title">APBDes {{ $year }} Pendapatan</div>
-                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($villageBudget, 0) }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($villageBudget, 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
         </div>

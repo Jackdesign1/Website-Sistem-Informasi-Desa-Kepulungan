@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="flex-1">
         <x-header class="mb-8 text-center">Pelaksanaan Desa Berdasarkan Klasifikasi Kegiatan</x-header>
         @if ($operationalBudget)
