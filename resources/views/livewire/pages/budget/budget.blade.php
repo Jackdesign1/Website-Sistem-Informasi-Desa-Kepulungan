@@ -1,4 +1,5 @@
 <div class="flex flex-col items-center gap-8 lg:flex-row">
+    @dd($villageBudget)
     @if ($withChart) 
         <div class="flex-[.75] text-center flex justify-center items-center flex-col">
             <x-mary-chart wire:model="budgetChart" class="w-full max-w-xl"/>
