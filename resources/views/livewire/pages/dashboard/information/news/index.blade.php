@@ -35,11 +35,12 @@
                     <img class="object-cover h-24 min-w-24 aspect-square rounded-box" src="{{ asset($item->media->first()->url) }}"/>
                 </div>
                 <div class="flex-1">
-                    <div class="mb-1.5 capitalize text-lg">
+                    <x-mary-avatar :placeholder="getInitials($item->user->name?? '-')" :title="$item->user->name?? '-'" :subtitle="$item->created_at->format('d M Y')" class="!w-10" />
+                    <div class="mt-3 text-lg capitalize">
                         <div class="font-semibold">
                             <a href="{{ route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)]) }}">{{ $item->title }}</a>
                         </div>
-                        <div class="text-xs opacity-60">{{ $item->created_at->diffForHumans() }}</div>
+                        {{-- <div class="text-xs opacity-60">{{ $item->created_at->diffForHumans() }}</div> --}}
                     </div>
                     <div class="text-sm line-clamp-4">
                         <a href="{{ route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)]) }}">

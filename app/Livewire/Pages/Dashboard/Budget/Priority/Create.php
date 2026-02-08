@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Dashboard\Budget\Priority;
 
 use App\Models\BudgetPriority;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -49,6 +50,7 @@ class Create extends Component
         try {
             $budgetPriority = BudgetPriority::create([
                 'year' => $this->year,
+                'user_id' => Auth::user()->id
             ]);
 
             $budgetPriority->details()->createMany($this->detailBudgetPriorities);

@@ -6,7 +6,12 @@
                 <div class="flex flex-col gap-5">
                     @foreach ($chunk as $item)
                         <div>
-                            <x-mary-card :title="$item->title" :subtitle="$item->updated_at->diffForHumans()" class="border shadow-lg">
+                            {{-- <x-mary-card :title="$item->title" :subtitle="$item->updated_at->diffForHumans()" class="border shadow-lg"> --}}
+                            <x-mary-card class="relative border shadow-lg">
+                                <x-mary-badge :value="'Update '.$item->updated_at->format('d M Y')" class="absolute rounded-full badge-primary left-3 top-4" />
+                                <x-mary-avatar :placeholder="getInitials($item->user->name?? '-')" :title="$item->user->name?? '-'" :subtitle="$item->created_at->diffForHumans()" class="!w-11" />
+                                <p class="mt-2 text-2xl font-semibold">{{ $item->title }}</p>
+
                                 <div class="relative overflow-hidden max-h-56">
                                     <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent"></div>
                                     {{-- <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}" class="line-clamp-3">
@@ -14,7 +19,7 @@
                                     </a> --}}
                                 </div>
                                 <x-slot:figure>
-                                    <a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">
+                                    <a class="block min-h-12" href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">
                                         @if ($item->imageMedia->first()->url)
                                             <img src="{{ asset($item->imageMedia->first()->url) }}" class="aspect-[2/1] object-cover"/>
                                         @else

@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Dashboard\Budget\Village;
 
 use App\Models\VillageBudget;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Mary\Traits\Toast;
@@ -14,7 +15,7 @@ class Create extends Component
     #[Validate('required|date_format:Y|unique:village_budgets,year')]
     public $year;
     #[Validate('required')]
-    public $silpa = null;
+    public $silpa = null;  
 
     #[Validate([
         'detailBudgets.*.type' => 'required|string',
@@ -64,9 +65,16 @@ class Create extends Component
             $villageBudget = VillageBudget::create([
                 'year' => $this->year,
                 'silpa' => $this->silpa, 
+                'user_id' => Auth::user()->id
             ]);
 
-            $villageBudget->details()->createMany($this->detailBudgets);
+            $userId = Auth::user()->id;
+
+            $finalDetailBudgets = collect($this->detailBudgets)->map(function ($detail) use ($userId) {
+                return array_merge($detail, ['user_id' => $userId]);
+            });
+
+            $villageBudget->details()->createMany($finalDetailBudgets->toArray());
             $this->reset();
             $this->dispatch('refresh');
             $this->dispatch('closeCreateModal');
@@ -74,6 +82,10 @@ class Create extends Component
         } catch (\Exception $e) {
             $this->error('Error', 'Terjadi error saat menambahkan data');
         }
+    }
+
+    public function mount() {
+        $this->year = now()->year;
     }
 
     public function render()

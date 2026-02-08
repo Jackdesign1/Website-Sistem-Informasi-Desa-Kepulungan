@@ -11,6 +11,7 @@ use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Create extends Component
@@ -52,12 +53,14 @@ class Create extends Component
         $this->validate();
 
         $imagePaths = null;
+        $userId = Auth::user()->id;
 
         try {
-            $imagePaths = collect($this->files)->map(function($file) {
+            $imagePaths = collect($this->files)->map(function($file) use ($userId) {
                 return [
                     'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'image',
+                    'user_id' => $userId
                 ];
             })->toArray();
         } catch (\Exception $e) {
@@ -72,6 +75,7 @@ class Create extends Component
                     'type' => 'news',
                     'status' => $status,
                     'content' => $this->content,
+                    'user_id' => $userId
                 ]);
 
             $news->media()->createMany(

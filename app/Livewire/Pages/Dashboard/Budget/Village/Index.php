@@ -23,7 +23,7 @@ class Index extends Component
     }
 
     public function villageBudgets() {
-        $villageBudgets = VillageBudget::latest('year')->with('details')->get();
+        $villageBudgets = VillageBudget::latest('year')->with('details', 'user', 'details.user')->get();
         $chunkedBudgets = $villageBudgets->chunk(2);
         return $villageBudgets;
     }

@@ -16,7 +16,8 @@ class News extends Model
         'type',
         'status',
         'description',
-        'content'
+        'content',
+        'user_id',
     ];
 
     // protected $casts = [
@@ -55,5 +56,9 @@ class News extends Model
 
     public function imageMedia() {
         return $this->media()->onlyImage();
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

@@ -8,10 +8,10 @@
                         <li class="list-row">
                             <div><img class="size-10 rounded-box" src="{{ asset($item->imageMedia->first()->url) }}"/></div>
                             <div>
-                                <div><a href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">{{ $item->title }}</a></div>
-                                <div class="text-xs font-semibold capitalize opacity-60">{{ $item->updated_at->diffForHumans() }}</div>
+                                <div><a class="text-lg" href="{{ route('information.news-content', ['type' => 'news', 'slug' => $item->slug]) }}">{{ $item->title }}</a></div>
+                                <div class="text-sm font-semibold capitalize opacity-60">{{ $item->updated_at->diffForHumans() }}</div>
                             </div>
-                            <div class="text-xs list-col-wrap line-clamp-4 max-h-20">
+                            <div class="text-sm list-col-wrap line-clamp-4 max-h-20">
                                 {!! Str::limit($item->content, 255) !!}
                             </div>
                         </li>

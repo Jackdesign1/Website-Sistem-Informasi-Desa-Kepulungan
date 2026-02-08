@@ -4,10 +4,12 @@
     <div class="flex flex-col gap-8 md:flex-row">
         <div class="flex-1 space-y-5">
             <div>
-                <x-mary-carousel :slides="$images" class="!h-96"/>
-                <div class="text-sm">
+                <x-mary-carousel :slides="$images" class="!h-96 mb-3"/>
+                <x-mary-avatar :placeholder="getInitials($data->user->name?? '-')" :title="$data->user->name?? '-'" :subtitle="$data->created_at->diffForHumans()" class="!w-11" />
+
+                {{-- <div class="text-sm">
                     <p>Dibuat: {{ _($data->created_at->diffForHumans()) }}</p>
-                </div>
+                </div> --}}
             </div>
             <div class="pt-10">
                 {!! $data->content !!}

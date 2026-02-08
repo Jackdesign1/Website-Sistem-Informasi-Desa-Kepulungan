@@ -5,11 +5,12 @@
         <x-mary-input wire:model.live.debounce='year' label="Tahun Operasional" icon="o-calendar" placeholder="2025" />
         <div class="mt-4 space-y-1.5">
             @foreach ($operationalTypes as $typeIndex => $operationalType)
-                <x-mary-collapse name="operational-{{ $typeIndex }}">
+                <x-mary-collapse name="operational-{{ $typeIndex }}" x-data="calculate($el, 'Rp {{ number_format(array_sum(array_column($operationalType['details'], 'value')), 2) }}')">
                     <x-slot:heading>
                         <div class="flex items-center justify-between">
                             <span>Operasional ({{ $operationalType['operational_type_name'] }})</span>
-                            <span>Rp {{ number_format(array_sum(array_column($operationalType['details'], 'value')), 2) }}</span>
+                            {{-- <span>Rp {{ number_format(array_sum(array_column($operationalType['details'], 'value')), 2) }}</span> --}}
+                            <span x-text="value"></span>
                         </div>
                     </x-slot:heading>
                     <x-slot:content>
@@ -36,7 +37,7 @@
                                         <x-mary-input wire:model='operationalTypes.{{ $typeIndex }}.details.{{ $detailIndex }}.operational_detail_name' label="Detail Operasional {{ $loop->iteration }}" icon="o-tag" placeholder="Detail Operasional" />
                                     </div>
                                     <div class="flex-[0.8]">
-                                        <x-mary-input wire:model.live='operationalTypes.{{ $typeIndex }}.details.{{ $detailIndex }}.value' label="Nilai Operasional" prefix="Rp." money placeholder="Nilai Operasional" />
+                                        <x-mary-input x-init="add($el)" x-on:keyup="calculate($el)" wire:model='operationalTypes.{{ $typeIndex }}.details.{{ $detailIndex }}.value' label="Nilai Operasional" prefix="Rp." money placeholder="Nilai Operasional" />
                                     </div>
                                     <div class="flex items-end">
                                         <x-mary-button 
@@ -65,4 +66,32 @@
         </x-slot:actions>
     </x-mary-form>
     
-</x-dashboard-c>
+</x-dashboard-container>
+
+@script
+    <script>
+        Alpine.data('calculate', (el, value) => ({
+            values: {},
+            value: value,
+            parse(value) {
+                return parseFloat(value.replaceAll(',', '')) || 0;
+            },  
+            add(el) {
+                this.values[el.id] = this.parse(el.value);
+                console.log(this.values);
+            },
+            calculate(el) {
+                this.values[el.id] = this.parse(el.value)
+                subtotal = Object.values(this.values).reduce((sum, val) => sum + val)
+                this.value = "Rp" + subtotal.toLocaleString('id-ID', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+                console.log(
+                    this.values,
+                    this.value
+                );
+            }
+        }));
+    </script>
+@endscript

@@ -62,7 +62,7 @@
                                             {{-- <div class="flex items-center justify-between gap-3"> --}}
                                             <div class="flex flex-col items-end">
                                                 <x-mary-badge value="{{ number_format(($operationalType->details->sum('value') / $operationalBudget->total) * 100, 1) }}%" class="badge-soft" />
-                                                <span class="whitespace-nowrap">Rp{{ number_format($operationalType->details->sum('value'), 2) }}</span>
+                                                <span class="whitespace-nowrap">Rp{{ number_format($operationalType->details->sum('value'), 0) }}</span>
                                             </div>
                                         </div>
                                     </x-slot:heading>
@@ -71,7 +71,7 @@
                                             @foreach ($operationalType->details as $detail)
                                                 <li class="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                                                     <span>{{ $detail->operational_detail_name }}</span>
-                                                    <span class="whitespace-nowrap">Rp{{ number_format($detail->value, 2) }}</span>
+                                                    <span class="whitespace-nowrap">Rp{{ number_format($detail->value, 0) }}</span>
                                                 </li>
                                             @endforeach
                                         </ol>

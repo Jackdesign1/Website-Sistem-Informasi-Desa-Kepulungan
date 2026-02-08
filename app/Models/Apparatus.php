@@ -14,6 +14,12 @@ class Apparatus extends Model
         'name',
         'position',
         'nipd',
-        'image'
+        'image',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

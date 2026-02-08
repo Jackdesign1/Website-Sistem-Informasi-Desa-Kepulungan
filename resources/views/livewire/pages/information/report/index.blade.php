@@ -6,7 +6,13 @@
                 <div class="flex flex-col gap-5">
                     @foreach ($chunk as $report)
                         <div>
-                            <x-mary-card :title="$report->title" :subtitle="$report->updated_at->diffForHumans()" class="flex-1 max-w-md border shadow-lg min-w-64">
+                            {{-- <x-mary-card :title="$report->title" :subtitle="$report->updated_at->diffForHumans()" class="flex-1 max-w-md border shadow-lg min-w-64"> --}}
+                            <x-mary-card class="relative flex-1 max-w-md border shadow-lg min-w-64">
+                                <x-mary-badge :value="'Update '.$report->updated_at->diffForHumans()" class="absolute rounded-full badge-primary left-3 top-4" />
+
+                                <x-mary-avatar :placeholder="getInitials($report->user->name?? '-')" :title="$report->user->name?? '-'" :subtitle="$report->created_at->diffForHumans()" class="!w-11" />
+                                <p class="mt-2 text-2xl font-semibold">{{ $report->title }}</p>
+                                
                                 <span class="line-clamp-3">{{ $report->description }}</span>
                                 <x-slot:figure>
                                     @if ($report->imageMedia->first()->url)

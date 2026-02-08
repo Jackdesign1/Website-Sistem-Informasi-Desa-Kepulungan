@@ -169,7 +169,7 @@
             <x-mary-button class="btn-success" label="Lihat Galeri" :link="route('galery')" />
         </div>
         {{-- galery --}}
-        <div class="grid grid-cols-2 gap-3 min-h-96">
+        {{-- <div class="grid grid-cols-2 gap-3 min-h-96">
             <div class="flex flex-col min-h-0 gap-3">
                 <div class="rounded-xl overflow-hidden shadow-lg flex-[.8] aspect-[16/8]">
                     <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
@@ -186,6 +186,12 @@
                     <img src="{{ asset('assets/images/Galeri_3.jpg') }}" alt="product-1.jpg" class="object-cover object-center w-full h-full transition duration-300 hover:scale-110">
                 </div>
             </div>
+        </div> --}}
+        <div class="flex flex-wrap justify-center gap-5">
+            <img src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}" alt="product-1.jpg" class="flex-1 block object-cover object-center transition duration-300 shadow-lg rounded-xl aspect-square min-w-60 max-h-96 hover:scale-110">
+            <img src="{{ asset('assets/images/Galeri_1.jpg') }}" alt="product-1.jpg" class="flex-1 block object-cover object-center transition duration-300 shadow-lg rounded-xl aspect-square min-w-60 max-h-96 hover:scale-110">
+            <img src="{{ asset('assets/images/Galeri_2.jpg') }}" alt="product-1.jpg" class="flex-1 block object-cover object-center transition duration-300 shadow-lg rounded-xl aspect-square min-w-60 max-h-96 hover:scale-110">
+            <img src="{{ asset('assets/images/Galeri_3.jpg') }}" alt="product-1.jpg" class="flex-1 block object-cover object-center transition duration-300 shadow-lg rounded-xl aspect-square min-w-60 max-h-96 hover:scale-110">
         </div>
     </x-container>
 </div>

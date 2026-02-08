@@ -17,7 +17,7 @@ class Index extends Component
 
     public function render()
     {
-        $news = News::onlyNews()->onlyPublish()->with('imageMedia')->latest()->paginate(10, pageName: 'news');
+        $news = News::onlyNews()->onlyPublish()->with('imageMedia', 'user')->latest()->paginate(10, pageName: 'news');
         $newsChunks = [[], []];
         foreach ($news as $i => $item) {
             $newsChunks[$i % 2][] = $item;

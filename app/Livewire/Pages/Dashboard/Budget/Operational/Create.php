@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Operational;
 
-use App\Models\Operational;
 use App\Models\OperationalBudget;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -25,7 +25,6 @@ class Create extends Component
     public $operationalTypes = [
         [
             'operational_type_name' => 'Bidang Pemerintahan',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -35,7 +34,6 @@ class Create extends Component
         ],
         [
             'operational_type_name' => 'Bidang Pembangunan',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -45,7 +43,6 @@ class Create extends Component
         ],
         [
             'operational_type_name' => 'Bidang Pembinaan Masyarakat',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -55,7 +52,6 @@ class Create extends Component
         ],
         [
             'operational_type_name' => 'Bidang Pemberdayaan Masyarakat',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -65,7 +61,6 @@ class Create extends Component
         ],
         [
             'operational_type_name' => 'Penyertaan Modal BUMDes',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -75,7 +70,6 @@ class Create extends Component
         ],
         [
             'operational_type_name' => 'Bidang Penanggulangan Bencana',
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -88,7 +82,6 @@ class Create extends Component
     public function addOperationalType() {
         $this->operationalTypes[] = [
             'operational_type_name' => null,
-            'value' => null,
             'details' => [
                 [
                     'operational_detail_name' => null,
@@ -124,6 +117,7 @@ class Create extends Component
 
             $operational = OperationalBudget::create([
                 'year' => $this->year,
+                'user_id' => Auth::user()->id
             ]);
 
             $operationalTypesData = collect($this->operationalTypes)->map(function ($operationalType) use ($operational) {
@@ -152,8 +146,12 @@ class Create extends Component
             $this->success('Berhasil menambahkan data', redirectTo: route('dashboard.budget.operational.index'));
         } catch (\Exception $e) {
             DB::rollback();
-            $this->error('Error', 'Terjadi error saat menambahkan data'.$e->getMessage());
+            $this->error('Error', 'Terjadi error saat menambahkan data');
         }
+    }
+
+    public function mount() {
+        $this->year = now()->year;
     }
     
     public function render()

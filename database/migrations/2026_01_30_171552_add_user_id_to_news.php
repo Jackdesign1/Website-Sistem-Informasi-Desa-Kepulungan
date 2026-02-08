@@ -27,6 +27,9 @@ return new class extends Migration
         Schema::table('income_details', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null')->before('created_at'); // as a creator or editor
         });
+        Schema::table('media', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null')->before('created_at'); // as a owner
+        });
         Schema::table('homepage_hero_images', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null')->before('created_at'); // as a owner
         });
@@ -81,6 +84,10 @@ return new class extends Migration
             $table->dropColumn('user_id');
         });
         Schema::table('income_details', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
+        Schema::table('media', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });
