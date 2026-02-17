@@ -70,7 +70,7 @@
 </div> --}}
 
 
-<footer class="px-8 py-12 text-gray-800"> 
+{{-- <footer class="px-8 py-12 text-gray-800"> 
    <div class="flex flex-wrap justify-between w-full gap-8 mx-auto max-w-7xl"> 
    <!-- Kolom 1: Logo dan Alamat --> 
    <div class="pe-5"> 
@@ -139,4 +139,105 @@
    <div class="pt-4 mt-10 text-sm text-center text-gray-600 border-t"> 
       © 2025 Pemerintah Desa Kepulungan. Developed by Bara Api Digital 
    </div> 
-</footer> 
+   <div class="border-t border-[#d4a373]/10 pt-8 text-center">
+      <p class="mb-1 text-sm text-gray-400">
+         Copyright &copy; 2025. All rights reserved Developed By Bara Api Digital
+      </p>
+      <p class="mb-1 text-sm text-gray-400">
+         Supported By Teknik Informatika PSDKU Sidoarjo
+      </p>
+      <p class="text-sm text-gray-400">
+         Politeknik Negeri Jember
+      </p>
+   </div>
+</footer>  --}}
+
+<footer class="pt-16 pb-8 text-gray-800" id="kontak">
+   <div class="max-w-[1400px] mx-auto px-8">
+      
+      <div class="grid grid-cols-1 gap-8 mb-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
+
+         {{-- <div class="flex flex-col text-center border-b border-[#d4a373]/20 pb-6 mb-6 sm:col-span-2 lg:col-span-1 lg:text-left lg:border-b-0 lg:pb-0 lg:mb-0">
+            <img src="{{ asset('/assets/images/logo-desa-kapulungan.png') }}" alt="Wong Pulungan Logo" class="h-[120px] w-auto object-none mb-2 lg:mx-0">
+            
+            <h3 class="text-[1.3rem] font-semibold mb-2 lg:text-left">DESA KEPULUNGAN</h3>
+            
+            <p class="text-gray-600 text-[0.95rem] leading-relaxed lg:text-left">
+               Jl. Raya Malang - Surabaya Dusun Gondang RT. 08 RW. 002 Desa Kepulungan Kecamatan Gempol
+            </p>
+         </div> --}}
+
+         <div class="pe-5"> 
+            <div class="flex items-start mb-4 space-x-4"> 
+               <img src="{{ asset('assets/images/logo-desa-kapulungan.png') }}" alt="Logo" class="object-contain w-24 h-auto"> 
+               <div> 
+                  <h2 class="text-lg font-bold leading-snug whitespace-nowrap">Pemerintah Kabupaten <br> Pasuruan</h2> 
+                  <p class="text-sm">Kecamatan Gempol</p> 
+               </div> 
+            </div> 
+            <p class="mt-2 text-sm"> 
+               Desa Kepulungan<br> 
+               Jl. Dau Darmorejo No. 45 Desa Kepulungan<br> 
+               Kec. Gempol Kab. Pasuruan 67155 
+            </p> 
+         </div> 
+
+         <div class="border-b border-[#d4a373]/10 pb-6 mb-6 sm:border-b-0 sm:pb-0 sm:mb-0">
+            <h2 class="text-[1.1rem] font-semibold mb-6 text-center sm:text-left">Tentang Kami</h2>
+            
+            <div class="flex flex-col items-center space-y-3 sm:items-start">
+               <a href="#home" class="text-gray-600 text-[0.95rem] hover:text-primary transition duration-300">Berita</a>
+               <a href="#destinasi" class="text-gray-600 text-[0.95rem] hover:text-primary transition duration-300">Destinasi Wisata</a>
+               <a href="#news" class="text-gray-600 text-[0.95rem] hover:text-primary transition duration-300">UMKM</a>
+            </div>
+         </div>
+
+         <div class="border-b border-[#d4a373]/10 pb-6 mb-6 sm:border-b-0 sm:pb-0 sm:mb-0">
+            <h3 class="text-[1.1rem] font-semibold mb-6 text-center sm:text-left">Ikuti Kami</h3>
+            
+            <div class="flex justify-center space-x-4 sm:justify-start">
+               <a href="#" target="_blank" aria-label="Facebook" class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full hover:bg-primary hover:text-white hover:-translate-y-[3px] transition duration-300 ease-in-out">
+                  <x-icon name="tabler-brand-facebook" class="w-5 h-5" />
+               </a>
+               <a href="#" target="_blank" aria-label="Instagram" class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full hover:bg-primary hover:text-white hover:-translate-y-[3px] transition duration-300 ease-in-out">
+                  <x-icon name="tabler-brand-instagram" class="w-5 h-5" />
+               </a>
+               <a href="#" target="_blank" aria-label="Twitter" class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full hover:bg-primary hover:text-white hover:-translate-y-[3px] transition duration-300 ease-in-out">
+                  <x-icon name="tabler-brand-twitter" class="w-5 h-5" />
+               </a>
+               <a href="#" target="_blank" aria-label="YouTube" class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full hover:bg-primary hover:text-white hover:-translate-y-[3px] transition duration-300 ease-in-out">
+                  <x-icon name="tabler-brand-youtube" class="w-5 h-5" />
+               </a>
+            </div>
+         </div>
+
+
+         <div>
+            <h3 class="text-[1.1rem] font-semibold mb-6 text-center sm:text-left">Kontak Kami</h3>
+            
+            <div class="flex flex-col space-y-4 text-[0.95rem] items-center sm:items-start">
+               <div class="flex items-start space-x-3 text-gray-600">
+                  <x-icon name="tabler-phone" class="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <span class="leading-relaxed">+62 896-9981-5985</span>
+               </div>
+               <div class="flex items-start space-x-3 text-gray-600">
+                  <x-icon name="tabler-mail" class="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <span class="leading-relaxed">bumdesa@kepulungan.desa.id</span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="border-t border-[#d4a373]/10 pt-8 text-center">
+         <p class="mb-1 text-sm text-gray-400">
+            Copyright &copy; 2025. All rights reserved Developed By Bara Api Digital
+         </p>
+         <p class="mb-1 text-sm text-gray-400">
+            Supported By Teknik Informatika PSDKU Sidoarjo
+         </p>
+         <p class="text-sm text-gray-400">
+            Politeknik Negeri Jember
+         </p>
+      </div>
+   </div>
+</footer>

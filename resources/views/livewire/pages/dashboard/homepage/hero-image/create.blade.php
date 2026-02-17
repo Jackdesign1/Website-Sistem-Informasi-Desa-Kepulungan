@@ -21,7 +21,7 @@
                 <x-mary-input wire:model='buttonUrl' label="URL Tombol CTA" placeholder="https://..." />
             </div>
             <div class="md:flex-shrink">
-                <x-mary-input wire:model='order' type="number" label="Urutan" placeholder="1" hint="Urutan mana untuk ini tampil(Mulai dari 1)" min="1"/>
+                <x-mary-input wire:model='order' type="number" label="Urutan" placeholder="1" hint="Urutan tampil(Mulai dari 1)" min="1" max="{{ $max }}"/>
             </div>
         </div>
 

@@ -24,7 +24,7 @@
                     <div class="absolute top-0 bottom-0 left-0 right-0 z-10 bg-black/40"></div>
                     <img
                         src="{{ asset($heroImage->image) }}"
-                        class="object-cover w-full " />
+                        class="object-cover w-full aspect-[4/2]" />
                     <div class="absolute top-0 bottom-0 z-20 flex justify-center left-5 right-5 md:justify-start">
                         <div class="absolute z-20 text-lg text-center text-white bottom-14 max-w-96 lg:left-16 md:text-left">
                             <p class="font-semibold md:text-3xl">{{ $heroImage->title }}</p>

@@ -88,11 +88,27 @@
                             {{-- <x-carousel-nav index="1" name="bumdes"></x-carousel-nav> --}}
                             <div class="absolute space-y-3 text-center text-white translate-y-1/2 bottom-1/2 md:bottom-20 md:translate-y-0 md:left-14 lg:left-24 md:text-left lg:w-1/2">
                                 <x-header class="text-2xl md:text-3xl">
-                                    Bupati Pasuruan Resmikan Wisata Air Panas Kepulungan
+                                    Wisata Air Panas Kepulungan Wong Pulungan
                                 </x-header>
                                 <div class="text-base md:text-xl">
-                                    Wisata Pemandian Air Panas Langsung <br>
-                                    Dari Sumbernya yang Sangat Menyejukkan Badan
+                                    Destinasi wisata air panas alami yang menjadi kebanggaan desa Kepulungan
+                                </div>
+                                <x-mary-button label="Kunjungi Website" class="btn-success"/>
+                            </div>
+                        </x-container>
+                    </div>
+                    <div id="bumdes" class="relative w-full carousel-item">
+                        <img
+                            src="{{ asset('assets/images/badan-usaha-milik-desa.png') }}"
+                            class="object-cover w-full" />
+                        <x-container class="absolute top-0 bottom-0 z-20 left-5 right-5">
+                            {{-- <x-carousel-nav index="1" name="bumdes"></x-carousel-nav> --}}
+                            <div class="absolute space-y-3 text-center text-white translate-y-1/2 bottom-1/2 md:bottom-20 md:translate-y-0 md:left-14 lg:left-24 md:text-left lg:w-1/2">
+                                <x-header class="text-2xl md:text-3xl">
+                                    Pasar Desa Kepulungan
+                                </x-header>
+                                <div class="text-base md:text-xl">
+                                    Pusat ekonomi desa yang menyediakan kebutuhan sehari-hari masyarakat
                                 </div>
                                 <x-mary-button label="Kunjungi Website" class="btn-success"/>
                             </div>

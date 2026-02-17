@@ -8,6 +8,8 @@
         <title>{{ $title?? 'Dashboard Desa Kepulungan' }}</title>
         <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-desa-kapulungan.png') }}">
 
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
         @assets
             <!-- Fonts -->
             <link rel="preconnect" href="https://fonts.bunny.net">

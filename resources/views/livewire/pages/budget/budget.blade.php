@@ -1,5 +1,4 @@
 <div class="flex flex-col items-center gap-8 lg:flex-row">
-    @dd($villageBudget)
     @if ($withChart) 
         <div class="flex-[.75] text-center flex justify-center items-center flex-col">
             <x-mary-chart wire:model="budgetChart" class="w-full max-w-xl"/>
@@ -28,7 +27,7 @@
                     </div>
                 @endif
                 <div class="stat-title">APBDes {{ $year }} {{ $budgetChart['data']['labels'][0] }}</div>
-                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($budgetChart['data']['datasets'][0]['data'][0], 0) }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($budgetChart['data']['datasets'][0]['data'][0], 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
             <div class="stat">
@@ -37,8 +36,8 @@
                         <x-mary-button class="bg-[#4BC0C0] btn-sm" link="#pendapatan" no-wire-navigate icon="o-arrow-right"></x-mary-button>
                     </div>
                 @endif
-                <div class="stat-title">APBDes {{ $year }} Pendapatan</div>
-                <div class="stat-value text-dark text-ellipsis">Rp {{ number_format($villageBudget, 0) }}</div>
+                <div class="stat-title">APBDes {{ $year }} {{ $budgetChart['data']['labels'][1] }}</div>
+                <div class="stat-value text-dark text-ellipsis">Rp{{ number_format($budgetChart['data']['datasets'][0]['data'][1], 0) }}</div>
                 {{-- <div class="stat-desc">21% more than previous</div> --}}
             </div>
         </div>

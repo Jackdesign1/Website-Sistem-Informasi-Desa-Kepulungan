@@ -21,28 +21,32 @@ class Create extends Component
         'detailBudgets.*.type' => 'required|string',
         'detailBudgets.*.value' => 'required',
     ])]
-    public $detailBudgets = [
-        [
-            'type' => 'PAB',
-            'value' => null,
-        ],
-        [
-            'type' => 'DD',
-            'value' => null,
-        ],
-        [
-            'type' => 'BHPD',
-            'value' => null,
-        ],
-        [
-            'type' => 'ADD',
-            'value' => null,
-        ],
-        [
-            'type' => 'BKK',
-            'value' => null,
-        ],
-    ];
+    public $detailBudgets = [];
+
+    public function initDetailBudgets() {
+        $this->detailBudgets = [
+            [
+                'type' => 'PAB',
+                'value' => null,
+            ],
+            [
+                'type' => 'DD',
+                'value' => null,
+            ],
+            [
+                'type' => 'BHPD',
+                'value' => null,
+            ],
+            [
+                'type' => 'ADD',
+                'value' => null,
+            ],
+            [
+                'type' => 'BKK',
+                'value' => null,
+            ],
+        ];
+    }
 
     public function addDetailBudget() {
         $this->detailBudgets[] = [
@@ -57,6 +61,7 @@ class Create extends Component
 
     public function resetPage() {
         $this->reset();
+        $this->initDetailBudgets();
     }
 
     public function create() {
@@ -74,7 +79,7 @@ class Create extends Component
             });
 
             $villageBudget->details()->createMany($finalDetailBudgets->toArray());
-            $this->reset();
+            $this->resetPage();
             $this->dispatch('refresh');
             $this->dispatch('closeCreateModal');
             $this->success('Berhasil menambahkan data');

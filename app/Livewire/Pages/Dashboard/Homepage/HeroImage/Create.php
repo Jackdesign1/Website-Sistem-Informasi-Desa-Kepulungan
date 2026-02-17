@@ -23,6 +23,7 @@ class Create extends Component
     public $order;
     public $buttonText;
     public $buttonUrl;
+    public int $max;
 
     public function rules() {
         $rules = [];
@@ -68,8 +69,9 @@ class Create extends Component
     }
 
     public function mount() {
-        $maxOrder = HomepageHeroImage::max('order');
-        $this->order = is_null($maxOrder) ? 1 : $maxOrder + 1;
+        $heroImages = HomepageHeroImage::get();
+        $this->order = is_null($heroImages->max('order')) ? 1 : $heroImages->max('order') + 1;
+        $this->max = $heroImages->count() + 1;
     }
 
     public function render()

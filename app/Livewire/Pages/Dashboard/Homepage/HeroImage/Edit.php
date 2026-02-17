@@ -31,6 +31,8 @@ class Edit extends Component
     public $buttonText;
     public $buttonUrl;
 
+    public int $max;
+
     public function rules() {
         $rules = [];
         if ($this->newBackground) {
@@ -103,6 +105,10 @@ class Edit extends Component
             DB::rollBack();
             $this->error('Gagal pengubah data hero image.');
         }
+    }
+
+    public function mount() {
+        $this->max = HomepageHeroImage::get()->count();
     }
 
     public function render()
