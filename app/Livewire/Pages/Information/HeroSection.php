@@ -7,16 +7,13 @@ use Livewire\Component;
 
 class HeroSection extends Component
 {
-    public $news;
-    public $reports;
-
-    public function mount($news, $reports) {
-        $this->news = [
-            $news,
-            $reports,
-        ];
-        // $this->reports = $reports;
-    }
+    // public function mount($news, $reports) {
+    //     $this->news = [
+    //         $news,
+    //         $reports,
+    //     ];
+    //     // $this->reports = $reports;
+    // }
 
     public function placeholder() {
         return view('livewire.pages.information.placeholder.hero-section');
@@ -28,8 +25,10 @@ class HeroSection extends Component
         $reports = News::onlyReport()->latest()->take(2)->get()->load('media');
 
         return view('livewire.pages.information.hero-section', [
-            'news' => $news,
-            'reports' => $reports,
+            'news' => [
+                'news' => $news,
+                'reports' => $reports,
+            ]
         ]);
         // return view('livewire.pages.information.placeholder.hero-section');
     }

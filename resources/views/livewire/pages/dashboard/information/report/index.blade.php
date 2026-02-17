@@ -51,16 +51,13 @@
                         </a>
                     </div>
                     <div class="max-w-full overflow-x-auto">
-                    <div class="max-w-full overflow-x-auto">
+                        <h6 class="font-semibold">Dokumen</h6>
                         <div class="flex gap-5 pt-2">
                             @foreach ($report->fileMedia as $reportFile)
                             <div class="w-32 text-center">
-                            <div class="w-32 text-center">
-                                <a href="{{ asset($reportFile->url) }}" target="blank" title="{{ $reportFile->name }}">
+                                {{-- <a href="{{ asset($reportFile->url) }}" target="blank" title="{{ $reportFile->name }}">
                                     <x-mary-icon name='tabler.file-description' class="w-12 h-12 mb-2"></x-mary-icon>
-                                    <x-mary-icon name='tabler.file-description' class="w-12 h-12 mb-2"></x-mary-icon>
-                                </a>
-                                <a href="{{ asset($reportFile->url) }}" target="blank" class="text-sm link line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
+                                </a> --}}
                                 <a href="{{ asset($reportFile->url) }}" target="blank" class="text-sm link line-clamp-2 link-hover text-primary" title="{{ $reportFile->name }}">{{ $reportFile->name }}</a>
                             </div>
                             @endforeach
@@ -68,7 +65,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-3">
-                    <div>
+                    <div class="flex-1 hidden sm:block">
                         <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
                         <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.report.edit', ['key' => Crypt::encrypt($report->id)])"></x-mary-button>
                         <x-mary-button icon="o-trash" tooltip="hapus" class="btn-circle !tooltip-bottom btn-ghost btn-sm" @click="$wire.deleteModalState = true; $wire.selectedKey = '{{ Crypt::encrypt($report->id) }}'"></x-mary-button>

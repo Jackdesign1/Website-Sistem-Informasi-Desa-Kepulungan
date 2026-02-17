@@ -27,9 +27,9 @@
         </x-slot:actions>
     </x-mary-header>
 
-    <ul class="flex flex-col gap-3 rounded-lg">
+    <div class="flex flex-col gap-3 rounded-lg">
         @foreach ($news as $item)
-            <li class="relative flex flex-col gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
+            <div class="relative flex flex-col max-w-full gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
                 <div class="flex items-center gap-3">
                     <img class="object-cover w-full max-h-28 sm:w-auto sm:h-24 min-w-24 aspect-square rounded-box" src="{{ asset($item->media->first()->url) }}"/>
                 </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="hidden text-sm line-clamp-3 sm:block">
                         <a href="{{ route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)]) }}">
-                            <div class="no-tailwindcss-base">
+                            <div class="max-w-lg no-tailwindcss-base max-h-32">
                                 {!! truncateHTML($item->content, 200) !!}
                             </div>
                         </a>
@@ -65,7 +65,7 @@
                             @click="$wire.statusModalState = true; newsStatus = '{{ $item->status }}'; $wire.selectedKey = '{{ Crypt::encrypt($item->id); }}'" />
                     </div>
                 </div>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
 </x-dashboard-contain>
