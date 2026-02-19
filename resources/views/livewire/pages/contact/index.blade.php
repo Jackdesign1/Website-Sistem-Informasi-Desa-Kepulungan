@@ -13,7 +13,7 @@
             </button>
         </div>
     </div>
-    <x-container class="pt-10 pb-0pp">
+    <x-container class="pt-10 pb-0">
         <x-mary-tabs wire:model="selectedContactTab" class="py-3">
             <x-mary-tab name="report" label="Laporan">
                 <livewire:pages.contact.report />
