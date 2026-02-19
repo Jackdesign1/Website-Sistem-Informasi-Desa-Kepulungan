@@ -4,55 +4,49 @@
     <div class="flex flex-col gap-8 md:flex-row">
         <x-contact.contact-information-card />
 
-        <div class="p-8 bg-whitep">
+        <div class="p-8 bg-white border border-gray-100 shadow-sm md:w-2/3 rounded-2xl">
             <h3 class="mb-2 text-xl font-bold">Form Laporan Warga</h3>
             <p class="mb-6 text-sm text-gray-500">Sampaikan aspirasi, keluhan, atau laporan Anda kepada Pemerintah Desa Kepulungan</p>
 
-            <form wire:submit.prevent="sendToWhatsapp" class="space-y-4">
+            <x-mary-form class="space-y-4" wire:submit='sendToWhatsapp'>
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" wire:model="nama" placeholder="Masukkan nama lengkap" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                        @error('nama') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
+                        <x-mary-input wire:model="name" placeholder="Masukkan nama lengkap" label="Nama Lengkap" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" wire:model="email" placeholder="nama@email.com" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                        <x-mary-input type="email" wire:model="email" placeholder="nama@email.com" label="Email" />
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">No. Telepon</label>
-                        <input type="text" wire:model="telepon" placeholder="08xxxxxxxxxx" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                        <x-mary-input wire:model="phone" placeholder="08xxxxxxxxxx" label="Nomor Telepon" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Kategori Laporan</label>
-                        <select wire:model="kategori" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
-                            <option value="">Pilih Kategori</option>
-                            <option value="Infrastruktur">Infrastruktur</option>
-                            <option value="Keamanan">Keamanan</option>
-                            <option value="Lainnya">Lainnya</option>
-                        </select>
+                        @php
+                            $options = [
+                                ['id' => 'Infrastruktur', 'name' => 'Infrastruktur'],
+                                ['id' => 'Keamanan', 'name' => 'Keamanan'],
+                                ['id' => 'Lainnya', 'name' => 'Lainnya'],
+                            ]
+                        @endphp
+                        <x-mary-select label="Kategori Laporan" wire:model='category' placeholder="Pilih Kategori" :options="$options" />
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Judul Laporan</label>
-                    <input type="text" wire:model="judul" placeholder="Ringkasan singkat laporan Anda" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                    <x-mary-input label="Subjek" type="text" wire:model="title" placeholder="Ringkasan singkat laporan Anda" />
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Isi Laporan</label>
-                    <textarea wire:model="isi" rows="4" placeholder="Jelaskan detail laporan Anda..." class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"></textarea>
-                    <p class="mt-1 text-xs text-right text-gray-400">Maksimal 1000 karakter</p>
+                    <x-mary-textarea label="Isi Laporan" wire:model='description' placeholder="Jelaskan detail laporan Anda..." hint="Max 1000 Karakter" rows="7" />
                 </div>
 
-                <button type="submit" class="flex items-center justify-center w-full gap-2 py-3 font-bold text-white transition duration-200 bg-green-600 rounded-lg hover:bg-green-700">
+                <x-mary-button type="submit" class="btn-success">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
                     Kirim Laporan
-                </button>
-            </form>
+                </x-mary-button>
+            </x-mary-form>
         </div>
     </div>
 </div>
