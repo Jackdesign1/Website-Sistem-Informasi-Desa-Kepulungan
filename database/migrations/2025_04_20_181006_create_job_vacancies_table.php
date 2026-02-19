@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('job_vacancies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-            $table->string('position')->nullable();
+            $table->text('description')->nullable();
+            $table->string('position');
             $table->string('location')->nullable();
             $table->string('company_name');
             $table->string('company_logo')->nullable(); // if you want to show logo
             $table->string('contact_email')->nullable();
 
-            $table->date('posted_at')->default(now());
+            // $table->date('posted_at');
             $table->date('expires_at')->nullable(); // optional expiration
 
             $table->enum('status', ['open', 'closed'])->default('open');

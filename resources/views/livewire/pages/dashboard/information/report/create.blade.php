@@ -15,9 +15,9 @@
         </x-slot:actions>
     </x-mary-header>
 
-    <div class="px-5">
+    <div class="sm:px-5">
         <x-mary-form wire:submit='create' id="create-news" class="space-y-5">
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:gap-3 sm:flex-row">
                 <div class="flex-1">
                     <x-mary-input wire:model.live.debounce='title' label="Judul Berita" />
                 </div>
@@ -27,9 +27,9 @@
             </div>
 
             <x-mary-image-library
-                wire:model="imageFiles"                 {{-- Temprary files --}}
-                wire:library="library"             {{-- Library metadata property --}}
-                :preview="$library"                {{-- Preview control --}}
+                wire:model="imageFiles"      {{-- Temprary files --}}
+                wire:library="library"       {{-- Library metadata property --}}
+                :preview="$library"          {{-- Preview control --}}
                 label="Upload Gambar Slide"
                 hint="Max 2Mb"
                 crop-text="false"
@@ -39,11 +39,11 @@
 
             <div>
                 <x-mary-file wire:model="reportFiles" label="Upload File" hint="Only PDF" accept="application/pdf" multiple/>
-                <div class="flex gap-5 flex-wrap">
+                <div class="flex flex-wrap gap-5">
                     @foreach ($reportFiles as $reportFile)
                         <div>
                             <div class="text-center">
-                                <x-mary-icon name='tabler.file-description' class="mb-2 w-16 h-16"></x-mary-icon>
+                                <x-mary-icon name='tabler.file-description' class="w-16 h-16 mb-2"></x-mary-icon>
                             </div>
                             <a href="{{ asset($reportFile->temporaryUrl()) }}" target="blank" class="link max-w-32 line-clamp-2 link-hover text-primary" title="{{ $reportFile->getClientOriginalName() }}">{{ $reportFile->getClientOriginalName() }}</a>
                         </div>

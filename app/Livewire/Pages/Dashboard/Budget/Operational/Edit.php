@@ -45,9 +45,21 @@ class Edit extends Component
         if ($this->originalYear !== $this->year) {
             $yearRule .= '|unique:operational_budgets,year';
         }
-        return [
+
+        $rules = [
             'year' => $yearRule,
+            'operationalTypes.*.operational_type_name' => 'required|string',
         ];
+
+        foreach ($this->operationalTypes as $opKey => $operationalType) {
+            foreach ($operationalType['details'] as $detKey => $detail) {
+                if ($detail['operational_detail_name'] != null || $detail['value'] != null) {
+                    $rules["operationalTypes.{$opKey}.details.{$detKey}.operational_detail_name"] = "required|string";
+                    $rules["operationalTypes.{$opKey}.details.{$detKey}.value"] = "required";
+                }
+            }
+        }
+        return $rules;
     }
 
     public function addOperationalType() {
@@ -94,6 +106,7 @@ class Edit extends Component
 
     public function edit() {
         $this->validate();
+        // dd($this->operationalTypes);
         try {
             DB::beginTransaction();
 
@@ -108,7 +121,6 @@ class Edit extends Component
                     ['id' => $operationalTypeData['id'] ?? null],
                     [
                         'operational_type_name' => $operationalTypeData['operational_type_name'],
-                        'value' => $operationalTypeData['value'],
                     ]
                 );
 

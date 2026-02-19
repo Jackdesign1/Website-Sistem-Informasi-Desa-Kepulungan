@@ -5,7 +5,7 @@ namespace App\Livewire\Pages\Dashboard\Apparatus;
 use Mary\Traits\Toast;
 use Livewire\Component;
 use App\Models\Apparatus;
-use Livewire\Attributes\Lazy;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 
@@ -38,6 +38,7 @@ class Create extends Component
                 'position' => $this->position,
                 'nipd' => $this->nipd,
                 'image' => 'storage/' . $imagePath,
+                'user_id' => Auth::user()->id
             ]);
         } catch (\Exception $e) {
             $this->error('Kesalahan menyimpan data');

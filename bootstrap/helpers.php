@@ -7,4 +7,12 @@ if (!function_exists('truncateHTML')) {
       $truncator = new TruncateService();
       return $truncator->truncate($html, $limit);
    }
+
+   function getInitials($name, $limit = 2) {
+      return collect(explode(' ', trim($name)))
+         ->filter()
+         ->map(fn($word) => strtoupper($word[0]))
+         ->take($limit)
+         ->join('');
+   }
 }

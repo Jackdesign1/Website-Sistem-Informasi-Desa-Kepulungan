@@ -25,13 +25,17 @@ class Index extends Component
 
     public function render()
     {
-        $images = Media::onlyImage()->latest()->get();
-        $divisor = ($this->isMobile ? 2 : 3) ?: 1;
-        $imageChunks = $images->chunk(
-            $divisor > 0 ? ceil($images->count() / $divisor) : $images->count()
-        );
+        // $images = Media::onlyImage()->latest()->get();
+        // $divisor = ($this->isMobile ? 2 : 3) ?: 1;
+        // $imageChunks = $images->chunk(
+        //     $divisor > 0 ? ceil($images->count() / $divisor) : $images->count()
+        // );
+        // return view('livewire.pages.galery.index', [
+        //     'imageChunks' => $imageChunks
+        // ]);
+
         return view('livewire.pages.galery.index', [
-            'imageChunks' => $imageChunks
+            'images' => Media::onlyImage()->latest()->get()
         ]);
     }
 }

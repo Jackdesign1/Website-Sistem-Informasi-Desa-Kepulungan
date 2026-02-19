@@ -20,7 +20,7 @@
                                 </td>
                                 <td class="p-2">
                                     <div class="w-full px-4 py-2 text-base font-semibold border rounded-lg shadow-lg md:text-2xl whitespace-nowrap">
-                                        {{ "Rp ".number_format($operationalChart['data']['datasets'][0]['data'][$index]) }}
+                                        {{ "Rp".number_format($operationalChart['data']['datasets'][0]['data'][$index]) }}
                                     </div>
                                 </td>
                             </tr>
@@ -37,7 +37,7 @@
                             </td>
                             <td class="p-2">
                                 <div class="w-full px-4 py-2 text-2xl font-semibold border rounded-lg shadow-lg whitespace-nowrap">
-                                    Rp ---,--
+                                    Rp---,--
                                 </div>
                             </td>
                         </tr>
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="flex-1">
         <x-header class="mb-8 text-center">Pelaksanaan Desa Berdasarkan Klasifikasi Kegiatan</x-header>
         @if ($operationalBudget)
@@ -59,18 +59,19 @@
                                     <x-slot:heading class="bg-green-100">
                                         <div class="flex flex-col md:items-center md:justify-between md:flex-row">
                                             <span class="text-sm md:text-base">{{ $operationalType->operational_type_name }}</span>
-                                            <div class="flex items-center justify-between gap-3">
-                                                <span>Rp {{ number_format($operationalType->details->sum('value'), 2) }}</span>
+                                            {{-- <div class="flex items-center justify-between gap-3"> --}}
+                                            <div class="flex flex-col items-end">
                                                 <x-mary-badge value="{{ number_format(($operationalType->details->sum('value') / $operationalBudget->total) * 100, 1) }}%" class="badge-soft" />
+                                                <span class="whitespace-nowrap">Rp{{ number_format($operationalType->details->sum('value'), 0) }}</span>
                                             </div>
                                         </div>
                                     </x-slot:heading>
                                     <x-slot:content>
                                         <ol class="px-5 list-decimal text-start">
                                             @foreach ($operationalType->details as $detail)
-                                                <li class="flex justify-between gap-2 py-1 border-b last:border-b-0">
+                                                <li class="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                                                     <span>{{ $detail->operational_detail_name }}</span>
-                                                    <span>Rp{{ number_format($detail->value, 2) }}</span>
+                                                    <span class="whitespace-nowrap">Rp{{ number_format($detail->value, 0) }}</span>
                                                 </li>
                                             @endforeach
                                         </ol>

@@ -15,9 +15,9 @@
         </x-slot:actions>
     </x-mary-header>
 
-    <div class="px-5">
+    <div class="sm:px-5">
         <x-mary-form wire:submit='create' id="create-news" class="space-y-5">
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:gap-3 sm:flex-row">
                 <div class="flex-1">
                     <x-mary-input wire:model.live.debounce='title' label="Judul Berita" />
                 </div>

@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Mary\Traits\WithMediaSync;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Create extends Component
@@ -59,19 +60,22 @@ class Create extends Component
 
     public function create($status = 'publish') {
         $mediaPaths = null;
+        $userId = Auth::user()->id;
         try {
-            $imagePaths = collect($this->imageFiles)->map(function($file) {
+            $imagePaths = collect($this->imageFiles)->map(function($file) use ($userId) {
                 return [
                     'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'image',
+                    'user_id' => $userId
                 ];
             });
-            $reportPaths = collect($this->reportFiles)->map(function($file) {
+            $reportPaths = collect($this->reportFiles)->map(function($file) use ($userId) {
                 return [
                     'url' => '/storage/'.$file->store('news', 'public'),
                     'type' => 'file',
                     'name' => $file->getClientOriginalName(),
                     'alt' => $file->getClientOriginalName(),
+                    'user_id' => $userId
                 ];
             });
             $mediaPaths = $imagePaths->merge($reportPaths);
@@ -87,6 +91,7 @@ class Create extends Component
                     'type' => 'report',
                     'status' => $status,
                     'content' => $this->description,
+                    'user_id' => $userId
                 ]);
 
             $news->media()->createMany(

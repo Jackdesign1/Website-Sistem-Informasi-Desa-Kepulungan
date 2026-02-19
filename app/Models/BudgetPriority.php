@@ -12,10 +12,16 @@ class BudgetPriority extends Model
 
     protected $fillable = [
         'year',
+        'user_id'
     ];
 
     public function details()
     {
         return $this->hasMany(BudgetPriorityDetail::class);
+    }
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
     }
 }

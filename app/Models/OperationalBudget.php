@@ -12,6 +12,7 @@ class OperationalBudget extends Model
 
     protected $fillable = [
         'year',
+        'user_id'
     ];
 
     public function operationalTypes()
@@ -22,5 +23,10 @@ class OperationalBudget extends Model
     public function operationalDetails()
     {
         return $this->hasManyThrough(OperationalBudgetTypeDetail::class, OperationalBudgetType::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

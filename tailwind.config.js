@@ -5,11 +5,11 @@ import forms from '@tailwindcss/forms';
 export default {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './vendor/livewire/**/*.blade.php',
+        './vendor/robsontenorio/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/*.blade.php',
         './resources/views/**/*.blade.php',
-        './resources/views/**/**/*.blade.php',
-        './resources/views/**/**/**/*.blade.php',
     ],
 
     darkMode: ['selector'],
@@ -21,6 +21,19 @@ export default {
             },
         },
     },
+
+    safelist: [
+        'bg-blue-200',
+        'bg-green-200',
+        'bg-pink-200',
+        'bg-yellow-200',
+        'bg-purple-200',
+        'bg-indigo-200',
+        'bg-teal-200',
+        'bg-orange-200',
+        'bg-cyan-200',
+        'bg-lime-200',
+    ],
 
     plugins: [
         // forms,

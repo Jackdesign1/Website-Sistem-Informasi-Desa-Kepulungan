@@ -15,9 +15,9 @@
         </x-slot:actions>
     </x-mary-header>
 
-    <div class="px-5">
+    <div class="md:px-5">
         <x-mary-form wire:submit='edit' id="edit-news" class="space-y-5">
-            <div class="flex gap-3">
+            <div class="flex flex-col sm:gap-3 sm:flex-row">
                 <div class="flex-1">
                     <x-mary-input wire:model.live.debounce='title' label="Judul Berita" />
                 </div>
@@ -28,9 +28,9 @@
 
 			<div>
                 <span class="text-xs font-semibold">Gambar Ter-upload</span>
-                <div class="rounded border relative mt-2">
+                <div class="relative mt-2 border rounded">
                     @foreach ($uploaded_media as $media)
-                        <div class="py-2 ps-16 pe-10 border-b last:border-b-0">
+                        <div class="py-2 border-b ps-16 pe-10 last:border-b-0">
                             <div class="absolute p-2 start-2">
                                 <x-mary-button wire:click="removeUploadedMedia({{ $media->id }})" spinner="removeUploadedMedia" class="btn lg:tooltip lg:tooltip-top btn-sm btn-ghost btn-circle" data-tip="remove">
                                     <svg wire:loading.remove='removeUploadedMedia' class="inline w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -38,7 +38,7 @@
                                     </svg>
                                 </x-mary-button>
                             </div>
-                            <img src="{{ asset($media->url) }}" alt="" class="h-24 w-fit cursor-pointer border-2 border-base-content/10 rounded-lg hover:scale-105 transition-all ease-in-out">
+                            <img src="{{ asset($media->url) }}" alt="" class="h-24 transition-all ease-in-out border-2 rounded-lg cursor-pointer w-fit border-base-content/10 hover:scale-105">
                         </div>
                     @endforeach
                 </div>

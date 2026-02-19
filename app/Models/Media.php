@@ -16,6 +16,7 @@ class Media extends Model
         'name',
         'url',
         'alt',
+        'user_id'
     ];
 
     public function scopeOnlyImage($query) {
@@ -29,5 +30,10 @@ class Media extends Model
     public function mediable()
     {
         return $this->morphTo();
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

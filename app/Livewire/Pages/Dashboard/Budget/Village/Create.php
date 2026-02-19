@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Pages\Dashboard\Budget\Village;
 
-use App\Models\VillageBudget;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
 use Mary\Traits\Toast;
+use Livewire\Component;
+use App\Models\VillageBudget;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Validate;
 
 class Create extends Component
 {
@@ -14,34 +15,38 @@ class Create extends Component
     #[Validate('required|date_format:Y|unique:village_budgets,year')]
     public $year;
     #[Validate('required')]
-    public $silpa = null;
+    public $silpa = null;  
 
     #[Validate([
         'detailBudgets.*.type' => 'required|string',
         'detailBudgets.*.value' => 'required',
     ])]
-    public $detailBudgets = [
-        [
-            'type' => 'PAB',
-            'value' => null,
-        ], 
-        [
-            'type' => 'DD',
-            'value' => null,
-        ], 
-        [
-            'type' => 'BHPD',
-            'value' => null,
-        ], 
-        [
-            'type' => 'ADD',
-            'value' => null,
-        ], 
-        [
-            'type' => 'BKK',
-            'value' => null,
-        ], 
-    ];
+    public $detailBudgets = [];
+
+    public function initDetailBudgets() {
+        $this->detailBudgets = [
+            [
+                'type' => 'PAB',
+                'value' => null,
+            ],
+            [
+                'type' => 'DD',
+                'value' => null,
+            ],
+            [
+                'type' => 'BHPD',
+                'value' => null,
+            ],
+            [
+                'type' => 'ADD',
+                'value' => null,
+            ],
+            [
+                'type' => 'BKK',
+                'value' => null,
+            ],
+        ];
+    }
 
     public function addDetailBudget() {
         $this->detailBudgets[] = [
@@ -56,24 +61,35 @@ class Create extends Component
 
     public function resetPage() {
         $this->reset();
+        $this->initDetailBudgets();
     }
 
     public function create() {
         $this->validate();
+        $userId = Auth::user()->id;
         try {
             $villageBudget = VillageBudget::create([
                 'year' => $this->year,
                 'silpa' => $this->silpa, 
+                'user_id' => $userId
             ]);
 
-            $villageBudget->details()->createMany($this->detailBudgets);
-            $this->reset();
+            $finalDetailBudgets = collect($this->detailBudgets)->map(function ($detail) use ($userId) {
+                return array_merge($detail, ['user_id' => $userId]);
+            });
+
+            $villageBudget->details()->createMany($finalDetailBudgets->toArray());
+            $this->resetPage();
             $this->dispatch('refresh');
             $this->dispatch('closeCreateModal');
             $this->success('Berhasil menambahkan data');
         } catch (\Exception $e) {
             $this->error('Error', 'Terjadi error saat menambahkan data');
         }
+    }
+
+    public function mount() {
+        $this->year = now()->year;
     }
 
     public function render()

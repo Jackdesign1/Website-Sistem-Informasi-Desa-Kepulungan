@@ -19,17 +19,6 @@ class Index extends Component
 
     public function render()
     {
-        $news = News::onlyNews()->latest()->take(4)->get();
-        $reports = News::onlyReport()->latest()->take(4)->get();
-
-        if (!$reports->isEmpty() && !$news->isEmpty()) {
-            $news = $news->take(2);
-            $reports = $reports->take(2);
-        }
-
-        return view('livewire.pages.information.index', [
-            'news' => $news,
-            'reports' => $reports,
-        ]);
+        return view('livewire.pages.information.index');
     }
 }

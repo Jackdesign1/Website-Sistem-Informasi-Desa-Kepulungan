@@ -3,6 +3,8 @@
       <livewire:pages.dashboard.budget.village.create />
    </x-mary-modal>
 
+   {{-- @dd($chunkedVillageBudgets, $villageBudgets) --}}
+
    <x-mary-header title="Pendapatan Desa" separator progress-indicator>
       <x-slot:actions>
          <x-mary-button label="Pendapatan Desa" icon="tabler.plus" class="btn-primary" @click="$wire.createModal = true" />
@@ -14,9 +16,18 @@
          @foreach ($villageBudgets as $index => $budget)
             @if ($index % 2 == 0)
                <x-mary-card title="Pendapatan Desa ({{ $budget->year }})" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
-                  <div class="absolute flex flex-col gap-1.5 top-1.5 right-3">
+                  <div class="absolute grid grid-cols-2 gap-1.5 right-3 top-2">
                      <x-mary-button icon="tabler.edit" :link="route('dashboard.budget.village.edit', ['key' => Crypt::encrypt($budget->id)])" class="btn-sm btn-circle"></x-mary-button>
                      <x-mary-button icon="tabler.trash" @click="confirm('Anda yakin ingin menghapus data pendapatan tahun {{ $budget->year }}?')? $wire.delete('{{ Crypt::encrypt($budget->id) }}') : ''" class="btn-sm btn-circle"></x-mary-button>
+                     <span></span>
+                     <x-mary-popover>
+                        <x-slot:trigger>
+                           <x-mary-button icon="tabler.info-circle" class="btn-sm btn-circle"></x-mary-button>
+                        </x-slot:trigger>
+                        <x-slot:content>
+                           <span class="whitespace-nowrap">Diupload oleh: {{ $budget->user->name?? "-" }}</span>
+                        </x-slot:content>
+                     </x-mary-popover>
                   </div>
                   <x-mary-collapse :name="'group'.$index" separator>
                      <x-slot:heading>
@@ -30,7 +41,17 @@
                            @foreach ($budget->details as $detail)
                               <li class="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                                  <span>{{ $detail->type }}</span>
-                                 <span>Rp{{ number_format($detail->value) }}</span>
+                                 <div class="flex items-center gap-1">
+                                    <span>Rp{{ number_format($detail->value, 2) }}</span>
+                                    <x-mary-popover>
+                                       <x-slot:trigger>
+                                          <x-mary-icon name="tabler.info-circle"></x-mary-icon>
+                                       </x-slot:trigger>
+                                       <x-slot:content>
+                                          <span class="whitespace-nowrap">Dibuat/Diedit oleh: {{ $detail->user->name?? "-" }}</span>
+                                       </x-slot:content>
+                                    </x-mary-popover>
+                                 </div>
                               </li>
                            @endforeach
                         </ol>
@@ -45,9 +66,18 @@
          @foreach ($villageBudgets as $index => $budget)
             @if ($index % 2 == 1)
                <x-mary-card title="Pendapatan Desa ({{ $budget->year }})" subtitle="SILPA: Rp{{ number_format($budget->silpa) }}" shadow separator class="relative border shadow-lg">
-                  <div class="absolute flex flex-col gap-1.5 top-1.5 right-3">
+                  <div class="absolute grid grid-cols-2 gap-1.5 right-3 top-2">
                      <x-mary-button icon="tabler.edit" :link="route('dashboard.budget.village.edit', ['key' => Crypt::encrypt($budget->id)])" class="btn-sm btn-circle"></x-mary-button>
                      <x-mary-button icon="tabler.trash" @click="confirm('Anda yakin ingin menghapus data pendapatan tahun {{ $budget->year }}?')? $wire.delete('{{ Crypt::encrypt($budget->id) }}') : ''" class="btn-sm btn-circle"></x-mary-button>
+                     <span></span>
+                     <x-mary-popover>
+                        <x-slot:trigger>
+                           <x-mary-button icon="tabler.info-circle" class="btn-sm btn-circle"></x-mary-button>
+                        </x-slot:trigger>
+                        <x-slot:content>
+                           <span class="whitespace-nowrap">Diupload oleh: {{ $budget->user->name?? "-" }}</span>
+                        </x-slot:content>
+                     </x-mary-popover>
                   </div>
                   <x-mary-collapse :name="'group'.$index" separator>
                      <x-slot:heading>
@@ -61,7 +91,17 @@
                            @foreach ($budget->details as $detail)
                               <li class="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                                  <span>{{ $detail->type }}</span>
-                                 <span>Rp{{ number_format($detail->value, 2) }}</span>
+                                 <div class="flex items-center gap-1">
+                                    <span>Rp{{ number_format($detail->value, 2) }}</span>
+                                    <x-mary-popover>
+                                       <x-slot:trigger>
+                                          <x-mary-icon name="tabler.info-circle"></x-mary-icon>
+                                       </x-slot:trigger>
+                                       <x-slot:content>
+                                          <span class="whitespace-nowrap">Dibuat/Diedit oleh: {{ $detail->user->name?? "-" }}</span>
+                                       </x-slot:content>
+                                    </x-mary-popover>
+                                 </div>
                               </li>
                            @endforeach
                         </ol>

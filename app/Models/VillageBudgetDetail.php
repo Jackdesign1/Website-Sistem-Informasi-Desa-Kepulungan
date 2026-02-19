@@ -14,5 +14,11 @@ class VillageBudgetDetail extends Model
         'village_budget_id',
         'type',
         'value',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

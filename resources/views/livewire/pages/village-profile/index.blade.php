@@ -29,54 +29,25 @@
         </x-container>
     </div>
 
-    {{-- <x-container>
-        <x-header class="mb-8">
-            Program Desa
-        </x-header>
-
-        @php
-            $headers = [
-                ['key' => 'id', 'label' => '#'],
-                ['key' => 'name', 'label' => 'Nama Program'],
-                ['key' => 'anggaran', 'label' => 'Anggaran'],
-                ['key' => 'realisasi', 'label' => 'Realisasi'],
-                ['key' => 'status_program', 'label' => 'Status Program'],
-                ['key' => 'dokumen', 'label' => 'Dokumen'],
-            ];
-
-            $rows = [
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.google.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.facebook.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.youtube.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.google.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.google.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.google.com'],
-                ['id' => 1, 'name' => 'Program 1', 'anggaran' => "Rp 12.000,000", "realisasi" => 'lorem ipsum dolorem', 'status_program' => 'Berjalan', 'dokumen' => 'www.google.com'],
-            ]
-        @endphp
-
-        <x-mary-table :headers="$headers" :rows="$rows">
-            @scope('cell_dokumen', $row)
-                <a href="http://{{ $row['dokumen'] }}" class="link link-hover link-primary">Unduh</a>
-            @endscope
-        </x-mary-table>
-    </x-container> --}}
+    <x-container>
+        <livewire:pages.village-profile.village-program>
+    </x-container>
 
     <x-container>
         <x-header class="mb-8">
             Struktur Desa Kepulungan
         </x-header>
 
-        {{-- <img src="{{ asset('assets/images/struktur-desa.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-3xl mx-auto"> --}}
+        <img src="{{ asset('assets/images/bagan-organisasi.png') }}" alt="struktur-desa.png" class="w-full h-auto max-w-4xl mx-auto">
     </x-container>
 
-    {{-- <x-container>
+    <x-container id="village-calendar">
         <x-header class="mb-8">
             Kalender Desa
         </x-header>
 
         @livewire('pages.village-profile.calendar')
-    </x-container> --}}
+    </x-container>
 
     <x-container>
         <x-header class="mb-8">

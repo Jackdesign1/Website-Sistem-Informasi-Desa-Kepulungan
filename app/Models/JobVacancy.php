@@ -9,4 +9,16 @@ class JobVacancy extends Model
 {
     /** @use HasFactory<\Database\Factories\JobVacancyFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'title', 
+        'position', 
+        // 'description', 
+        // 'location',
+        'company_name',
+        'company_logo', 
+        'contact_email',
+        'expires_at',
+        'status'
+    ];
 }

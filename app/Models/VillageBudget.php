@@ -12,11 +12,17 @@ class VillageBudget extends Model
 
     protected $fillable = [
         'year',
-        'silpa'
+        'silpa',
+        'user_id'
     ];
 
     public function details()
     {
         return $this->hasMany(VillageBudgetDetail::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

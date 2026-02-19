@@ -3,13 +3,14 @@
 namespace App\Livewire\Pages\Information\Report;
 
 use App\Models\News;
+use Mary\Traits\Toast;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithoutUrlPagination;
 
 class Index extends Component
 {
-    use WithPagination, WithoutUrlPagination;
+    use WithPagination, WithoutUrlPagination, Toast;
 
     public function placeholder() {
         return view('livewire.pages.information.content-placeholder');
@@ -17,7 +18,7 @@ class Index extends Component
 
     public function render()
     {
-        $reports = News::onlyReport()->with('imageMedia', 'fileMedia')->latest()->paginate(10, pageName: 'page');
+        $reports = News::onlyReport()->with('imageMedia', 'fileMedia', 'user')->latest()->paginate(10, pageName: 'page');
         $reportChunks = [[], []];
         foreach ($reports as $i => $item) {
             $reportChunks[$i % 2][] = $item;
