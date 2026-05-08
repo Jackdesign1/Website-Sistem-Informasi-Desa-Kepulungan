@@ -2,7 +2,7 @@
 /node_modules
 /public/build
 /public/hot
-/public/js/tinymce
+/public/js/tinymce/*
 /subdomain
 /public/storage
 /storage/*.key
