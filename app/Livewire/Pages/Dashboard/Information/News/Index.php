@@ -6,10 +6,11 @@ use App\Models\News;
 use Mary\Traits\Toast;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use Toast;
+    use Toast, WithPagination;
 
     public $statusModalState = false;
     public $deleteModalState = false;
@@ -46,7 +47,7 @@ class Index extends Component
     public function render()
     {
         return view("livewire.pages.dashboard.information.news.index", [
-            "news" => News::onlyNews()->with('user', 'media')->latest()->get(),
+            "news" => News::onlyNews()->with('user', 'media')->latest()->paginate(10),
         ]);
     }
 }

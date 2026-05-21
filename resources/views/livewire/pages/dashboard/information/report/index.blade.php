@@ -27,6 +27,9 @@
         </x-slot:actions>
     </x-mary-header>
 
+    <div class="mb-5">
+        {{ $reports->links() }}
+    </div>
     <ul class="flex flex-col gap-3 rounded-lg">
         @foreach ($reports as $report)
             <li class="relative flex flex-col gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
@@ -83,4 +86,7 @@
             </li>
         @endforeach
     </ul>
+    <div class="mt-5">
+        {{ $reports->links() }}
+    </div>
 </x-dashboard-contain>

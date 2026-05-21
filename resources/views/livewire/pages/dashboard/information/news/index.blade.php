@@ -27,6 +27,9 @@
         </x-slot:actions>
     </x-mary-header>
 
+    <div class="mb-5">
+        {{ $news->links() }}
+    </div>
     <div class="flex flex-col gap-3 rounded-lg">
         @foreach ($news as $item)
             <div class="relative flex flex-col max-w-full gap-3 p-6 overflow-hidden border rounded-lg shadow-lg sm:flex-row">
@@ -67,5 +70,8 @@
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="mt-5">
+        {{ $news->links() }}
     </div>
 </x-dashboard-contain>
