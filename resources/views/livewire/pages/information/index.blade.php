@@ -1,5 +1,5 @@
 <div>
-    <livewire:pages.information.hero-section />
+    <livewire:pages.information.hero-section lazy />
     <x-container class="py-8">
         <div class="flex flex-col gap-8 pt-24 md:flex-row" id="news-content">
             <div class="flex-1">

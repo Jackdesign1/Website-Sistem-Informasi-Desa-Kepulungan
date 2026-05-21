@@ -13,6 +13,7 @@ class NewsContent extends Component
 {
     public $slug;
     public $type;
+    public $content;
 
     #[Computed()]
     public function news() {
@@ -22,6 +23,7 @@ class NewsContent extends Component
         } else {
             $news->load('imageMedia', 'fileMedia');
         }
+        $this->content = $news->content;
         return $news;
     }
 
@@ -32,11 +34,20 @@ class NewsContent extends Component
 
     public function render()
     {
+        if($this->news->status != 'publish') {
+            abort(404);
+        }
+
         return view('livewire.pages.information.news-content', [
             'data' => $this->news,
             'images' => $this->news->imageMedia->pluck('url')->map(function($url) {
                 return ['image' => $url];
             })->toArray()
+        ])->layout('layouts.guest', [
+            'metaTitle' => $this->news->title,
+            'metaDescription' => $this->news->description,
+            'metaImage' => env('APP_URL').$this->news->imageMedia->first()?->url,
+            'metaUrl' => request()->url(),
         ]);
     }
 }

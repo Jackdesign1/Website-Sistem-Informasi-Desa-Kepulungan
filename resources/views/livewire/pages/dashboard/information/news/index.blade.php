@@ -43,21 +43,21 @@
                     </div>
                     <div class="hidden text-sm line-clamp-3 sm:block">
                         <a href="{{ route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)]) }}">
-                            <div class="max-w-lg no-tailwindcss-base max-h-32">
+                            <div class="max-w-lg max-h-32 tinymce-content">
                                 {!! truncateHTML($item->content, 200) !!}
                             </div>
                         </a>
                     </div>
                 </div>
                 <div class="flex gap-0.5 flex-col">
-                    <div class="flex-1 hidden sm:block">
-                        <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
+                    <div class="justify-end flex-1 hidden sm:flex">
+                        {{-- <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button> --}}
                         <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)])"></x-mary-button>
                         <x-mary-button icon="o-trash" tooltip="hapus" class="btn-circle !tooltip-bottom btn-ghost btn-sm" wire:click="deleteModalState = true; $wire.selectedKey = '{{ Crypt::encrypt($item->id) }}'"></x-mary-button>
                     </div>
                     <div class="flex items-center justify-between sm:justify-end">
                         <div class="flex-1 sm:hidden">
-                            <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button>
+                            {{-- <x-mary-button icon="o-eye" tooltip="lihat" class="btn-circle !tooltip-bottom btn-ghost btn-sm"></x-mary-button> --}}
                             <x-mary-button icon="tabler.edit" tooltip="edit" class="btn-circle !tooltip-bottom btn-ghost btn-sm" :link="route('dashboard.information.news.edit', ['key' => Crypt::encrypt($item->id)])"></x-mary-button>
                             <x-mary-button icon="o-trash" tooltip="hapus" class="btn-circle !tooltip-bottom btn-ghost btn-sm" wire:click="deleteModalState = true; $wire.selectedKey = '{{ Crypt::encrypt($item->id) }}'"></x-mary-button>
                         </div>

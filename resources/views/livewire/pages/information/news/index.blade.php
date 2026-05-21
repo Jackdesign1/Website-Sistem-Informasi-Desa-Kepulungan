@@ -9,7 +9,7 @@
                             {{-- <x-mary-card :title="$item->title" :subtitle="$item->updated_at->diffForHumans()" class="border shadow-lg"> --}}
                             <x-mary-card class="relative border shadow-lg">
                                 <x-mary-badge :value="'Update '.$item->updated_at->format('d M Y')" class="absolute rounded-full badge-primary left-3 top-4" />
-                                <x-mary-avatar :placeholder="getInitials($item->user->name?? '-')" :title="$item->user->name?? '-'" :subtitle="$item->created_at->diffForHumans()" class="!w-11" />
+                                {{-- <x-mary-avatar :placeholder="getInitials($item->user->name?? '-')" :title="$item->user->name?? '-'" :subtitle="$item->created_at->diffForHumans()" class="!w-11" /> --}}
                                 <p class="mt-2 text-2xl font-semibold">{{ $item->title }}</p>
 
                                 <div class="relative overflow-hidden max-h-56">
@@ -27,7 +27,7 @@
                                         @endif
                                     </a>
                                 </x-slot:figure>
-                                <x-slot:menu>
+                                <x-slot:actions separator>
                                     <x-mary-button
                                         icon="o-share"
                                         class="btn-circle"
@@ -37,8 +37,6 @@
                                             $wire.info('URL Berhasil disalin');
                                         "
                                     />
-                                </x-slot:menu>
-                                <x-slot:actions separator>
                                     <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => 'news', 'slug' => $item->slug])"/>
                                 </x-slot:actions>
                             </x-mary-card>

@@ -11,7 +11,14 @@
                     <p>Dibuat: {{ _($data->created_at->diffForHumans()) }}</p>
                 </div> --}}
             </div>
-            <div class="pt-10 no-tailwindcss-base">
+
+            <style>
+                #tinymce_content img {
+                    display: inline-block;
+                }
+            </style>
+            <div class="pt-10" id="tinymce_content">
+                {{-- <x-mary-editor wire:model="content" :config="['content_css' => asset('assets/css/tinymce_content.css')]" /> --}}
                 {!! $data->content !!}
             </div>
 
@@ -34,3 +41,7 @@
         </div>
     </div>
 </x-container>
+
+@pushOnce('scripts')
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
+@endPushOnce

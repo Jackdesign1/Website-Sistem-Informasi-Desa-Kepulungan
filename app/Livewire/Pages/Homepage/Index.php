@@ -43,6 +43,11 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pages.homepage.index');
+        return view('livewire.pages.homepage.index')->layout('layouts.guest', [
+            'metaTitle' => 'Desa Kepulungan - Beranda',
+            'metaDescription' => 'Selamat datang di website resmi Desa Kepulungan. Temukan informasi terbaru, layanan masyarakat, dan berbagai kegiatan yang berlangsung di desa kami.',
+            'metaImage' => asset('assets/images/logo-kepulungan-16-9.jpg'),
+            'metaUrl' => request()->url(),
+        ]);
     }
 }

@@ -4,9 +4,27 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        
+
+        <meta name="description" content="{{ $metaDescription ?? 'Welcome to our portal' }}">
+
+        <!-- Open Graph for WhatsApp / Facebook -->
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="{{ $metaTitle ?? config('app.name') }}" />
+        <meta property="og:description" content="{{ $metaDescription ?? 'Welcome to our portals' }}" />
+        <meta property="og:image" content="{{ isset($metaImage) ? asset($metaImage) : asset('default-share-image.jpg') }}" />
+        <meta property="og:url" content="{{ $metaUrl ?? request()->url() }}" />
+        <meta property="og:site_name" content="Your News Portal" />
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name') }}" />
+        <meta name="twitter:description" content="{{ $metaDescription ?? 'Welcome to our portal' }}" />
+        <meta name="twitter:image" content="{{ isset($metaImage) ? asset($metaImage) : asset('default-share-image.jpg') }}" />
+
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
+
+        
         <title class="capitalize">{{ $title." Desa Kepulungan" }}</title>
         <link rel="icon" type="image/png" href="{{ asset('assets/images/logo-desa-kapulungan.png') }}">
 
@@ -31,6 +49,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+
+        @stack('styles')
     </head>
     <body class="font-sans antialiased" x-data="{ open: false }" x-on:scroll.window='open = false'>
         {{-- The navbar with `sticky` --}}
@@ -93,9 +113,11 @@
                 </x-container>
             </div>
         @endif
-
+        
         @livewireScripts
 
+        @stack('scripts')
+        
         {{--  TOAST area --}}
         <x-mary-toast />
 
@@ -106,7 +128,5 @@
 
         {{-- slick js library --}}
         <script type="text/javascript" src="{{ asset('assets/js/slick.min.js') }}"></script>
-
-        @stack('scripts')
     </body>
 </html>

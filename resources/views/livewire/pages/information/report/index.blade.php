@@ -10,7 +10,7 @@
                             <x-mary-card class="relative flex-1 max-w-md border shadow-lg min-w-64">
                                 <x-mary-badge :value="'Update '.$report->updated_at->diffForHumans()" class="absolute rounded-full badge-primary left-3 top-4" />
 
-                                <x-mary-avatar :placeholder="getInitials($report->user->name?? '-')" :title="$report->user->name?? '-'" :subtitle="$report->created_at->diffForHumans()" class="!w-11" />
+                                {{-- <x-mary-avatar :placeholder="getInitials($report->user->name?? '-')" :title="$report->user->name?? '-'" :subtitle="$report->created_at->diffForHumans()" class="!w-11" /> --}}
                                 <p class="mt-2 text-2xl font-semibold">{{ $report->title }}</p>
                                 
                                 <span class="line-clamp-3">{{ $report->description }}</span>
@@ -21,22 +21,20 @@
                                         <div class="w-full aspect-[2/1] skeleton"></div>
                                     @endif
                                 </x-slot:figure>
-                                <x-slot:menu>
-                                    <x-mary-button icon="o-share" class="btn-circle btn-sm"
-                                        x-on:click="
-                                            navigator.clipboard.writeText('{{ route('information.news-content', ['type' => $report->type, 'slug' => $report->slug]) }}');
-                                            $wire.info('URL Berhasil disalin');
-                                        "/>
-                                </x-slot:menu>
                                 <x-slot:actions separator>
-                                    <div class="flex justify-between flex-1">
+                                    {{-- <div class="flex justify-between flex-1">
                                         <x-mary-dropdown label="Report">
                                             @foreach ($report->fileMedia as $fileMedia)
                                                 <x-mary-menu-item title="{{ $fileMedia->name }}" :link="$fileMedia->url" external icon="tabler.file-description" />
                                             @endforeach
                                         </x-mary-dropdown>
-                                        <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => $report->type, 'slug' => $report->slug])"/>
-                                    </div>
+                                    </div> --}}
+                                    <x-mary-button icon="o-share" class="btn-circle"
+                                        x-on:click="
+                                            navigator.clipboard.writeText('{{ route('information.news-content', ['type' => $report->type, 'slug' => $report->slug]) }}');
+                                            $wire.info('URL Berhasil disalin');
+                                        "/>
+                                    <x-mary-button label="Baca Selengkapnya" class="btn-primary" :link="route('information.news-content', ['type' => $report->type, 'slug' => $report->slug])"/>
                                 </x-slot:actions>
                             </x-mary-card>
                         </div>

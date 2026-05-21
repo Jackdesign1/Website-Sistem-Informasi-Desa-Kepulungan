@@ -1,5 +1,14 @@
-<x-container class="w-full">
-    <div id="hero-carousel" wire:cloak>
+<x-container class="w-full pt-16" wire:cloak>
+    <div 
+        id="hero-carousel"
+        x-init="
+            $nextTick(() => {
+                $($el).slick({
+                    autoplay: true,
+                    dots: true
+                });
+            });
+        ">
         @if (!$news)
             <div class="py-10 text-center">
                 <p class="text-gray-500">Tidak ada berita atau laporan tersedia.</p>
@@ -41,7 +50,7 @@
     </div>
 </x-container>
 
-@script
+{{-- @script
     <script>
         $('#hero-carousel').slick({
             autoplay: true,
@@ -51,4 +60,4 @@
             $('#hero-carousel').slick('unslick')
         })
     </script>
-@endscript
+@endscript --}}
